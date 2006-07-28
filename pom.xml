@@ -3,104 +3,17 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
     <version>0.9-SNAPSHOT</version>
     <name>ParaNamer</name>
     <url>http://paranamer.codehaus.org</url>
 
-    <developers>
-        <developer>
-            <id>paul</id>
-            <name>Paul Hammant</name>
-            <email>paul@hammant.org</email>
-            <roles>
-                <role>administrator</role>
-                <role>developer</role>
-            </roles>
-            <timezone>-8</timezone>
-        </developer>
-    </developers>
-
-    <dependencies>
-        <dependency>
-            <groupId>qdox</groupId>
-            <artifactId>qdox</artifactId>
-            <version>1.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>ant</groupId>
-            <artifactId>ant</artifactId>
-            <version>1.6.5</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Test dependencies -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
     <scm>
         <connection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</connection>
         <developerConnection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</developerConnection>
         <url>http://svn.paranamer.codehaus.org/</url>
     </scm>
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>dependencies</report>
-                            <report>project-team</report>
-                            <report>license</report>
-                            <!--<report>scm</report>-->
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>surefire-report-maven-plugin</artifactId>
-                <version>2.0-beta-1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <configuration>
-                    <sourceEncoding>utf-8</sourceEncoding>
-                    <minimumTokens>100</minimumTokens>
-                    <targetJdk>1.2</targetJdk>
-                </configuration>
-            </plugin>
-            <plugin>
-                <inherited>true</inherited>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </reporting>
-
+    
     <licenses>
         <license>
             <name>Public Domain</name>
@@ -126,6 +39,49 @@
         </site>
     </distributionManagement>
 
+    <developers>
+        <developer>
+            <id>paul</id>
+            <name>Paul Hammant</name>
+            <email>paul@hammant.org</email>
+            <roles>
+                <role>administrator</role>
+                <role>developer</role>
+            </roles>
+            <timezone>-8</timezone>
+        </developer>
+        <developer>
+            <id>mauro</id>
+            <name>Mauro Talevi</name>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>0</timezone>
+        </developer>
+    </developers>
+
+    <dependencies>
+        <dependency>
+            <groupId>qdox</groupId>
+            <artifactId>qdox</artifactId>
+            <version>1.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.6.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
     <build>
         <extensions>
             <extension>
@@ -153,60 +109,124 @@
             </testResource>
         </testResources>
         <plugins>
+        	<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-compiler-plugin</artifactId>
+        		<configuration>
+        			<source>1.2</source>
+        			<target>1.2</target>
+        		</configuration>
+        	</plugin>
+        	<plugin>
+        		<artifactId>maven-assembly-plugin</artifactId>
+        		<configuration>
+        			<descriptor>src/main/assembly/dep.xml</descriptor>
+        		</configuration>
+        	</plugin>
+        	<plugin>
+        		<inherited>true</inherited>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-javadoc-plugin</artifactId>
+        		<executions>
+        			<execution>
+        				<id>attach-javadocs</id>
+        				<goals>
+        					<goal>jar</goal>
+        				</goals>
+        			</execution>
+        		</executions>
+        		<configuration>
+        			<links>
+        				<link>
+        					http://java.sun.com/j2se/1.4.2/docs/api/
+        				</link>
+        				<link>http://qdox.codehaus.org/apidocs/</link>
+        			</links>
+        			<linksource>true</linksource>
+        		</configuration>
+        	</plugin>
+        	<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-surefire-plugin</artifactId>
+        		<version>2.2</version>
+        		<configuration>
+        			<forkMode>once</forkMode>
+        			<printSummary>true</printSummary>
+        			<useFile>true</useFile>
+        			<systemProperties>
+        				<property>
+        					<name>test.src.dir</name>
+        					<value>${basedir}/src/test</value>
+        				</property>
+        			</systemProperties>
+        		</configuration>
+        	</plugin>
+        	<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-surefire-report-plugin</artifactId>
+        		<version>2.0</version>
+        	</plugin>
+        	<plugin>
+        		<groupId>org.codehaus.mojo</groupId>
+        		<artifactId>cobertura-maven-plugin</artifactId>
+        		<version>2.0</version>
+        		<executions>
+        			<execution>
+					<goals>
+        					<goal>clean</goal>
+        				</goals>
+        			</execution>
+        		</executions>
+             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>maven-pmd-plugin</artifactId>
                 <configuration>
-                    <source>1.2</source>
-                    <target>1.2</target>
+                    <sourceEncoding>utf-8</sourceEncoding>
+                    <minimumTokens>100</minimumTokens>
+                    <targetJdk>1.2</targetJdk>
                 </configuration>
             </plugin>
+        </plugins>
+    </build>
+   <reporting>
+        <plugins>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptor>src/main/assembly/dep.xml</descriptor>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>dependencies</report>
+                            <report>project-team</report>
+                            <report>license</report>
+                            <!--<report>scm</report>-->
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
             <plugin>
                 <inherited>true</inherited>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <links>
-                        <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
-                        <link>http://qdox.codehaus.org/apidocs/</link>
-                    </links>
-                    <linksource>true</linksource>
-                </configuration>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>javadoc</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <forkMode>once</forkMode>
-                    <printSummary>true</printSummary>
-                    <useFile>true</useFile>
-                    <systemProperties>
-                        <property>
-                            <name>test.src.dir</name>
-                            <value>${basedir}/src/test</value>
-                        </property>
-                    </systemProperties>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>2.0-beta-4</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
             </plugin>
         </plugins>
-    </build>
+    </reporting>
+
+    
 </project>
