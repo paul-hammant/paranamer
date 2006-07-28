@@ -26,6 +26,7 @@ public class ParanamerTestCase extends TestCase {
                 "com.thoughtworks.paranamer.ParanamerImpl lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerMojo execute\n" +
                 "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String\n" +
                 "com.thoughtworks.paranamer.ParanamerTask execute\n" +
                 "com.thoughtworks.paranamer.ParanamerTask setOutputDirectory outputDirectory java.lang.String\n" +
