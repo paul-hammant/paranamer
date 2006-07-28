@@ -7,24 +7,24 @@ import java.io.IOException;
 
 public class ParanamerTask extends Task {
 
-    private String sourcePath;
-    private String outputPath;
+    private String sourceDirectory;
+    private String outputDirectory;
 
     public void execute() throws BuildException {
         ParanamerGeneration paranamer = new ParanamerGeneration();
-        String parameterText = paranamer.generate(sourcePath);
+        String parameterText = paranamer.generate(sourceDirectory);
         try {
-            paranamer.write(outputPath, parameterText);
+            paranamer.write(outputDirectory, parameterText);
         } catch (IOException e) {
             throw new BuildException("Paranamer encountered an IOException", e);
         }
     }
 
-    public void setSourcePath(String sourcePath) {
-        this.sourcePath = sourcePath;
+    public void setSourceDirectory(String sourceDirectory) {
+        this.sourceDirectory = sourceDirectory;
     }
 
-    public void setOutputPath(String outputPath) {
-        this.outputPath = outputPath;
+    public void setOutputDirectory(String outputDirectory) {
+        this.outputDirectory = outputDirectory;
     }
 }

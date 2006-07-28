@@ -14,9 +14,7 @@ public class ParanamerTestCase extends TestCase {
                 "com.thoughtworks.paranamer.CachingParanamer CachingParanamer paranamer com.thoughtworks.paranamer.Paranamer\n" +
                 "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.CachingParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
-                "com.thoughtworks.paranamer.CachingParanamer checkedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.CachingParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-                "com.thoughtworks.paranamer.CachingParanamer uncheckedLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer\n" +
                 "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer delegate com.thoughtworks.paranamer.Paranamer\n" +
                 "com.thoughtworks.paranamer.CheckedParanamer checkedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
@@ -30,8 +28,8 @@ public class ParanamerTestCase extends TestCase {
                 "com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
                 "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String\n" +
                 "com.thoughtworks.paranamer.ParanamerTask execute\n" +
-                "com.thoughtworks.paranamer.ParanamerTask setOutputPath outputPath java.lang.String\n" +
-                "com.thoughtworks.paranamer.ParanamerTask setSourcePath sourcePath java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerTask setOutputDirectory outputDirectory java.lang.String\n" +
+                "com.thoughtworks.paranamer.ParanamerTask setSourceDirectory sourceDirectory java.lang.String\n" +
                 "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer\n" +
                 "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer delegate com.thoughtworks.paranamer.Paranamer\n" +
                 "com.thoughtworks.paranamer.UncheckedParanamer uncheckedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String\n" +
