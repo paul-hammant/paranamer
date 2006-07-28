@@ -19,24 +19,6 @@ public class CachingParanamer implements Paranamer {
         delegate = new ParanamerImpl();
     }
 
-    public synchronized Method checkedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) throws ParanamerException {
-        Method m = lookupMethod(classLoader, className, methodName, paramNames);
-        if (m != null) {
-            return m;
-        } else {
-            throw new ParanamerException("Paranamer could not find method signature");
-        }
-    }
-
-    public Method uncheckedLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        Method m = lookupMethod(classLoader, className, methodName, paramNames);
-        if (m != null) {
-            return m;
-        } else {
-            throw new ParanamerRuntimeException("Paranamer could not find method signature");
-        }
-    }
-
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
         String key = className + " " + methodName + " " + paramNames;
         Map map = (Map) classLoaders.get(classLoader);
