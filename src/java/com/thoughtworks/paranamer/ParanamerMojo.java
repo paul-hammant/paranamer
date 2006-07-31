@@ -35,10 +35,10 @@ public class ParanamerMojo
         throws MojoExecutionException, MojoFailureException
     {
         getLog().debug( "Generating parameter names from " + sourceDirectory + " to " + outputDirectory );
-        ParanamerGeneration paranamer = new ParanamerGeneration();
-        String parameterText = paranamer.generate(sourceDirectory);
+        QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
+        String parameterText = generator.generate(sourceDirectory);
         try {
-            paranamer.write(outputDirectory, parameterText);
+            generator.write(outputDirectory, parameterText);
         } catch (IOException e) {            
             throw new MojoExecutionException("Failed to generate parameter names", e);
         }

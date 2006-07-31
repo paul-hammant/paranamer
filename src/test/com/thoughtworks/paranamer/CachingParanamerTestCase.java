@@ -95,9 +95,9 @@ public class CachingParanamerTestCase extends TestCase {
 
     public void testCanChainToDefaultImpl() throws IOException {
         //setup
-        ParanamerGeneration paranamerGeneration = new ParanamerGeneration();
-        String parameterSignatures = paranamerGeneration.generate(new File(".").getAbsolutePath() + "/src/java");
-        paranamerGeneration.write(new File(".").getAbsolutePath() + "/target/classes/", parameterSignatures);
+        QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
+        String parameterSignatures = generator.generate(new File(".").getAbsolutePath() + "/src/java");
+        generator.write(new File(".").getAbsolutePath() + "/target/classes/", parameterSignatures);
 
         Paranamer cachingParanamer = new CachingParanamer();
         Method m = cachingParanamer.lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookupMethod", "classLoader,className,methodName,paramNames");

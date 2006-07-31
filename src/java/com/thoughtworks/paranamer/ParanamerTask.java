@@ -11,10 +11,10 @@ public class ParanamerTask extends Task {
     private String outputDirectory;
 
     public void execute() throws BuildException {
-        ParanamerGeneration paranamer = new ParanamerGeneration();
-        String parameterText = paranamer.generate(sourceDirectory);
+        QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
+        String parameterText = generator.generate(sourceDirectory);
         try {
-            paranamer.write(outputDirectory, parameterText);
+            generator.write(outputDirectory, parameterText);
         } catch (IOException e) {
             throw new BuildException("Paranamer encountered an IOException", e);
         }

@@ -8,7 +8,7 @@ public class UncheckedParanamerTestCase extends AbstractParanamerTestCase {
 
     public void testUncheckedMethodRetrievalFailure() throws IOException {
         try {
-            new UncheckedParanamer().uncheckedMethodLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneration", "generate", "hello,goodbye");
+            new UncheckedParanamer().uncheckedMethodLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "hello,goodbye");
             fail("shoulda barfed");
         } catch (ParanamerRuntimeException e) {
             // expected

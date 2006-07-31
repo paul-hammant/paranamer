@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-public class ParanamerGeneration {
+public class QdoxParanamerGenerator {
 
     public String generate(String sourcePath) {
         String retval = "";
