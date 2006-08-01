@@ -14,8 +14,13 @@ import java.util.Arrays;
 
 public class QdoxParanamerGenerator {
 
+    private static final String SPACE  = " ";
+    private static final String NEWLINE = "\n";
+    private static final String COMMA = ",";
+    private static final String EMPTY = "";
+
     public String generate(String sourcePath) {
-        String retval = "";
+        StringBuffer buffer = new StringBuffer();
         JavaDocBuilder builder = new JavaDocBuilder();
         builder.addSourceTree(new File(sourcePath));
         JavaClass[] classes = builder.getClasses();
@@ -23,52 +28,58 @@ public class QdoxParanamerGenerator {
         for (int i = 0; i < classes.length; i++) {
             JavaClass clazz = classes[i];
             if (!clazz.isInterface()) {
-                retval = retval + addMethods(clazz.getMethods(), clazz.getPackage() + "." + clazz.getName());
+        	buffer.append(addMethods(clazz.getMethods(), clazz.getPackage() + "." + clazz.getName()));
             }
         }
-        return retval;
+        return buffer.toString();
     }
 
     private String addMethods(JavaMethod[] methods, String className) {
-        String retval = "";
+        StringBuffer buffer = new StringBuffer();
         Arrays.sort(methods);
         for (int j = 0; j < methods.length; j++) {
             JavaMethod method = methods[j];
             if (Arrays.asList(method.getModifiers()).contains("public")) {
-                retval = retval + addPublicMethod(method, className);
+        	buffer.append(addPublicMethod(method, className));
             }
         }
-        return retval;
+        return buffer.toString();
     }
 
     private String addPublicMethod(JavaMethod method, String className) {
-        String retval = "";
+        StringBuffer buffer = new StringBuffer();
         JavaParameter[] parms = method.getParameters();
         DocletTag[] alsoKnownAs = method.getTagsByName("previousParamNames");
         for (int k = 0; k < alsoKnownAs.length; k++) {
             String value = alsoKnownAs[k].getValue();
-            retval = retval + className + " " + (method.getName() + " " + value + " " + getTypes(parms)).trim() + "\n";
+            buffer.append(className);
+            buffer.append(SPACE);
+            buffer.append((method.getName() + SPACE + value + SPACE + getTypes(parms)).trim());
+            buffer.append(NEWLINE);
         }
-        retval = retval + className + " " + (method.getName() + " " + getParamNames(parms) + " " + getTypes(parms)).trim() + "\n";
-        return retval;
+        buffer.append(className);
+        buffer.append(SPACE);
+        buffer.append((method.getName() + SPACE + getParamNames(parms) + SPACE + getTypes(parms)).trim());
+        buffer.append(NEWLINE);
+        return buffer.toString();
     }
 
     private String getParamNames(JavaParameter[] parms) {
-        String meth = "";
+	StringBuffer buffer = new StringBuffer();
         for (int k = 0; k < parms.length; k++) {
-            meth = meth + parms[k].getName();
-            meth = meth + comma(k, parms.length);
+            buffer.append(parms[k].getName());
+            buffer.append(comma(k, parms.length));
         }
-        return meth;
+        return buffer.toString();
     }
 
     private String getTypes(JavaParameter[] parms) {
-        String types = "";
+	StringBuffer buffer = new StringBuffer();
         for (int k = 0; k < parms.length; k++) {
-            types = types + parms[k].getType();
-            types = types + comma(k, parms.length);
+            buffer.append(parms[k].getType());
+            buffer.append(comma(k, parms.length));
         }
-        return types;
+        return buffer.toString();
     }
 
 
@@ -82,7 +93,7 @@ public class QdoxParanamerGenerator {
     }
 
     private String comma(int k, int size) {
-        return (k + 1 < size) ? "," : "";
+        return (k + 1 < size) ? COMMA : EMPTY;
     }
 
 
