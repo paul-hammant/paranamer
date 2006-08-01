@@ -60,11 +60,23 @@
         </developer>
     </developers>
 
+	<repositories>
+		<repository>
+			<id>codehaus-legacy-repository</id>
+			<name>Codehaus Legacy Repository</name>
+			<url>http://dist.codehaus.org</url>
+			<layout>legacy</layout>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+    </repositories>
+    
     <dependencies>
         <dependency>
             <groupId>qdox</groupId>
             <artifactId>qdox</artifactId>
-            <version>1.5</version>
+            <version>20060801.022451</version>
         </dependency>
         <dependency>
             <groupId>ant</groupId>
