@@ -94,10 +94,19 @@ public class ParanamerImpl implements Paranamer {
         int ix = mappings.indexOf(classAndMethodName);
         List matches = new ArrayList();
         while (ix > 0) {
-            matches.add(mappings.substring(ix + classAndMethodName.length(), mappings.indexOf(SPACE, ix + classAndMethodName.length() + 1)).trim());
+            int start = ix + classAndMethodName.length();
+            int end = mappings.indexOf(SPACE, ix + classAndMethodName.length() + 1);
+            String expected = mappings.substring(start, end);
+            if (didNotReadOffEndOfLine(expected)) {
+                matches.add(expected.trim());
+            }
             ix = mappings.indexOf(classAndMethodName, ix + 1);
         }
         return (String[]) matches.toArray(new String[matches.size()]);
+    }
+
+    private boolean didNotReadOffEndOfLine(String expected) {
+        return !expected.contains("\n");
     }
 
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {

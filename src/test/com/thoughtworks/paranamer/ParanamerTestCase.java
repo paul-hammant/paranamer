@@ -95,6 +95,12 @@ public class ParanamerTestCase extends TestCase {
     }
 
 
+    public void testMethodWithNoArgsCanBeRetrievedAndShowNoParameterNames() throws IOException, NoSuchMethodException {
+        File dir = new File("target/classes/");
+        new QdoxParanamerGenerator().write(dir.getAbsolutePath(), allParameters);
+        String[] choices = new ParanamerImpl().lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo", "execute");
+        assertEquals(0, choices.length);
+    }
 
 
 }
