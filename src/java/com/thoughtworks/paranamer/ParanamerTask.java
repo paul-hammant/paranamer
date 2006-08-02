@@ -15,6 +15,7 @@ public class ParanamerTask extends Task {
         String parameterText = generator.generate(sourceDirectory);
         try {
             generator.write(outputDirectory, parameterText);
+            System.out.println("Generated " + parameterText.length() + " characters of Parameter Name Data in '" + outputDirectory + "'");
         } catch (IOException e) {
             throw new BuildException("Paranamer encountered an IOException", e);
         }
