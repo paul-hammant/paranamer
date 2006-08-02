@@ -15,9 +15,9 @@ com.thoughtworks.paranamer.ParanamerImpl lookupParameterNames classLoader,classN
 com.thoughtworks.paranamer.ParanamerImpl lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String
 com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
 com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.ParanamerMojo execute
+com.thoughtworks.paranamer.ParanamerMojo execute 
 com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String
-com.thoughtworks.paranamer.ParanamerTask execute
+com.thoughtworks.paranamer.ParanamerTask execute 
 com.thoughtworks.paranamer.ParanamerTask setOutputDirectory outputDirectory java.lang.String
 com.thoughtworks.paranamer.ParanamerTask setSourceDirectory sourceDirectory java.lang.String
 com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer

@@ -21,7 +21,12 @@ public class ParanamerImpl implements Paranamer {
      */
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
         String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
-        String classAndMethodAndParamNames = "\n" + className + " " + methodName + " " + paramNames + " ";
+        StringBuffer classAndMethodAndParamNamesSB = new StringBuffer("\n").append(className).append(" ").append(methodName);
+        if (!paramNames.equals("")) {
+            classAndMethodAndParamNamesSB.append(" ").append(paramNames);
+        }
+        String classAndMethodAndParamNames = classAndMethodAndParamNamesSB.toString();
+
         int ix = mappings.indexOf(classAndMethodAndParamNames);
         if (ix != -1) {
             String methodParamTypes = extractParamerTypesFromFoundMethod(ix, classAndMethodAndParamNames, mappings);

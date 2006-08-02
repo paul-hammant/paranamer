@@ -57,9 +57,20 @@ public class QdoxParanamerGenerator {
             buffer.append((method.getName() + SPACE + value + SPACE + getTypes(parms)).trim());
             buffer.append(NEWLINE);
         }
+        String paramNames = getParamNames(parms);
+        String types = getTypes(parms);
         buffer.append(className);
         buffer.append(SPACE);
-        buffer.append((method.getName() + SPACE + getParamNames(parms) + SPACE + getTypes(parms)).trim());
+        buffer.append(method.getName());
+        if (!paramNames.equals(EMPTY)) {
+              buffer.append(SPACE);
+          }
+        buffer.append(paramNames);
+        if (!types.equals(EMPTY)) {
+            buffer.append(SPACE);
+        }
+        buffer.append(types);
+        buffer.append(SPACE);
         buffer.append(NEWLINE);
         return buffer.toString();
     }
