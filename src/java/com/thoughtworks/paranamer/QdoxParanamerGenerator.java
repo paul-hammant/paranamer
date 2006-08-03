@@ -19,6 +19,18 @@ public class QdoxParanamerGenerator {
     private static final String COMMA = ",";
     private static final String EMPTY = "";
 
+    private static final String DEFAULT_PARANAMER_RESOURCE = "META-INF/ParameterNames.txt";
+
+    private String paranamerResourcePath;
+
+    public QdoxParanamerGenerator() {
+        this(DEFAULT_PARANAMER_RESOURCE);
+    }
+
+    public QdoxParanamerGenerator(String paranamerResourcePath) {
+        this.paranamerResourcePath = paranamerResourcePath;
+    }
+
     public String generate(String sourcePath) {
         StringBuffer buffer = new StringBuffer();
         JavaDocBuilder builder = new JavaDocBuilder();
@@ -95,12 +107,21 @@ public class QdoxParanamerGenerator {
 
 
     public void write(String outputPath, String parameterText) throws IOException {
-        new File(outputPath + File.separator + "META-INF" + File.separator).mkdirs();
-        FileWriter fileWriter = new FileWriter(outputPath + File.separator + "META-INF" + File.separator + "ParameterNames.txt");
+        String path = outputPath + File.separator + paranamerResourcePath;
+        ensureParentDirectoriesExist(path);
+        FileWriter fileWriter = new FileWriter(path);
         PrintWriter pw = new PrintWriter(fileWriter);
         pw.println("format version 1.0");
         pw.println(parameterText);
         pw.close();
+    }
+
+    private void ensureParentDirectoriesExist(String path) {
+        File file = new File(path);
+        if ( file.getParentFile() != null ){
+            file.getParentFile().mkdirs();
+        }
+
     }
 
     private String comma(int k, int size) {

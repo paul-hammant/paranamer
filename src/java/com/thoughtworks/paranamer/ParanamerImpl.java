@@ -13,16 +13,25 @@ public class ParanamerImpl implements Paranamer {
     private static final String SPACE = " ";
     private static final String NEWLINE = "\n";
 
+    private static final String DEFAULT_PARANAMER_RESOURCE = "META-INF/ParameterNames.txt";
+    private String paranamerResource;
+    
+
+    public ParanamerImpl() {
+        this(DEFAULT_PARANAMER_RESOURCE);
+    }
+
+    public ParanamerImpl(String paranamerResource) {
+        this.paranamerResource = paranamerResource;
+    }
+
     /**
-     * Lookup a method, and return null if its not there
-     * <p/>
-     * Copy the body of the method to wherever you want to - it means you won't have to rely on
-     * one more jar in your app.
-     *
+     * {@inheritDoc}
+     * 
      * @previousParamNames classLoader,c,m,p
      */
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
+        String mappings = getMappingsFromResource(getParanamerResource(classLoader));
         StringBuffer classAndMethodAndParamNamesSB = new StringBuffer(NEWLINE).append(className).append(SPACE).append(methodName);
         if (!paramNames.equals("")) {
             classAndMethodAndParamNamesSB.append(SPACE).append(paramNames);
@@ -53,40 +62,8 @@ public class ParanamerImpl implements Paranamer {
         return null;
     }
 
-    private String getMappingsFromResource(InputStream resourceAsStream) {
-        StringBuffer paramMappingsBuffer = new StringBuffer();
-        try {
-            if (resourceAsStream == null) {
-                return "";
-            }
-            InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
-            LineNumberReader lineReader = new LineNumberReader(inputStreamReader);
-            String line = readLine(lineReader);
-            while (line != null) {
-                paramMappingsBuffer.append(line).append(NEWLINE);
-                line = readLine(lineReader);
-            }
-            return paramMappingsBuffer.toString();
-        } finally {
-            try {
-                if (resourceAsStream != null) {
-                    resourceAsStream.close();
-                }
-            } catch (IOException e) {
-            }
-        }
-    }
-
-    private String readLine(LineNumberReader lineReader) {
-        try {
-            return lineReader.readLine();
-        } catch (IOException e) {
-            return null; // or throw an exception if you prefer
-        }
-    }
-
     public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
-        String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
+        String mappings = getMappingsFromResource(getParanamerResource(classLoader));
         if (mappings == null) {
             return new String[0];
         }
@@ -110,7 +87,7 @@ public class ParanamerImpl implements Paranamer {
     }
 
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
-        String mappings = getMappingsFromResource(classLoader.getResourceAsStream("META-INF/ParameterNames.txt"));
+        String mappings = getMappingsFromResource(classLoader.getResourceAsStream(DEFAULT_PARANAMER_RESOURCE));
         String classAndConstructorAndParamNames = NEWLINE + className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE + paramNames + SPACE;
         int ix = mappings.indexOf(classAndConstructorAndParamNames);
         if (ix != -1) {
@@ -149,4 +126,42 @@ public class ParanamerImpl implements Paranamer {
         }
         return paramTypes;
     }
+    
+
+    private String getMappingsFromResource(InputStream resourceAsStream) {
+        StringBuffer paramMappingsBuffer = new StringBuffer();
+        try {
+            if (resourceAsStream == null) {
+                return "";
+            }
+            InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
+            LineNumberReader lineReader = new LineNumberReader(inputStreamReader);
+            String line = readLine(lineReader);
+            while (line != null) {
+                paramMappingsBuffer.append(line).append(NEWLINE);
+                line = readLine(lineReader);
+            }
+            return paramMappingsBuffer.toString();
+        } finally {
+            try {
+                if (resourceAsStream != null) {
+                    resourceAsStream.close();
+                }
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    private String readLine(LineNumberReader lineReader) {
+        try {
+            return lineReader.readLine();
+        } catch (IOException e) {
+            return null; // or throw an exception if you prefer
+        }
+    }
+
+    private InputStream getParanamerResource(ClassLoader classLoader) {
+        return classLoader.getResourceAsStream(paranamerResource);
+    }
+
 }

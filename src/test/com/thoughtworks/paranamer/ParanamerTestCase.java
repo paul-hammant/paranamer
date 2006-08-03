@@ -21,6 +21,8 @@ public class ParanamerTestCase extends TestCase {
                     "com.thoughtworks.paranamer.CheckedParanamer checkedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.CheckedParanamer checkedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String \n" +
+                    "com.thoughtworks.paranamer.ParanamerImpl ParanamerImpl \n" +
+                    "com.thoughtworks.paranamer.ParanamerImpl ParanamerImpl paranamerResource java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerImpl lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerImpl lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
@@ -30,6 +32,8 @@ public class ParanamerTestCase extends TestCase {
                     "com.thoughtworks.paranamer.ParanamerTask execute \n" +
                     "com.thoughtworks.paranamer.ParanamerTask setOutputDirectory outputDirectory java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerTask setSourceDirectory sourceDirectory java.lang.String \n" +
+                    "com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator \n" +
+                    "com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator paranamerResourcePath java.lang.String \n" +
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator generate sourcePath java.lang.String \n" +
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator write outputPath,parameterText java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer \n" +
