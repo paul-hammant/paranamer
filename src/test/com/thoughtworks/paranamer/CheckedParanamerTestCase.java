@@ -17,8 +17,8 @@ public class CheckedParanamerTestCase extends AbstractParanamerTestCase {
     }
 
     public void testMethodCanBeRetrievedByParameterNamesViaCheckedLookup() throws IOException, NoSuchMethodException, ParanamerException {
-        Method method = new CheckedParanamer().checkedMethodLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookupMethod", "classLoader,className,methodName,paramNames");
-        assertEquals(ParanamerImpl.class.getMethod("lookupMethod", new Class[]{ClassLoader.class, String.class, String.class, String.class}), method);
+        Method method = new CheckedParanamer().checkedMethodLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookupMethod", "classLoader,className,methodName,paramNames");
+        assertEquals(DefaultParanamer.class.getMethod("lookupMethod", new Class[]{ClassLoader.class, String.class, String.class, String.class}), method);
     }
 
     public void testCheckedConstructorRetrievalFailure() throws IOException {

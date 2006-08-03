@@ -9,19 +9,21 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParanamerImpl implements Paranamer {
-    private static final String SPACE = " ";
+public class DefaultParanamer implements Paranamer {
+    private static final String EMPTY = "";
+    private static final String COMMA = ",";
     private static final String NEWLINE = "\n";
+    private static final String SPACE = " ";
 
     private static final String DEFAULT_PARANAMER_RESOURCE = "META-INF/ParameterNames.txt";
     private String paranamerResource;
     
 
-    public ParanamerImpl() {
+    public DefaultParanamer() {
         this(DEFAULT_PARANAMER_RESOURCE);
     }
 
-    public ParanamerImpl(String paranamerResource) {
+    public DefaultParanamer(String paranamerResource) {
         this.paranamerResource = paranamerResource;
     }
 
@@ -33,7 +35,7 @@ public class ParanamerImpl implements Paranamer {
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
         String mappings = getMappingsFromResource(getParanamerResource(classLoader));
         StringBuffer classAndMethodAndParamNamesSB = new StringBuffer(NEWLINE).append(className).append(SPACE).append(methodName);
-        if (!paramNames.equals("")) {
+        if (!paramNames.equals(EMPTY)) {
             classAndMethodAndParamNamesSB.append(SPACE).append(paramNames);
         }
         String classAndMethodAndParamNames = classAndMethodAndParamNamesSB.toString();
@@ -83,7 +85,7 @@ public class ParanamerImpl implements Paranamer {
     }
 
     private boolean didNotReadOffEndOfLine(String expected) {
-        return !expected.contains("\n");
+        return !expected.contains(NEWLINE);
     }
 
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
@@ -119,10 +121,10 @@ public class ParanamerImpl implements Paranamer {
     }
 
     private String turnClassArrayIntoRepresentativeString(Class[] parameters) {
-        String paramTypes = "";
+        String paramTypes = EMPTY;
         for (int k = 0; k < parameters.length; k++) {
             paramTypes = paramTypes + parameters[k].getName();
-            paramTypes = paramTypes + ((k + 1 < parameters.length) ? "," : "");
+            paramTypes = paramTypes + ((k + 1 < parameters.length) ? COMMA : EMPTY);
         }
         return paramTypes;
     }
@@ -132,7 +134,7 @@ public class ParanamerImpl implements Paranamer {
         StringBuffer paramMappingsBuffer = new StringBuffer();
         try {
             if (resourceAsStream == null) {
-                return "";
+                return EMPTY;
             }
             InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
             LineNumberReader lineReader = new LineNumberReader(inputStreamReader);

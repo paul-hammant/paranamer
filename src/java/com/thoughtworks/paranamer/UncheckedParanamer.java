@@ -12,7 +12,7 @@ public class UncheckedParanamer {
     }
 
     public UncheckedParanamer() {
-        this.delegate = new ParanamerImpl();
+        this.delegate = new DefaultParanamer();
     }
 
 
@@ -26,10 +26,10 @@ public class UncheckedParanamer {
 
 
     public Constructor uncheckedConstructorLookup(ClassLoader classLoader, String className, String paramNames) {
-        Constructor ctor = delegate.lookupConstructor(classLoader, className, paramNames);
-        if (ctor == null) {
+        Constructor constructor = delegate.lookupConstructor(classLoader, className, paramNames);
+        if (constructor == null) {
             throw new ParanamerRuntimeException("Paranamer could not find constructor signature");
         }
-        return ctor;
+        return constructor;
     }
 }

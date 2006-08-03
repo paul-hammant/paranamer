@@ -100,14 +100,14 @@ public class CachingParanamerTestCase extends TestCase {
         generator.write(new File(".").getAbsolutePath() + "/target/classes/", parameterSignatures);
 
         Paranamer cachingParanamer = new CachingParanamer();
-        Method m = cachingParanamer.lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookupMethod", "classLoader,className,methodName,paramNames");
+        Method m = cachingParanamer.lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookupMethod", "classLoader,className,methodName,paramNames");
         assertNotNull(m);
     }
 
     public void testLookupOfParameterNames() {
 
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
-        String[] paramNameChoices = cachingParanamer.lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerImpl", "lookup");
+        String[] paramNameChoices = cachingParanamer.lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookup");
         assertEquals(1, paramNameChoices.length);
         assertEquals("foo,bar", paramNameChoices[0]);
     }

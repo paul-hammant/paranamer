@@ -12,7 +12,7 @@ public class CheckedParanamer {
     }
 
     public CheckedParanamer() {
-        this.delegate = new ParanamerImpl();
+        this.delegate = new DefaultParanamer();
     }
 
     public Method checkedMethodLookup(ClassLoader classLoader, String className, String methodName, String paramNames) throws ParanamerException {
@@ -24,10 +24,10 @@ public class CheckedParanamer {
     }
 
     public Constructor checkedConstructorLookup(ClassLoader classLoader, String className, String paramNames) throws ParanamerException {
-        Constructor ctor = delegate.lookupConstructor(classLoader, className, paramNames);
-        if (ctor == null) {
+        Constructor constructor = delegate.lookupConstructor(classLoader, className, paramNames);
+        if (constructor == null) {
             throw new ParanamerException("Paranamer could not find constructor signature");
         }
-        return ctor;
+        return constructor;
     }
 }

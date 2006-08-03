@@ -20,13 +20,13 @@ public class ParanamerTestCase extends TestCase {
                     "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer delegate com.thoughtworks.paranamer.Paranamer \n" +
                     "com.thoughtworks.paranamer.CheckedParanamer checkedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.CheckedParanamer checkedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
+                    "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer \n" +
+                    "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer paranamerResource java.lang.String \n" +
+                    "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
+                    "com.thoughtworks.paranamer.DefaultParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
+                    "com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
+                    "com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String \n" +
-                    "com.thoughtworks.paranamer.ParanamerImpl ParanamerImpl \n" +
-                    "com.thoughtworks.paranamer.ParanamerImpl ParanamerImpl paranamerResource java.lang.String \n" +
-                    "com.thoughtworks.paranamer.ParanamerImpl lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
-                    "com.thoughtworks.paranamer.ParanamerImpl lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
-                    "com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
-                    "com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerMojo execute \n" +
                     "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerTask execute \n" +
@@ -63,12 +63,12 @@ public class ParanamerTestCase extends TestCase {
     }
 
     public void testMethodCantBeRetrievedIfItAintThere() throws IOException {
-        Object method = new ParanamerImpl().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "hello,goodbye");
+        Object method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "hello,goodbye");
         assertNull(method);
     }
 
     public void testBogusClassEndsLookup() throws IOException {
-        Object method = new ParanamerImpl().lookupMethod(Paranamer.class.getClassLoader(), "foo.Bar", "generate", "hello,goodbye");
+        Object method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "foo.Bar", "generate", "hello,goodbye");
         assertNull(method);
     }
 
@@ -76,25 +76,24 @@ public class ParanamerTestCase extends TestCase {
         File file = new File("target/classes/META-INF/ParameterNames.txt");
         file.delete();
         assertFalse(file.exists());
-        Object method = new ParanamerImpl().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "sourcePath,rootPackage");
+        Object method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "sourcePath,rootPackage");
         assertNull(method);
     }
 
     public void testMethodCantBeRetrievedForClassThatAintThere() throws IOException {
-        Object method = new ParanamerImpl().lookupMethod(Paranamer.class.getClassLoader(), "paranamer.Footle", "generate", "sourcePath,rootPackage");
+        Object method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "paranamer.Footle", "generate", "sourcePath,rootPackage");
         assertNull(method);
     }
 
     public void testMethodRetrievalFailureIfNoParametersTextFile() throws IOException {
-        new File("/Users/paul/scm/oss/Paranamer/classes/META-INF/ParameterNames.txt").delete();
-        Object method = new ParanamerImpl().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "hello,goodbye");
+        Object method = new DefaultParanamer("/non-existent/path").lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "hello,goodbye");
         assertNull(method);
     }
 
     public void testMethodWithNoArgsCanBeRetrievedByParameterNames() throws IOException, NoSuchMethodException {
         File dir = new File("target/classes/");
         new QdoxParanamerGenerator().write(dir.getAbsolutePath(), allParameters);
-        Method method = new ParanamerImpl().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo", "execute", "");
+        Method method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo", "execute", "");
         assertEquals(ParanamerMojo.class.getMethod("execute", new Class[0]), method);
     }
 
@@ -102,7 +101,7 @@ public class ParanamerTestCase extends TestCase {
     public void testMethodWithNoArgsCanBeRetrievedAndShowNoParameterNames() throws IOException, NoSuchMethodException {
         File dir = new File("target/classes/");
         new QdoxParanamerGenerator().write(dir.getAbsolutePath(), allParameters);
-        String[] choices = new ParanamerImpl().lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo", "execute");
+        String[] choices = new DefaultParanamer().lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo", "execute");
         assertEquals(0, choices.length);
     }
 

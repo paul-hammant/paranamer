@@ -8,17 +8,17 @@ com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer
 com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer delegate com.thoughtworks.paranamer.Paranamer
 com.thoughtworks.paranamer.CheckedParanamer checkedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String
 com.thoughtworks.paranamer.CheckedParanamer checkedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
+com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer 
+com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer paranamerResource java.lang.String 
+com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String
+com.thoughtworks.paranamer.DefaultParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String
+com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
+com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
 com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String
 com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator 
 com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator paranamerResourcePath java.lang.String 
 com.thoughtworks.paranamer.QdoxParanamerGenerator generate sourcePath java.lang.String
 com.thoughtworks.paranamer.QdoxParanamerGenerator write outputPath,parameterText java.lang.String,java.lang.String
-com.thoughtworks.paranamer.ParanamerImpl ParanamerImpl 
-com.thoughtworks.paranamer.ParanamerImpl ParanamerImpl paranamerResource java.lang.String 
-com.thoughtworks.paranamer.ParanamerImpl lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.ParanamerImpl lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.ParanamerImpl lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
 com.thoughtworks.paranamer.ParanamerMojo execute 
 com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String
 com.thoughtworks.paranamer.ParanamerTask execute 

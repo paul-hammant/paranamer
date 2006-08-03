@@ -16,7 +16,7 @@ public class CachingParanamer implements Paranamer {
     }
 
     public CachingParanamer() {
-        delegate = new ParanamerImpl();
+        delegate = new DefaultParanamer();
     }
 
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
@@ -41,20 +41,20 @@ public class CachingParanamer implements Paranamer {
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
         String key = className + " " + className.substring(className.lastIndexOf(".")+1) + " " + paramNames;
         Map map = (Map) classLoaders.get(classLoader);
-        Constructor ctor;
+        Constructor constuctor;
         if (map != null) {
-            ctor = (Constructor) map.get(key);
-            if (ctor != null) {
-                return ctor;
+            constuctor = (Constructor) map.get(key);
+            if (constuctor != null) {
+                return constuctor;
             }
         }
         if (map == null) {
             map = new HashMap();
             classLoaders.put(classLoader, map);
         }
-        ctor = delegate.lookupConstructor(classLoader, className, paramNames);
-        map.put(key,ctor);
-        return ctor;
+        constuctor = delegate.lookupConstructor(classLoader, className, paramNames);
+        map.put(key,constuctor);
+        return constuctor;
 
     }
 
