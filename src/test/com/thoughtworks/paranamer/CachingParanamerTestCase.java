@@ -95,7 +95,7 @@ public class CachingParanamerTestCase extends TestCase {
 
     public void testCanChainToDefaultImpl() throws IOException {
         //setup
-        QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
+        ParanamerGenerator generator = new QdoxParanamerGenerator();
         String parameterSignatures = generator.generate(new File(".").getAbsolutePath() + "/src/java");
         generator.write(new File(".").getAbsolutePath() + "/target/test-classes/", parameterSignatures);
 

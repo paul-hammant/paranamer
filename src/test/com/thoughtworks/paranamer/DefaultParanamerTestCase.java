@@ -39,7 +39,7 @@ public class DefaultParanamerTestCase extends TestCase {
     }
 
     public void testLookupFailsIfResourceMissing() throws IOException {
-        Paranamer paranamer = new DefaultParanamer("/inexistent/resource.txt");
+        Paranamer paranamer = new DefaultParanamer("/inexistent/resource");
         try {
             paranamer.lookupMethod(Paranamer.class.getClassLoader(),
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator",
@@ -54,15 +54,15 @@ public class DefaultParanamerTestCase extends TestCase {
             throws IOException, NoSuchMethodException {
         Method method = paranamer.lookupMethod(
                 Paranamer.class.getClassLoader(),
-                "com.thoughtworks.paranamer.ParanamerMojo", "execute", "");
-        assertEquals(ParanamerMojo.class.getMethod("execute", new Class[0]),
+                "com.thoughtworks.paranamer.ParanamerGeneratorMojo", "execute", "");
+        assertEquals(ParanamerGeneratorMojo.class.getMethod("execute", new Class[0]),
                 method);
     }
 
     public void testMethodWithNoArgsCanBeRetrievedAndShowNoParameterNames()
             throws IOException, NoSuchMethodException {
         String[] choices = paranamer.lookupParameterNames(Paranamer.class
-                .getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo",
+                .getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneratorMojo",
                 "execute");
         assertEquals(0, choices.length);
     }

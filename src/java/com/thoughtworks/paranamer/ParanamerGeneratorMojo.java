@@ -8,14 +8,14 @@ import org.apache.maven.plugin.MojoFailureException;
 
 
 /**
- * Mojo to generate parameter names via Paranamer
+ * Mojo to generate parameter names via ParanamerGenerator
  * 
  * @author Mauro Talevi
- * @goal run
+ * @goal generate
  * @phase compile
  * @requiresDependencyResolution compile
  */
-public class ParanamerMojo
+public class ParanamerGeneratorMojo
     extends AbstractMojo
 {
 
@@ -34,7 +34,7 @@ public class ParanamerMojo
     protected String outputDirectory;
 
     /** The Paranamer generator */
-    private QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
+    private ParanamerGenerator generator = new QdoxParanamerGenerator();
 
     public void execute()
         throws MojoExecutionException, MojoFailureException

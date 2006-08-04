@@ -12,23 +12,28 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-public class QdoxParanamerGenerator {
+/**
+ * Qdox-based implementation of ParanamerGenerator which
+ * parses Java source files.
+ * 
+ * @author Paul Hammant
+ * @author Mauro Talevi
+ */
+public class QdoxParanamerGenerator implements ParanamerGenerator {
 
     private static final String SPACE  = " ";
     private static final String NEWLINE = "\n";
     private static final String COMMA = ",";
     private static final String EMPTY = "";
 
-    private static final String DEFAULT_PARANAMER_RESOURCE = "META-INF/ParameterNames.txt";
-
-    private String paranamerResourcePath;
+    private String paranamerResource;
 
     public QdoxParanamerGenerator() {
-        this(DEFAULT_PARANAMER_RESOURCE);
+        this(ParanamerConstants.DEFAULT_PARANAMER_RESOURCE);
     }
 
-    public QdoxParanamerGenerator(String paranamerResourcePath) {
-        this.paranamerResourcePath = paranamerResourcePath;
+    public QdoxParanamerGenerator(String paranamerResource) {
+        this.paranamerResource = paranamerResource;
     }
 
     public String generate(String sourcePath) {
@@ -38,9 +43,9 @@ public class QdoxParanamerGenerator {
         JavaClass[] classes = builder.getClasses();
         Arrays.sort(classes);
         for (int i = 0; i < classes.length; i++) {
-            JavaClass clazz = classes[i];
-            if (!clazz.isInterface()) {
-        	buffer.append(addMethods(clazz.getMethods(), clazz.getPackage() + "." + clazz.getName()));
+            JavaClass javaClass = classes[i];
+            if (!javaClass.isInterface()) {
+                buffer.append(addMethods(javaClass.getMethods(), javaClass.getPackage() + "." + javaClass.getName()));
             }
         }
         return buffer.toString();
@@ -50,9 +55,9 @@ public class QdoxParanamerGenerator {
         StringBuffer buffer = new StringBuffer();
         Arrays.sort(methods);
         for (int j = 0; j < methods.length; j++) {
-            JavaMethod method = methods[j];
-            if (Arrays.asList(method.getModifiers()).contains("public")) {
-        	buffer.append(addPublicMethod(method, className));
+            JavaMethod javaMethod = methods[j];
+            if (Arrays.asList(javaMethod.getModifiers()).contains("public")) {
+                buffer.append(addPublicMethod(javaMethod, className));
             }
         }
         return buffer.toString();
@@ -75,8 +80,8 @@ public class QdoxParanamerGenerator {
         buffer.append(SPACE);
         buffer.append(method.getName());
         if (!paramNames.equals(EMPTY)) {
-              buffer.append(SPACE);
-          }
+            buffer.append(SPACE);
+        }
         buffer.append(paramNames);
         if (!types.equals(EMPTY)) {
             buffer.append(SPACE);
@@ -105,14 +110,13 @@ public class QdoxParanamerGenerator {
         return buffer.toString();
     }
 
-
-    public void write(String outputPath, String parameterText) throws IOException {
-        String path = outputPath + File.separator + paranamerResourcePath;
+    public void write(String outputPath, String content) throws IOException {
+        String path = outputPath + File.separator + paranamerResource;
         ensureParentDirectoriesExist(path);
         FileWriter fileWriter = new FileWriter(path);
         PrintWriter pw = new PrintWriter(fileWriter);
-        pw.println("format version 1.0");
-        pw.println(parameterText);
+        pw.println(ParanamerConstants.HEADER);
+        pw.println(content);
         pw.close();
     }
 
@@ -121,7 +125,6 @@ public class QdoxParanamerGenerator {
         if ( file.getParentFile() != null ){
             file.getParentFile().mkdirs();
         }
-
     }
 
     private String comma(int k, int size) {

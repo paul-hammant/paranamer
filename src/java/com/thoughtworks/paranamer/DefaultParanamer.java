@@ -18,12 +18,10 @@ public class DefaultParanamer implements Paranamer {
     private static final String NEWLINE = "\n";
     private static final String SPACE = " ";
 
-    private static final String DEFAULT_PARANAMER_RESOURCE = "META-INF/ParameterNames.txt";
-
     private String paranamerResource;
 
     public DefaultParanamer() {
-        this(DEFAULT_PARANAMER_RESOURCE);
+        this(ParanamerConstants.DEFAULT_PARANAMER_RESOURCE);
     }
 
     public DefaultParanamer(String paranamerResource) {

@@ -29,22 +29,22 @@ public class QdoxParanamerGeneratorTestCase extends TestCase {
                     "com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
                     "com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String \n" +
-                    "com.thoughtworks.paranamer.ParanamerMojo execute \n" +
+                    "com.thoughtworks.paranamer.ParanamerGeneratorMojo execute \n" +
+                    "com.thoughtworks.paranamer.ParanamerGeneratorTask execute \n" +
+                    "com.thoughtworks.paranamer.ParanamerGeneratorTask setOutputDirectory outputDirectory java.lang.String \n" +
+                    "com.thoughtworks.paranamer.ParanamerGeneratorTask setSourceDirectory sourceDirectory java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String \n" +
-                    "com.thoughtworks.paranamer.ParanamerTask execute \n" +
-                    "com.thoughtworks.paranamer.ParanamerTask setOutputDirectory outputDirectory java.lang.String \n" +
-                    "com.thoughtworks.paranamer.ParanamerTask setSourceDirectory sourceDirectory java.lang.String \n" +
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator \n" +
-                    "com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator paranamerResourcePath java.lang.String \n" +
+                    "com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator paranamerResource java.lang.String \n" +
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator generate sourcePath java.lang.String \n" +
-                    "com.thoughtworks.paranamer.QdoxParanamerGenerator write outputPath,parameterText java.lang.String,java.lang.String \n" +
+                    "com.thoughtworks.paranamer.QdoxParanamerGenerator write outputPath,content java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer delegate com.thoughtworks.paranamer.Paranamer \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer toString \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer uncheckedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer uncheckedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n";
 
-    private QdoxParanamerGenerator generator;
+    private ParanamerGenerator generator;
     
     protected void setUp() throws Exception {
         generator = new QdoxParanamerGenerator();
@@ -61,9 +61,10 @@ public class QdoxParanamerGeneratorTestCase extends TestCase {
     public void testCanWriteParameterNames() throws IOException {
         File dir = createOutputDirectory();
         generator.write(dir.getAbsolutePath(), allParameters);
-        String file = new File(dir.getPath()+"/META-INF/ParameterNames.txt").getAbsolutePath();
+        String file = new File(dir.getPath()+File.separator+
+                ParanamerConstants.DEFAULT_PARANAMER_RESOURCE).getAbsolutePath();
         assertTrue(new File(file).exists());
-        assertEquals("format version 1.0",
+        assertEquals(ParanamerConstants.HEADER,
                 new LineNumberReader(new FileReader(file)).readLine());
     }
 

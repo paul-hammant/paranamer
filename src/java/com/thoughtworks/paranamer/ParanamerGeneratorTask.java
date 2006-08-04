@@ -5,13 +5,21 @@ import org.apache.tools.ant.BuildException;
 
 import java.io.IOException;
 
-public class ParanamerTask extends Task {
+/**
+* Ant Task to generate parameter names via ParanamerGenerator
+* 
+* @author Paul Hammant
+* @author Mauro Talevi
+*/
+public class ParanamerGeneratorTask extends Task {
 
     private String sourceDirectory;
+    
     private String outputDirectory;
 
+    private ParanamerGenerator generator = new QdoxParanamerGenerator();
+
     public void execute() throws BuildException {
-        QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
         String parameterText = generator.generate(sourceDirectory);
         try {
             generator.write(outputDirectory, parameterText);

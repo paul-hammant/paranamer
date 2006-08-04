@@ -3,6 +3,12 @@ package com.thoughtworks.paranamer;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 
+/**
+ * Paranamer allows lookups of methods and constructors by parameter names.
+ * It also provides lookup of all the possible parameter names for a given method. 
+ * 
+ * @author Paul Hammant
+ */
 public interface Paranamer {
 
     /**
