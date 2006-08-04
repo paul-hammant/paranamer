@@ -97,7 +97,7 @@ public class CachingParanamerTestCase extends TestCase {
         //setup
         QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
         String parameterSignatures = generator.generate(new File(".").getAbsolutePath() + "/src/java");
-        generator.write(new File(".").getAbsolutePath() + "/target/classes/", parameterSignatures);
+        generator.write(new File(".").getAbsolutePath() + "/target/test-classes/", parameterSignatures);
 
         Paranamer cachingParanamer = new CachingParanamer();
         Method m = cachingParanamer.lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookupMethod", "classLoader,className,methodName,paramNames");

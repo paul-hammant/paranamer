@@ -58,10 +58,10 @@ public class ParanamerTestCase extends TestCase {
     }
 
     public void testWritingOfParamNameDataWorks() throws IOException {
-        File dir = new File("target/classes/");
+        File dir = new File("target/test=classes/");
         dir.mkdirs();
         new QdoxParanamerGenerator().write(dir.getAbsolutePath(), allParameters);
-        String file = new File("target/classes/META-INF/ParameterNames.txt").getAbsolutePath();
+        String file = new File("target/test=classes/META-INF/ParameterNames.txt").getAbsolutePath();
         assertTrue(new File(file).exists());
         assertEquals("format version 1.0",
                 new LineNumberReader(new FileReader(file)).readLine());
@@ -93,7 +93,7 @@ public class ParanamerTestCase extends TestCase {
     }
 
     public void testMethodWithNoArgsCanBeRetrievedByParameterNames() throws IOException, NoSuchMethodException {
-        File dir = new File("target/classes/");
+        File dir = new File("target/test=classes/");
         new QdoxParanamerGenerator().write(dir.getAbsolutePath(), allParameters);
         Method method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo", "execute", "");
         assertEquals(ParanamerMojo.class.getMethod("execute", new Class[0]), method);
@@ -101,7 +101,7 @@ public class ParanamerTestCase extends TestCase {
 
 
     public void testMethodWithNoArgsCanBeRetrievedAndShowNoParameterNames() throws IOException, NoSuchMethodException {
-        File dir = new File("target/classes/");
+        File dir = new File("target/test=classes/");
         new QdoxParanamerGenerator().write(dir.getAbsolutePath(), allParameters);
         String[] choices = new DefaultParanamer().lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo", "execute");
         assertEquals(0, choices.length);

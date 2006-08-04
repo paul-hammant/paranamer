@@ -11,7 +11,7 @@ public abstract class AbstractParanamerTestCase extends TestCase {
     protected void setUp() throws Exception {
         QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
         String parameterSignatures = generator.generate(new File(".").getAbsolutePath() + "/src/java");
-        generator.write(new File(".").getAbsolutePath() + "/target/classes/", parameterSignatures);
+        generator.write(new File(".").getAbsolutePath() + "/target/test-classes/", parameterSignatures);
     }
 
 
