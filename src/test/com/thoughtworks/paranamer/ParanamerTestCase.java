@@ -13,15 +13,18 @@ public class ParanamerTestCase extends TestCase {
     String allParameters =
             "com.thoughtworks.paranamer.CachingParanamer CachingParanamer \n" +
                     "com.thoughtworks.paranamer.CachingParanamer CachingParanamer paranamer com.thoughtworks.paranamer.Paranamer \n" +
+                    "com.thoughtworks.paranamer.CachingParanamer toString \n" +
                     "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.CachingParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.CachingParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer \n" +
                     "com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer delegate com.thoughtworks.paranamer.Paranamer \n" +
+                    "com.thoughtworks.paranamer.CheckedParanamer toString \n" +
                     "com.thoughtworks.paranamer.CheckedParanamer checkedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.CheckedParanamer checkedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer paranamerResource java.lang.String \n" +
+                    "com.thoughtworks.paranamer.DefaultParanamer toString \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String\n" +
@@ -38,6 +41,7 @@ public class ParanamerTestCase extends TestCase {
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator write outputPath,parameterText java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer delegate com.thoughtworks.paranamer.Paranamer \n" +
+                    "com.thoughtworks.paranamer.UncheckedParanamer toString \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer uncheckedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer uncheckedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n";
     String expected1 = "com.thoughtworks.paranamer.Paranamer lookupMethod clazz,classMethodAndParamNames java.lang.Class,java.lang.String\n";

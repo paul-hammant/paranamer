@@ -62,4 +62,13 @@ public class CachingParanamer implements Paranamer {
         return delegate.lookupParameterNames(classLoader, className, methodName);
     }
 
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("[CachingParanamer delegate=");
+        sb.append(delegate);
+        sb.append(", classLoaders=");
+        sb.append(classLoaders);
+        sb.append("]");
+        return sb.toString();
+    }
 }

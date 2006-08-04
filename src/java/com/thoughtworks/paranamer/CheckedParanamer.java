@@ -30,4 +30,12 @@ public class CheckedParanamer {
         }
         return constructor;
     }
+
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("[CheckedParanamer delegate=");
+        sb.append(delegate);
+        sb.append("]");
+        return sb.toString();
+    }
 }

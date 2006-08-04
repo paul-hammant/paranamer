@@ -16,8 +16,8 @@ public class DefaultParanamer implements Paranamer {
     private static final String SPACE = " ";
 
     private static final String DEFAULT_PARANAMER_RESOURCE = "META-INF/ParameterNames.txt";
+
     private String paranamerResource;
-    
 
     public DefaultParanamer() {
         this(DEFAULT_PARANAMER_RESOURCE);
@@ -166,4 +166,11 @@ public class DefaultParanamer implements Paranamer {
         return classLoader.getResourceAsStream(paranamerResource);
     }
 
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("[DefaultParanamer paranamerResource=");
+        sb.append(paranamerResource);
+        sb.append("]");
+        return sb.toString();
+    }
 }

@@ -32,4 +32,12 @@ public class UncheckedParanamer {
         }
         return constructor;
     }
+    
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("[UncheckedParanamer delegate=");
+        sb.append(delegate);
+        sb.append("]");
+        return sb.toString();
+    }
 }
