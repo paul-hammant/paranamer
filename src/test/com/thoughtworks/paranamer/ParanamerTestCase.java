@@ -1,12 +1,13 @@
 package com.thoughtworks.paranamer;
 
-import junit.framework.TestCase;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.lang.reflect.Method;
+import java.util.NoSuchElementException;
+
+import junit.framework.TestCase;
 
 public class ParanamerTestCase extends TestCase {
 
@@ -76,21 +77,18 @@ public class ParanamerTestCase extends TestCase {
         assertNull(method);
     }
 
-    public void testMissingMetaInfEndsLookup() throws IOException {
-        File file = new File("target/classes/META-INF/ParameterNames.txt");
-        file.delete();
-        assertFalse(file.exists());
-        Object method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "sourcePath,rootPackage");
-        assertNull(method);
+    public void testFailsIfResourceMissing() throws IOException {
+        Paranamer paranamer = new DefaultParanamer("/inexistent/resource.txt");
+        try {
+             paranamer.lookupMethod(Paranamer.class.getClassLoader(), 
+                "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "sourcePath,rootPackage");
+             fail("Expected NoSuchElementException");
+        } catch ( NoSuchElementException e) {
+            // expected
+        }
     }
-
     public void testMethodCantBeRetrievedForClassThatAintThere() throws IOException {
         Object method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "paranamer.Footle", "generate", "sourcePath,rootPackage");
-        assertNull(method);
-    }
-
-    public void testMethodRetrievalFailureIfNoParametersTextFile() throws IOException {
-        Object method = new DefaultParanamer("/non-existent/path").lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "hello,goodbye");
         assertNull(method);
     }
 

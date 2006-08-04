@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
+import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class DefaultParanamer implements Paranamer {
+    
     private static final String EMPTY = "";
     private static final String COMMA = ",";
     private static final String NEWLINE = "\n";
@@ -33,23 +36,23 @@ public class DefaultParanamer implements Paranamer {
      * @previousParamNames classLoader,c,m,p
      */
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        String mappings = getMappingsFromResource(getParanamerResource(classLoader));
+        String mappings = readMappings(getResource(classLoader));
         StringBuffer classAndMethodAndParamNamesSB = new StringBuffer(NEWLINE).append(className).append(SPACE).append(methodName);
         if (!paramNames.equals(EMPTY)) {
             classAndMethodAndParamNamesSB.append(SPACE).append(paramNames);
         }
-        String classAndMethodAndParamNames = classAndMethodAndParamNamesSB.toString();
+        String classAndMethodAndParameterNames = classAndMethodAndParamNamesSB.toString();
 
-        int ix = mappings.indexOf(classAndMethodAndParamNames);
-        if (ix != -1) {
-            String methodParamTypes = extractParamerTypesFromFoundMethod(ix, classAndMethodAndParamNames, mappings);
-            Class loadedClazz;
+        int index = mappings.indexOf(classAndMethodAndParameterNames);
+        if (index != -1) {
+            String methodParamTypes = extractParameterTypesFromFoundMethod(index, classAndMethodAndParameterNames, mappings);
+            Class loadedClass;
             try {
-                loadedClazz = classLoader.loadClass(className);
+                loadedClass = classLoader.loadClass(className);
             } catch (ClassNotFoundException e) {
                 return null; // or could throw a/the exception
             }
-            Method methods[] = loadedClazz.getMethods();
+            Method methods[] = loadedClass.getMethods();
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
                 Class[] parameters = method.getParameterTypes();
@@ -65,21 +68,18 @@ public class DefaultParanamer implements Paranamer {
     }
 
     public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
-        String mappings = getMappingsFromResource(getParanamerResource(classLoader));
-        if (mappings == null) {
-            return new String[0];
-        }
+        String mappings = readMappings(getResource(classLoader));
         String classAndMethodName = NEWLINE + className + SPACE + methodName + SPACE;
-        int ix = mappings.indexOf(classAndMethodName);
+        int index = mappings.indexOf(classAndMethodName);
         List matches = new ArrayList();
-        while (ix > 0) {
-            int start = ix + classAndMethodName.length();
-            int end = mappings.indexOf(SPACE, ix + classAndMethodName.length() + 1);
+        while (index > 0) {
+            int start = index + classAndMethodName.length();
+            int end = mappings.indexOf(SPACE, index + classAndMethodName.length() + 1);
             String expected = mappings.substring(start, end);
             if (didNotReadOffEndOfLine(expected)) {
                 matches.add(expected.trim());
             }
-            ix = mappings.indexOf(classAndMethodName, ix + 1);
+            index = mappings.indexOf(classAndMethodName, index + 1);
         }
         return (String[]) matches.toArray(new String[matches.size()]);
     }
@@ -89,18 +89,18 @@ public class DefaultParanamer implements Paranamer {
     }
 
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
-        String mappings = getMappingsFromResource(classLoader.getResourceAsStream(DEFAULT_PARANAMER_RESOURCE));
+        String mappings = readMappings(getResource(classLoader));
         String classAndConstructorAndParamNames = NEWLINE + className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE + paramNames + SPACE;
-        int ix = mappings.indexOf(classAndConstructorAndParamNames);
-        if (ix != -1) {
-            String methodParamTypes = extractParamerTypesFromFoundMethod(ix, classAndConstructorAndParamNames, mappings);
-            Class loadedClazz;
+        int index = mappings.indexOf(classAndConstructorAndParamNames);
+        if (index != -1) {
+            String methodParamTypes = extractParameterTypesFromFoundMethod(index, classAndConstructorAndParamNames, mappings);
+            Class loadedClass;
             try {
-                loadedClazz = classLoader.loadClass(className);
+                loadedClass = classLoader.loadClass(className);
             } catch (ClassNotFoundException e) {
                 return null; // or could throw a/the exception
             }
-            Constructor constructors[] = loadedClazz.getConstructors();
+            Constructor constructors[] = loadedClass.getConstructors();
             for (int i = 0; i < constructors.length; i++) {
                 Constructor constructor = constructors[i];
                 Class[] parameters = constructor.getParameterTypes();
@@ -113,41 +113,44 @@ public class DefaultParanamer implements Paranamer {
         return null;
     }
 
-    private String extractParamerTypesFromFoundMethod(int ix, String classAndConstructorAndParamNames, String mappings) {
-        int start = ix + classAndConstructorAndParamNames.length();
+    private String extractParameterTypesFromFoundMethod(int index, String classAndConstructorAndParamNames, String mappings) {
+        int start = index + classAndConstructorAndParamNames.length();
         int end = mappings.indexOf(NEWLINE, start + 1);
         String methodParamTypes = mappings.substring(start, end).trim();
         return methodParamTypes;
     }
 
     private String turnClassArrayIntoRepresentativeString(Class[] parameters) {
-        String paramTypes = EMPTY;
+        String parameterTypes = EMPTY;
         for (int k = 0; k < parameters.length; k++) {
-            paramTypes = paramTypes + parameters[k].getName();
-            paramTypes = paramTypes + ((k + 1 < parameters.length) ? COMMA : EMPTY);
+            parameterTypes = parameterTypes + parameters[k].getName();
+            parameterTypes = parameterTypes + ((k + 1 < parameters.length) ? COMMA : EMPTY);
         }
-        return paramTypes;
+        return parameterTypes;
     }
     
+    private Reader getResource(ClassLoader classLoader) {
+        InputStream inputStream = classLoader.getResourceAsStream(paranamerResource);
+        if ( inputStream == null ) {
+            throw new NoSuchElementException("Failed to find resource "+paranamerResource);
+        }
+        return new InputStreamReader(inputStream);
+    }
 
-    private String getMappingsFromResource(InputStream resourceAsStream) {
-        StringBuffer paramMappingsBuffer = new StringBuffer();
+    private String readMappings(Reader resource) {
+        StringBuffer buffer = new StringBuffer();
         try {
-            if (resourceAsStream == null) {
-                return EMPTY;
-            }
-            InputStreamReader inputStreamReader = new InputStreamReader(resourceAsStream);
-            LineNumberReader lineReader = new LineNumberReader(inputStreamReader);
+            LineNumberReader lineReader = new LineNumberReader(resource);
             String line = readLine(lineReader);
             while (line != null) {
-                paramMappingsBuffer.append(line).append(NEWLINE);
+                buffer.append(line).append(NEWLINE);
                 line = readLine(lineReader);
             }
-            return paramMappingsBuffer.toString();
+            return buffer.toString();
         } finally {
             try {
-                if (resourceAsStream != null) {
-                    resourceAsStream.close();
+                if (resource != null) {
+                    resource.close();
                 }
             } catch (IOException e) {
             }
@@ -160,10 +163,6 @@ public class DefaultParanamer implements Paranamer {
         } catch (IOException e) {
             return null; // or throw an exception if you prefer
         }
-    }
-
-    private InputStream getParanamerResource(ClassLoader classLoader) {
-        return classLoader.getResourceAsStream(paranamerResource);
     }
 
     public String toString() {
