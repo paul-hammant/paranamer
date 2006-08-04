@@ -37,11 +37,7 @@ public class DefaultParanamer implements Paranamer {
      */
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
         String mappings = readMappings(getResource(classLoader));
-        StringBuffer classAndMethodAndParamNamesSB = new StringBuffer(NEWLINE).append(className).append(SPACE).append(methodName);
-        if (!paramNames.equals(EMPTY)) {
-            classAndMethodAndParamNamesSB.append(SPACE).append(paramNames);
-        }
-        String classAndMethodAndParameterNames = classAndMethodAndParamNamesSB.toString();
+        String classAndMethodAndParameterNames = getClassAndMethodAndParameterNames(className, methodName, paramNames);
 
         int index = mappings.indexOf(classAndMethodAndParameterNames);
         if (index != -1) {
@@ -65,6 +61,14 @@ public class DefaultParanamer implements Paranamer {
             }
         }
         return null;
+    }
+
+    private String getClassAndMethodAndParameterNames(String className, String methodName, String paramNames) {
+        StringBuffer buffer = new StringBuffer(NEWLINE).append(className).append(SPACE).append(methodName);
+        if (!paramNames.equals(EMPTY)) {
+            buffer.append(SPACE).append(paramNames);
+        }
+        return buffer.toString();
     }
 
     public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
