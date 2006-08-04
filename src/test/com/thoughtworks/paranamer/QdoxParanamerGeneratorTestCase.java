@@ -4,12 +4,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.lang.reflect.Method;
-import java.util.NoSuchElementException;
 
 import junit.framework.TestCase;
 
-public class ParanamerTestCase extends TestCase {
+public class QdoxParanamerGeneratorTestCase extends TestCase {
 
     String allParameters =
             "com.thoughtworks.paranamer.CachingParanamer CachingParanamer \n" +
@@ -45,67 +43,34 @@ public class ParanamerTestCase extends TestCase {
                     "com.thoughtworks.paranamer.UncheckedParanamer toString \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer uncheckedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.UncheckedParanamer uncheckedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n";
-    String expected1 = "com.thoughtworks.paranamer.Paranamer lookupMethod clazz,classMethodAndParamNames java.lang.Class,java.lang.String\n";
 
-    private String parameterSignatures;
-
+    private QdoxParanamerGenerator generator;
+    
     protected void setUp() throws Exception {
-        parameterSignatures = new QdoxParanamerGenerator().generate(new File(".").getAbsolutePath() + "/src/java");
+        generator = new QdoxParanamerGenerator();
     }
 
-    public void testGenerationOfParamNameDataDoesSo() {
-        assertEquals(allParameters, parameterSignatures);
+    public void testCanGenerateParameterNamesFromSource() throws Exception {
+        assertEquals(allParameters, generator.generate(getSourcePath()));
     }
 
-    public void testWritingOfParamNameDataWorks() throws IOException {
-        File dir = new File("target/test=classes/");
-        dir.mkdirs();
-        new QdoxParanamerGenerator().write(dir.getAbsolutePath(), allParameters);
-        String file = new File("target/test=classes/META-INF/ParameterNames.txt").getAbsolutePath();
+    private String getSourcePath() {
+        return new File(".").getAbsolutePath() + "/src/java";
+    }
+
+    public void testCanWriteParameterNames() throws IOException {
+        File dir = createOutputDirectory();
+        generator.write(dir.getAbsolutePath(), allParameters);
+        String file = new File(dir.getPath()+"/META-INF/ParameterNames.txt").getAbsolutePath();
         assertTrue(new File(file).exists());
         assertEquals("format version 1.0",
                 new LineNumberReader(new FileReader(file)).readLine());
     }
 
-    public void testMethodCantBeRetrievedIfItAintThere() throws IOException {
-        Object method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "hello,goodbye");
-        assertNull(method);
+    private File createOutputDirectory() {
+        File dir = new File("target");
+        dir.mkdirs();
+        return dir;
     }
-
-    public void testBogusClassEndsLookup() throws IOException {
-        Object method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "foo.Bar", "generate", "hello,goodbye");
-        assertNull(method);
-    }
-
-    public void testFailsIfResourceMissing() throws IOException {
-        Paranamer paranamer = new DefaultParanamer("/inexistent/resource.txt");
-        try {
-             paranamer.lookupMethod(Paranamer.class.getClassLoader(), 
-                "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate", "sourcePath,rootPackage");
-             fail("Expected NoSuchElementException");
-        } catch ( NoSuchElementException e) {
-            // expected
-        }
-    }
-    public void testMethodCantBeRetrievedForClassThatAintThere() throws IOException {
-        Object method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "paranamer.Footle", "generate", "sourcePath,rootPackage");
-        assertNull(method);
-    }
-
-    public void testMethodWithNoArgsCanBeRetrievedByParameterNames() throws IOException, NoSuchMethodException {
-        File dir = new File("target/test=classes/");
-        new QdoxParanamerGenerator().write(dir.getAbsolutePath(), allParameters);
-        Method method = new DefaultParanamer().lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo", "execute", "");
-        assertEquals(ParanamerMojo.class.getMethod("execute", new Class[0]), method);
-    }
-
-
-    public void testMethodWithNoArgsCanBeRetrievedAndShowNoParameterNames() throws IOException, NoSuchMethodException {
-        File dir = new File("target/test=classes/");
-        new QdoxParanamerGenerator().write(dir.getAbsolutePath(), allParameters);
-        String[] choices = new DefaultParanamer().lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerMojo", "execute");
-        assertEquals(0, choices.length);
-    }
-
-
+ 
 }
