@@ -88,7 +88,7 @@ public class QdoxParanamerGenerator {
     }
 
     private String getParamNames(JavaParameter[] parms) {
-	StringBuffer buffer = new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
         for (int k = 0; k < parms.length; k++) {
             buffer.append(parms[k].getName());
             buffer.append(comma(k, parms.length));
@@ -97,7 +97,7 @@ public class QdoxParanamerGenerator {
     }
 
     private String getTypes(JavaParameter[] parms) {
-	StringBuffer buffer = new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
         for (int k = 0; k < parms.length; k++) {
             buffer.append(parms[k].getType());
             buffer.append(comma(k, parms.length));

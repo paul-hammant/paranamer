@@ -8,7 +8,7 @@ import org.apache.maven.plugin.MojoFailureException;
 
 
 /**
- * Mojo to generate parameter names
+ * Mojo to generate parameter names via Paranamer
  * 
  * @author Mauro Talevi
  * @goal run
@@ -20,25 +20,28 @@ public class ParanamerMojo
 {
 
     /**
+     * The directory containing the Java source files
      * @parameter
      * @required
      */
     protected String sourceDirectory;
 
     /**
+     * The directory where the Paranamer generator will write the output
      * @parameter
      * @required
      */
     protected String outputDirectory;
 
+    /** The Paranamer generator */
+    private QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
+
     public void execute()
         throws MojoExecutionException, MojoFailureException
     {
         getLog().debug( "Generating parameter names from " + sourceDirectory + " to " + outputDirectory );
-        QdoxParanamerGenerator generator = new QdoxParanamerGenerator();
-        String parameterText = generator.generate(sourceDirectory);
         try {
-            generator.write(outputDirectory, parameterText);
+            generator.write(outputDirectory, generator.generate(sourceDirectory));
         } catch (IOException e) {            
             throw new MojoExecutionException("Failed to generate parameter names", e);
         }
