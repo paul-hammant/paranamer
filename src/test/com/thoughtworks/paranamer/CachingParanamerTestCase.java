@@ -10,13 +10,13 @@ import java.io.IOException;
 public class CachingParanamerTestCase extends TestCase {
 
     Method method;
-    Constructor ctor;
+    Constructor constructor;
     Paranamer paranamer;
     int count = 0;
 
     protected void setUp() throws Exception {
         method = String.class.getMethod("toString", new Class[0]);
-        ctor = String.class.getConstructor(new Class[] {String.class});
+        constructor = String.class.getConstructor(new Class[] {String.class});
 
         paranamer = new Paranamer() {
 
@@ -27,7 +27,7 @@ public class CachingParanamerTestCase extends TestCase {
 
             public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
                 count++;
-                return ctor;
+                return constructor;
             }
 
             public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
@@ -47,7 +47,7 @@ public class CachingParanamerTestCase extends TestCase {
         assertEquals(1, count);
     }
 
-    public void testMethodNotCachedIfDiffeent() {
+    public void testMethodNotCachedIfDifferent() {
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
         Method m = cachingParanamer.lookupMethod(this.getClass().getClassLoader(), "huey", "duey", "luis");
         assertEquals(method, m);
@@ -68,25 +68,25 @@ public class CachingParanamerTestCase extends TestCase {
     public void testConstructorCachedOnLookup() {
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
         Constructor c = cachingParanamer.lookupConstructor(this.getClass().getClassLoader(), "huey", "luis");
-        assertEquals(ctor, c);
+        assertEquals(constructor, c);
         assertEquals(1, count);
         c = cachingParanamer.lookupConstructor(this.getClass().getClassLoader(), "huey", "luis");
-        assertEquals(ctor, c);
+        assertEquals(constructor, c);
         assertEquals(1, count);
     }
 
     public void testConstructorNotCachedIfDiffeent() {
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
         Constructor c = cachingParanamer.lookupConstructor(this.getClass().getClassLoader(), "huey", "luis");
-        assertEquals(ctor, c);
+        assertEquals(constructor, c);
         assertEquals(1, count);
         c = cachingParanamer.lookupConstructor(this.getClass().getClassLoader(), "huey", "horatio");
-        assertEquals(ctor, c);
+        assertEquals(constructor, c);
         assertEquals(2, count);
     }
 
     public void testConstructorForcedNullOnBogusLookup() {
-        ctor = null;
+        constructor = null;
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
         Constructor c = cachingParanamer.lookupConstructor(this.getClass().getClassLoader(), "huey", "luis");
         assertNull(c);
