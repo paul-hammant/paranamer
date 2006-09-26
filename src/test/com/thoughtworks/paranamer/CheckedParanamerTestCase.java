@@ -6,7 +6,6 @@ import java.lang.reflect.Constructor;
 
 public class CheckedParanamerTestCase extends AbstractParanamerTestCase {
 
-
     public void testCheckedMethodRetrievalFailure() throws IOException {
         try {
             new CheckedParanamer().checkedMethodLookup(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.QdoxParanamerGenerator","generate","hello,goodbye");

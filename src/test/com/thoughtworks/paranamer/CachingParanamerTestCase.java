@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 
 public class CachingParanamerTestCase extends TestCase {
-
     Method method;
     Constructor constructor;
     Paranamer paranamer;
@@ -33,8 +32,11 @@ public class CachingParanamerTestCase extends TestCase {
             public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
                 return new String[] {"foo,bar"};
             }
-        };
 
+            public String lookupParameterNamesForMethod(Method method) {
+                return "foo,bar";
+            }
+        };
     }
 
     public void testMethodCachedOnLookup() {
@@ -64,7 +66,6 @@ public class CachingParanamerTestCase extends TestCase {
         assertNull(m);
     }
 
-
     public void testConstructorCachedOnLookup() {
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
         Constructor c = cachingParanamer.lookupConstructor(this.getClass().getClassLoader(), "huey", "luis");
@@ -92,7 +93,6 @@ public class CachingParanamerTestCase extends TestCase {
         assertNull(c);
     }
 
-
     public void testCanChainToDefaultImpl() throws IOException {
         //setup
         ParanamerGenerator generator = new QdoxParanamerGenerator();
@@ -105,12 +105,16 @@ public class CachingParanamerTestCase extends TestCase {
     }
 
     public void testLookupOfParameterNames() {
-
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
         String[] paramNameChoices = cachingParanamer.lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookup");
         assertEquals(1, paramNameChoices.length);
         assertEquals("foo,bar", paramNameChoices[0]);
     }
 
-
+    public void testLookupOfParameterNamesForMethod() {
+        Paranamer cachingParanamer = new CachingParanamer(paranamer);
+        String paramNames = cachingParanamer.lookupParameterNamesForMethod(null);
+        assertEquals("foo,bar", paramNames);
+    }
+    
 }

@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class DefaultParanamer implements Paranamer {
-    
     private static final String EMPTY = "";
     private static final String COMMA = ",";
     private static final String NEWLINE = "\n";
@@ -30,7 +29,7 @@ public class DefaultParanamer implements Paranamer {
 
     /**
      * {@inheritDoc}
-     * 
+     *
      * @previousParamNames classLoader,c,m,p
      */
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
@@ -86,6 +85,43 @@ public class DefaultParanamer implements Paranamer {
         return (String[]) matches.toArray(new String[matches.size()]);
     }
 
+    public String lookupParameterNamesForMethod(Method method) {
+        if(method.getParameterTypes().length == 0) { // no arguments ... return empty string
+            return "";
+        }
+        
+        Class declaringClass = method.getDeclaringClass();
+        String parameterTypes = stringifyMethodParameterTypes(method);
+        String prefix = declaringClass.getName() + SPACE + method.getName();
+
+        List results = filterMappingByPrefix(prefix, getResource(declaringClass.getClassLoader()));
+
+        for (int i = 0; i < results.size(); i++) {
+            String definition = (String) results.get(i);
+
+            if(definition.endsWith(parameterTypes)) {
+                return definition.substring(prefix.length() + 1, definition.lastIndexOf(parameterTypes));
+            }
+        }
+
+        return null;
+    }
+
+    private String stringifyMethodParameterTypes(Method method) {
+        StringBuffer buffer = new StringBuffer(SPACE);
+        Class[] parameterTypes = method.getParameterTypes();
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            buffer.append(parameterTypes[i].getName());
+
+            if (i < parameterTypes.length - 1) {
+                buffer.append(COMMA);
+            }
+        }
+
+        return buffer.toString();
+    }
+
     private boolean didNotReadOffEndOfLine(String expected) {
         return !expected.contains(NEWLINE);
     }
@@ -93,6 +129,8 @@ public class DefaultParanamer implements Paranamer {
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
         String mappings = readMappings(getResource(classLoader));
         String classAndConstructorAndParamNames = NEWLINE + className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE + paramNames + SPACE;
+
+        filterMappingByPrefix(classAndConstructorAndParamNames, getResource(classLoader));
         int index = mappings.indexOf(classAndConstructorAndParamNames);
         if (index != -1) {
             String methodParamTypes = extractParameterTypesFromFoundMethod(index, classAndConstructorAndParamNames, mappings);
@@ -118,8 +156,7 @@ public class DefaultParanamer implements Paranamer {
     private String extractParameterTypesFromFoundMethod(int index, String classAndConstructorAndParamNames, String mappings) {
         int start = index + classAndConstructorAndParamNames.length();
         int end = mappings.indexOf(NEWLINE, start + 1);
-        String methodParamTypes = mappings.substring(start, end).trim();
-        return methodParamTypes;
+        return mappings.substring(start, end).trim();
     }
 
     private String turnClassArrayIntoRepresentativeString(Class[] parameters) {
@@ -130,13 +167,38 @@ public class DefaultParanamer implements Paranamer {
         }
         return parameterTypes;
     }
-    
+
     private Reader getResource(ClassLoader classLoader) {
         InputStream inputStream = classLoader.getResourceAsStream(paranamerResource);
-        if ( inputStream == null ) {
-            throw new NoSuchElementException("Failed to find resource "+paranamerResource);
+        if (inputStream == null) {
+            throw new NoSuchElementException("Failed to find resource " + paranamerResource);
         }
         return new InputStreamReader(inputStream);
+    }
+
+    private List filterMappingByPrefix(String prefix, Reader resource) {
+        List results = new ArrayList();
+
+        try {
+            LineNumberReader lineReader = new LineNumberReader(resource);
+            String line = readLine(lineReader);
+
+            while (line != null) {
+                if (line.startsWith(prefix)) {
+                    results.add(line.trim());
+                }
+                line = readLine(lineReader);
+            }
+            return results;
+        } finally {
+            try {
+                if (resource != null) {
+                    resource.close();
+                }
+            } catch (IOException ignore) {
+                // ignore
+            }
+        }
     }
 
     private String readMappings(Reader resource) {
@@ -154,7 +216,8 @@ public class DefaultParanamer implements Paranamer {
                 if (resource != null) {
                     resource.close();
                 }
-            } catch (IOException e) {
+            } catch (IOException ignore) {
+                // ignore
             }
         }
     }

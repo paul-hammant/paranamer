@@ -35,7 +35,7 @@ public interface Paranamer {
 
 
     /**
-     * Lookup the possible parameter names of a given method
+     * Lookup the possible parameter names of a given method name
      * 
      * @param classLoader the ClassLoader used for the lookup
      * @param className the name of the class to which the method belongs
@@ -44,7 +44,12 @@ public interface Paranamer {
      */
     public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName);
 
-
-
+    /**
+     * Lookup the parameter names of a given method
+     *
+     * @param method the method to be searched for
+     * @return A CSV list of the parameter names
+     */
+    public String lookupParameterNamesForMethod(Method method);
 
 }

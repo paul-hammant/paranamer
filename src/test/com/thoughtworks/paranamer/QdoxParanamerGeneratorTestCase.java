@@ -1,17 +1,18 @@
 package com.thoughtworks.paranamer;
 
+import junit.framework.TestCase;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-
-import junit.framework.TestCase;
 
 public class QdoxParanamerGeneratorTestCase extends TestCase {
 
     String allParameters =
             "com.thoughtworks.paranamer.CachingParanamer CachingParanamer \n" +
                     "com.thoughtworks.paranamer.CachingParanamer CachingParanamer paranamer com.thoughtworks.paranamer.Paranamer \n" +
+                    "com.thoughtworks.paranamer.CachingParanamer lookupParameterNamesForMethod method java.lang.reflect.Method \n" +
                     "com.thoughtworks.paranamer.CachingParanamer toString \n" +
                     "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.CachingParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
@@ -23,6 +24,7 @@ public class QdoxParanamerGeneratorTestCase extends TestCase {
                     "com.thoughtworks.paranamer.CheckedParanamer checkedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer paranamerResource java.lang.String \n" +
+                    "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNamesForMethod method java.lang.reflect.Method \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer toString \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +

@@ -20,7 +20,6 @@ import java.util.Arrays;
  * @author Mauro Talevi
  */
 public class QdoxParanamerGenerator implements ParanamerGenerator {
-
     private static final String SPACE  = " ";
     private static final String NEWLINE = "\n";
     private static final String COMMA = ",";
@@ -130,6 +129,5 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     private String comma(int k, int size) {
         return (k + 1 < size) ? COMMA : EMPTY;
     }
-
 
 }

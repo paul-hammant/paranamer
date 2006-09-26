@@ -1,10 +1,10 @@
 package com.thoughtworks.paranamer;
 
+import junit.framework.TestCase;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.NoSuchElementException;
-
-import junit.framework.TestCase;
 
 public class DefaultParanamerTestCase extends TestCase {
 
@@ -23,7 +23,7 @@ public class DefaultParanamerTestCase extends TestCase {
         assertNull(method);
     }
 
-    public void testMLookupMethodReturnsNullIfClassNotFound()
+    public void testLookupMethodReturnsNullIfClassNotFound()
             throws IOException {
         Object method = paranamer.lookupMethod(
                 Paranamer.class.getClassLoader(), "paranamer.Footle",
@@ -67,5 +67,18 @@ public class DefaultParanamerTestCase extends TestCase {
         assertEquals(0, choices.length);
     }
 
+    public void testLookupParameterNamesForMethod() throws Exception {
+        Method method = QdoxParanamerGenerator.class.getMethod("write", new Class[] {String.class, String.class});
+        String parameters = paranamer.lookupParameterNamesForMethod(method);
+
+        assertEquals("outputPath,content", parameters);
+    }
+
+    public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
+        Method method = DefaultParanamer.class.getMethod("toString", new Class[0]);
+        String parameters = paranamer.lookupParameterNamesForMethod(method);
+
+        assertEquals("", parameters);
+    }
 
 }

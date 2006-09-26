@@ -4,7 +4,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 
 public class CheckedParanamer {
-
     private Paranamer delegate;
 
     public CheckedParanamer(Paranamer delegate) {
