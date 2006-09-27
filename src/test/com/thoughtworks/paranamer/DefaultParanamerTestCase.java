@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 import java.util.NoSuchElementException;
 
 public class DefaultParanamerTestCase extends TestCase {
-
     private DefaultParanamer paranamer;
     
     protected void setUp() throws Exception {

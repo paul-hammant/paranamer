@@ -1,10 +1,9 @@
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 public class UncheckedParanamer {
-
     private Paranamer delegate;
 
     public UncheckedParanamer(Paranamer delegate) {
@@ -15,7 +14,6 @@ public class UncheckedParanamer {
         this.delegate = new DefaultParanamer();
     }
 
-
     public Method uncheckedMethodLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
         Method method = delegate.lookupMethod(classLoader, className, methodName, paramNames);
         if (method == null) {
@@ -24,7 +22,6 @@ public class UncheckedParanamer {
         return method;
     }
 
-
     public Constructor uncheckedConstructorLookup(ClassLoader classLoader, String className, String paramNames) {
         Constructor constructor = delegate.lookupConstructor(classLoader, className, paramNames);
         if (constructor == null) {
@@ -32,12 +29,11 @@ public class UncheckedParanamer {
         }
         return constructor;
     }
-    
+
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("[UncheckedParanamer delegate=");
-        sb.append(delegate);
-        sb.append("]");
-        return sb.toString();
+        return new StringBuffer("[UncheckedParanamer delegate=")
+                .append(delegate)
+                .append("]")
+                .toString();
     }
 }

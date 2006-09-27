@@ -304,8 +304,6 @@
     <option name="COPY_FORMS_RUNTIME_TO_OUTPUT" value="true" />
     <option name="DEFAULT_LAYOUT_MANAGER" value="GridLayoutManager" />
   </component>
-  <UsedPathMacros>
-    <macro name="M2_REPOSITORY" />
-  </UsedPathMacros>
+  <UsedPathMacros />
 </project>
 

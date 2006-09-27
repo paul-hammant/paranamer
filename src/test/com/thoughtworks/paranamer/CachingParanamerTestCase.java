@@ -8,10 +8,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class CachingParanamerTestCase extends TestCase {
-    Method method;
-    Constructor constructor;
-    Paranamer paranamer;
-    int count = 0;
+    private Method method;
+    private Constructor constructor;
+    private Paranamer paranamer;
+    private int count = 0;
 
     protected void setUp() throws Exception {
         method = String.class.getMethod("toString", new Class[0]);
@@ -30,10 +30,12 @@ public class CachingParanamerTestCase extends TestCase {
             }
 
             public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
+                count++;
                 return new String[] {"foo,bar"};
             }
 
             public String lookupParameterNamesForMethod(Method method) {
+                count++;
                 return "foo,bar";
             }
         };
@@ -109,12 +111,25 @@ public class CachingParanamerTestCase extends TestCase {
         String[] paramNameChoices = cachingParanamer.lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookup");
         assertEquals(1, paramNameChoices.length);
         assertEquals("foo,bar", paramNameChoices[0]);
+        assertEquals(1, count);
+
+        // cache hit
+        paramNameChoices = cachingParanamer.lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookup");
+        assertEquals(1, paramNameChoices.length);
+        assertEquals("foo,bar", paramNameChoices[0]);
+        assertEquals(1, count);
     }
 
     public void testLookupOfParameterNamesForMethod() {
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
         String paramNames = cachingParanamer.lookupParameterNamesForMethod(null);
         assertEquals("foo,bar", paramNames);
+        assertEquals(1, count);
+
+        // cache hit
+        paramNames = cachingParanamer.lookupParameterNamesForMethod(null);
+        assertEquals("foo,bar", paramNames);
+        assertEquals(1, count);
     }
     
 }

@@ -1,15 +1,15 @@
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 public class CachingParanamer implements Paranamer {
-
     private final Paranamer delegate;
-    private WeakHashMap classLoaders = new WeakHashMap();
+    private final WeakHashMap classLoaderCache = new WeakHashMap();
+    private final WeakHashMap methodCache = new WeakHashMap();
 
     public CachingParanamer(Paranamer paranamer) {
         delegate = paranamer;
@@ -21,58 +21,75 @@ public class CachingParanamer implements Paranamer {
 
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
         String key = className + " " + methodName + " " + paramNames;
-        Map map = (Map) classLoaders.get(classLoader);
-        Method method;
-        if (map != null) {
-            method = (Method) map.get(key);
-            if (method != null) {
-                return method;
-            }
+        Method method = (Method) checkCache(classLoader, key);
+
+        if(method == null) {
+            method = delegate.lookupMethod(classLoader, className, methodName, paramNames);
+            cacheIt(classLoader, key, method);
         }
-        if (map == null) {
-            map = new HashMap();
-            classLoaders.put(classLoader, map);
-        }
-        method = delegate.lookupMethod(classLoader, className, methodName, paramNames);
-        map.put(key,method);
+
         return method;
     }
 
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
-        String key = className + " " + className.substring(className.lastIndexOf(".")+1) + " " + paramNames;
-        Map map = (Map) classLoaders.get(classLoader);
-        Constructor constuctor;
-        if (map != null) {
-            constuctor = (Constructor) map.get(key);
-            if (constuctor != null) {
-                return constuctor;
-            }
-        }
-        if (map == null) {
-            map = new HashMap();
-            classLoaders.put(classLoader, map);
-        }
-        constuctor = delegate.lookupConstructor(classLoader, className, paramNames);
-        map.put(key,constuctor);
-        return constuctor;
+        String key = className + " " + className.substring(className.lastIndexOf(".") + 1) + " " + paramNames;
+        Constructor constructor = (Constructor) checkCache(classLoader, key);
 
+        if(constructor == null) {
+            constructor = delegate.lookupConstructor(classLoader, className, paramNames);
+            cacheIt(classLoader, key, constructor);
+        }
+
+        return constructor;
     }
 
     public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
-        return delegate.lookupParameterNames(classLoader, className, methodName);
+        String key = className + " " + className + " " + methodName;
+
+        String[] parameterNames = (String[]) checkCache(classLoader, key);
+
+        if(parameterNames == null) {
+            parameterNames = delegate.lookupParameterNames(classLoader, className, methodName);
+            cacheIt(classLoader, key, parameterNames);
+        }
+
+        return parameterNames;
     }
 
     public String lookupParameterNamesForMethod(Method method) {
-        return delegate.lookupParameterNamesForMethod(method);
+        if(methodCache.containsKey(method)) {
+            return (String) methodCache.get(method);
+        }
+
+        String value = delegate.lookupParameterNamesForMethod(method);
+        methodCache.put(method, value);
+
+        return value;
+    }
+
+    private Object checkCache(ClassLoader classLoader, String key) {
+        Map map = (Map) classLoaderCache.get(classLoader);
+
+        if(map == null) {
+            classLoaderCache.put(classLoader, new HashMap());
+        } else {
+            if(map.containsKey(key)) {
+                return map.get(key);
+            }
+        }
+
+        return null;
+    }
+
+    private void cacheIt(ClassLoader classLoader, String key, Object value) {
+        Map map = (Map) classLoaderCache.get(classLoader);
+        map.put(key, value);
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("[CachingParanamer delegate=");
-        sb.append(delegate);
-        sb.append(", classLoaders=");
-        sb.append(classLoaders);
-        sb.append("]");
-        return sb.toString();
+        return new StringBuffer("[CachingParanamer delegate=")
+                .append(delegate)
+                .append(", classLoaders=")
+                .append(classLoaderCache).append("]").toString();
     }
 }

@@ -12,12 +12,9 @@ import java.io.IOException;
 * @author Mauro Talevi
 */
 public class ParanamerGeneratorTask extends Task {
-
+    private final ParanamerGenerator generator = new QdoxParanamerGenerator();
     private String sourceDirectory;
-    
     private String outputDirectory;
-
-    private ParanamerGenerator generator = new QdoxParanamerGenerator();
 
     public void execute() throws BuildException {
         String parameterText = generator.generate(sourceDirectory);

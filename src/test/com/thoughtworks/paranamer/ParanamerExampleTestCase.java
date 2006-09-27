@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-
 public class ParanamerExampleTestCase extends AbstractParanamerTestCase {
 
     // An example of a test that looks something up by it's parameter names
@@ -44,6 +43,5 @@ public class ParanamerExampleTestCase extends AbstractParanamerTestCase {
         Constructor ctor = new DefaultParanamer().lookupConstructor(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.ParanamerException", "message");
         assertEquals(ParanamerException.class.getConstructor(new Class[]{String.class}), ctor);
     }
-
 
 }

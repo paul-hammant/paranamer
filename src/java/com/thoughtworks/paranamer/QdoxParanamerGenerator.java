@@ -24,7 +24,6 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     private static final String NEWLINE = "\n";
     private static final String COMMA = ",";
     private static final String EMPTY = "";
-
     private String paranamerResource;
 
     public QdoxParanamerGenerator() {

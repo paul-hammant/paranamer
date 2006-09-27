@@ -1,7 +1,7 @@
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 public class CheckedParanamer {
     private Paranamer delegate;
@@ -31,10 +31,9 @@ public class CheckedParanamer {
     }
 
     public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("[CheckedParanamer delegate=");
-        sb.append(delegate);
-        sb.append("]");
-        return sb.toString();
+        return new StringBuffer("[CheckedParanamer delegate=")
+                .append(delegate)
+                .append("]")
+                .toString();
     }
 }
