@@ -54,11 +54,12 @@ public class TypeCollector implements ClassVisitor {
 		if (paramCount != this.parameterTypes.length) {
 			return null;
 		}
-		/*
-		 * MethodVisitor visitor = super.visitMethod(access, name, desc,
-		 * signature, exceptions);
-		 */
-		// MethodVisitor visitor = new MethodVisitor();
+		for (int i = 0; i < argumentTypes.length; i++) {
+			if (!argumentTypes[i].getClassName().equals(
+					this.parameterTypes[i].getName())) {
+				return null;
+			}
+		}
 		this.collector = new MethodCollector(null,
 				(Modifier.isStatic(access) ? 0 : 1), argumentTypes.length
 						+ longOrDoubleQuantity);
