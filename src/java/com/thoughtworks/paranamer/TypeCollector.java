@@ -20,11 +20,11 @@ public class TypeCollector implements ClassVisitor {
 
 	private final String methodName;
 
-	private final Class<?>[] parameterTypes;
+	private final Class[] parameterTypes;
 
 	private MethodCollector collector;
 
-	public TypeCollector(String methodName, Class<?>[] parameterTypes) {
+	public TypeCollector(String methodName, Class[] parameterTypes) {
 		this.methodName = methodName;
 		this.parameterTypes = parameterTypes;
 		this.collector = null;

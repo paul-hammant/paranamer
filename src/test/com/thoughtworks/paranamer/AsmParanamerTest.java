@@ -11,7 +11,7 @@ public class AsmParanamerTest extends TestCase {
 		AsmParanamer asm = new AsmParanamer();
 		String names = asm
 				.lookupParameterNamesForMethod(SpecificMethodSearchable.class
-						.getMethod("singleString", String.class));
+						.getMethod("singleString", new Class[] {String.class}));
 		assertEquals("s", names);
 	}
 
@@ -20,7 +20,7 @@ public class AsmParanamerTest extends TestCase {
 		AsmParanamer asm = new AsmParanamer();
 		String names = asm
 				.lookupParameterNamesForMethod(SpecificMethodSearchable.class
-						.getMethod("noParameters"));
+						.getMethod("noParameters", new Class[0]));
 		assertEquals("", names);
 	}
 
@@ -29,7 +29,7 @@ public class AsmParanamerTest extends TestCase {
 		AsmParanamer asm = new AsmParanamer();
 		String names = asm
 				.lookupParameterNamesForMethod(SpecificMethodSearchable.class
-						.getMethod("noParametersOneLocalVariable"));
+						.getMethod("noParametersOneLocalVariable", new Class[0]));
 		assertEquals("", names);
 	}
 
