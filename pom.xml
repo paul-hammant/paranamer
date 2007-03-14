@@ -67,18 +67,6 @@
         </developer>
     </developers>
 
-    <repositories>
-        <repository>
-            <id>codehaus-legacy-repository</id>
-            <name>Codehaus Legacy Repository</name>
-            <url>http://dist.codehaus.org</url>
-            <layout>legacy</layout>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>qdox</groupId>
@@ -96,11 +84,11 @@
             <version>2.0</version>
         </dependency>
 
-		<!-- support through asm -->
+		<!-- ASM support -->
         <dependency>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
-            <version>3.0_RC1</version>
+            <version>3.0</version>
             <optional>true</optional>
         </dependency>
 
@@ -108,7 +96,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.2</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -178,7 +166,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.3</version>
                 <configuration>
                     <forkMode>once</forkMode>
                     <printSummary>true</printSummary>
@@ -194,7 +182,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.0</version>
+                <version>2.3</version>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
