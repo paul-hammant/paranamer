@@ -3,14 +3,14 @@
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-RC-1</version>
     <name>ParaNamer</name>
     <url>http://paranamer.codehaus.org</url>
 
     <scm>
-        <connection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</connection>
-        <developerConnection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</developerConnection>
-        <url>http://svn.paranamer.codehaus.org/trunk</url>
+        <connection>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-1.0-RC-1</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-1.0-RC-1</developerConnection>
+        <url>https://svn.codehaus.org/paranamer/tags/paranamer-1.0-RC-1</url>
     </scm>
 
     <licenses>
