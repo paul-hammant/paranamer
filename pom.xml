@@ -9,6 +9,7 @@
 
     <modules>
         <module>paranamer</module>
+        <module>paranamer-asm</module>
     </modules>
 
     <dependencyManagement>
