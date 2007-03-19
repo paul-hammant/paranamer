@@ -112,6 +112,9 @@ public class AsmParanamer implements Paranamer {
             ClassReader creader = new ClassReader(content);
             //TODO - also for constructors
             List methods = getMatchingMethods(classLoader, className, ctorOrMethodName);
+            if (methods.size() == 0) {
+                return Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER;
+            }
             TypeCollector visitor = new TypeCollector(ctorOrMethodName, ((Method) methods.get(0)).getParameterTypes());
             creader.accept(visitor, 0);
             if (visitor.isClassFound()) {

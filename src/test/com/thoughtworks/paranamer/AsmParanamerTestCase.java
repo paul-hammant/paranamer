@@ -1,6 +1,5 @@
 package com.thoughtworks.paranamer;
 
-import java.io.IOException;
 
 public class AsmParanamerTestCase extends AbstractParanamerTestCase {
     

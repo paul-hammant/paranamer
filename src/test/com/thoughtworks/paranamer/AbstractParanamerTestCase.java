@@ -26,7 +26,7 @@ public abstract class AbstractParanamerTestCase extends TestCase {
         assertNull(method);
     }
 
-    public void testLookupParanamerCanIndicateThatUnableToGetParameterNames()
+    public void testLookupParanamerCanIndicateThatUnableToGetParameterNamesForBogusClass()
             throws IOException {
         ClassLoader cl = new ClassLoader(){};
         Object method = paranamer.lookupMethod(cl, "Blah", "doBlah", "blah");
@@ -43,6 +43,13 @@ public abstract class AbstractParanamerTestCase extends TestCase {
 
     }
 
+    public void testLookupParanamerCanIndicateThatUnableToGetParameterNamesForRealClassButBogusMethod()
+            throws IOException {
+        int x = paranamer.isParameterNameDataAvailable(QdoxParanamerGenerator.class.getClassLoader(),
+                "com.thoughtworks.paranamer.QdoxParanamerGenerator", "fooo");
+        assertEquals(Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER, x);
+
+    }
 
     public void testLookupMethodEndsWithUnknownClass() throws IOException {
         Object method = paranamer.lookupMethod(
