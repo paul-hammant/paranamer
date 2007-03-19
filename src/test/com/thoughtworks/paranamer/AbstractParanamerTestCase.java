@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 public abstract class AbstractParanamerTestCase extends TestCase {
-    protected DefaultParanamer paranamer;
+    protected Paranamer paranamer;
 
 
     public void testLookupMethodReturnsNullIfMethodNotFound()

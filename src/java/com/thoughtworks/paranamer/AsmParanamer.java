@@ -66,8 +66,11 @@ public class AsmParanamer implements Paranamer {
 			for (int i = 0; i < methods.length; i++) {
 				Method method = methods[i];
 				if (method.getName().equals(methodName)) {
-					names.add(lookupParameterNamesForMethod(method));
-				}
+                    String s = lookupParameterNamesForMethod(method);
+                    if (!s.equals("")) {
+                        names.add(s);
+                    }
+                }
 			}
 			return (String[]) names.toArray(new String[names.size()]);
 		} catch (SecurityException e) {
