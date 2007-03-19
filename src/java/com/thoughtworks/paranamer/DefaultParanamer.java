@@ -50,7 +50,11 @@ public class DefaultParanamer implements Paranamer {
         }
 
         String classAndMethodAndParameterNames = getClassAndMethodAndParameterNames(className, methodName, paramNames);
-        List results = filterMappingByPrefix(classAndMethodAndParameterNames, getResource(classLoader));
+        Reader resource = getResource(classLoader);
+        if (resource == null) {
+            return null;
+        }
+        List results = filterMappingByPrefix(classAndMethodAndParameterNames, resource);
 
         if (results.isEmpty()) {
             return null;
@@ -99,7 +103,11 @@ public class DefaultParanamer implements Paranamer {
         }
 
         String classAndConstructorAndParamNames = className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE + paramNames + SPACE;
-        List results = filterMappingByPrefix(classAndConstructorAndParamNames, getResource(classLoader));
+        Reader resource = getResource(classLoader);
+        if (resource == null) {
+            return null;
+        }
+        List results = filterMappingByPrefix(classAndConstructorAndParamNames, resource);
 
         if (results.isEmpty()) {
             return null;
@@ -192,7 +200,7 @@ public class DefaultParanamer implements Paranamer {
     private Reader getResource(ClassLoader classLoader) {
         InputStream inputStream = classLoader.getResourceAsStream(paranamerResource);
         if (inputStream == null) {
-            throw new NoSuchElementException("Failed to find resource " + paranamerResource);
+            return null;
         }
         return new InputStreamReader(inputStream);
     }
@@ -239,5 +247,24 @@ public class DefaultParanamer implements Paranamer {
                 .append(paranamerResource)
                 .append("]")
                 .toString();
+    }
+
+    public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
+        Reader reader = getResource(classLoader);
+        if (reader == null) {
+            return NO_PARAMETER_NAMES_LIST;
+        }
+        String clazzName = className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE;
+        List list = filterMappingByPrefix(clazzName, reader);
+        if (list.size() == 0) {
+            return NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS;
+        }
+        String classAndConstructorOrMethodNames = className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE + ctorOrMethodName + SPACE;
+        list = filterMappingByPrefix(classAndConstructorOrMethodNames, reader);
+        if (list.size() == 0) {
+            return NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_ARG;
+        }
+
+        return PARAMETER_NAME_DATA_FOUND;
     }
 }

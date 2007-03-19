@@ -10,12 +10,15 @@ import java.io.LineNumberReader;
 public class QdoxParanamerGeneratorTestCase extends TestCase {
 
     String allParameters =
-            "com.thoughtworks.paranamer.AsmParanamer lookupParameterNamesForMethod method java.lang.reflect.Method \n" +
+                    "com.thoughtworks.paranamer.AsmParanamer isParameterNameDataAvailable classLoader,className,ctorOrMethodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
+                    "com.thoughtworks.paranamer.AsmParanamer lookupParameterNamesForConstructor ctor java.lang.reflect.Constructor \n" +
+                    "com.thoughtworks.paranamer.AsmParanamer lookupParameterNamesForMethod method java.lang.reflect.Method \n" +
                     "com.thoughtworks.paranamer.AsmParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.AsmParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.AsmParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.CachingParanamer CachingParanamer \n" +
                     "com.thoughtworks.paranamer.CachingParanamer CachingParanamer paranamer com.thoughtworks.paranamer.Paranamer \n" +
+                    "com.thoughtworks.paranamer.CachingParanamer isParameterNameDataAvailable classLoader,className,ctorOrMethodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.CachingParanamer lookupParameterNamesForMethod method java.lang.reflect.Method \n" +
                     "com.thoughtworks.paranamer.CachingParanamer toString \n" +
                     "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
@@ -28,6 +31,7 @@ public class QdoxParanamerGeneratorTestCase extends TestCase {
                     "com.thoughtworks.paranamer.CheckedParanamer checkedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer paranamerResource java.lang.String \n" +
+                    "com.thoughtworks.paranamer.DefaultParanamer isParameterNameDataAvailable classLoader,className,ctorOrMethodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNamesForMethod method java.lang.reflect.Method \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer toString \n" +
                     "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames classLoader,className,methodName java.lang.ClassLoader,java.lang.String,java.lang.String \n" +
@@ -72,6 +76,8 @@ public class QdoxParanamerGeneratorTestCase extends TestCase {
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator generate sourcePath java.lang.String \n" +
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator write outputPath,content java.lang.String,java.lang.String \n" +
                     "com.thoughtworks.paranamer.TypeCollector TypeCollector methodName,parameterTypes java.lang.String,java.lang.Class[] \n" +
+                    "com.thoughtworks.paranamer.TypeCollector isClassFound \n" +
+                    "com.thoughtworks.paranamer.TypeCollector isMethodFound \n" +
                     "com.thoughtworks.paranamer.TypeCollector getParameterNamesForMethod \n" +
                     "com.thoughtworks.paranamer.TypeCollector visitAnnotation arg0,arg1 java.lang.String,boolean \n" +
                     "com.thoughtworks.paranamer.TypeCollector visitField arg0,arg1,arg2,arg3,arg4 int,java.lang.String,java.lang.String,java.lang.String,java.lang.Object \n" +

@@ -30,6 +30,17 @@ public class DefaultParanamerTestCase extends TestCase {
         assertNull(method);
     }
 
+    public void testLookupParanamerCanIndicateThatUnableToGetParameterNames()
+            throws IOException {
+        ClassLoader cl = new ClassLoader(){};
+        Object method = paranamer.lookupMethod(cl, "Blah", "doBlah", "blah");
+        assertNull(method);
+        int x = paranamer.isParameterNameDataAvailable(cl,"Blah", "doBlah");
+        assertEquals(Paranamer.NO_PARAMETER_NAMES_LIST, x);
+
+    }
+
+
     public void testLookupMethodEndsWithUnknownClass() throws IOException {
         Object method = paranamer.lookupMethod(
                 Paranamer.class.getClassLoader(), "foo.Bar", "generate",
@@ -39,14 +50,10 @@ public class DefaultParanamerTestCase extends TestCase {
 
     public void testLookupFailsIfResourceMissing() throws IOException {
         Paranamer paranamer = new DefaultParanamer("/inexistent/resource");
-        try {
-            paranamer.lookupMethod(Paranamer.class.getClassLoader(),
-                    "com.thoughtworks.paranamer.QdoxParanamerGenerator",
-                    "generate", "sourcePath,rootPackage");
-            fail("Expected NoSuchElementException");
-        } catch (NoSuchElementException e) {
-            // expected
-        }
+        Method m = paranamer.lookupMethod(Paranamer.class.getClassLoader(),
+                "com.thoughtworks.paranamer.QdoxParanamerGenerator",
+                "generate", "sourcePath,rootPackage");
+        assertTrue("null expected", m == null);
     }
 
     public void testMethodWithNoArgsCanBeRetrievedByParameterNames()

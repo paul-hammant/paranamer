@@ -23,8 +23,10 @@ public class TypeCollector implements ClassVisitor {
 	private final Class[] parameterTypes;
 
 	private MethodCollector collector;
+    private boolean methodFound = false;
+    private boolean classFound = false;
 
-	public TypeCollector(String methodName, Class[] parameterTypes) {
+    public TypeCollector(String methodName, Class[] parameterTypes) {
 		this.methodName = methodName;
 		this.parameterTypes = parameterTypes;
 		this.collector = null;
@@ -33,14 +35,16 @@ public class TypeCollector implements ClassVisitor {
 	public MethodVisitor visitMethod(int access, String name, String desc,
 			String signature, String[] exceptions) {
 		// already found the method, skip any processing
-		if (collector != null) {
+        classFound = true;
+        if (collector != null) {
 			return null;
 		}
 		// not the same name
 		if (!name.equals(methodName)) {
 			return null;
 		}
-		Type[] argumentTypes = Type.getArgumentTypes(desc);
+        methodFound = true;
+        Type[] argumentTypes = Type.getArgumentTypes(desc);
 		int longOrDoubleQuantity = 0;
 		for (int i = 0; i < argumentTypes.length; i++) {
 			Type t = argumentTypes[i];
@@ -104,4 +108,12 @@ public class TypeCollector implements ClassVisitor {
 	public void visitSource(String arg0, String arg1) {
 	}
 
+
+    public boolean isMethodFound() {
+        return methodFound;
+    }
+
+    public boolean isClassFound() {
+        return classFound;
+    }
 }

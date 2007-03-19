@@ -92,4 +92,9 @@ public class CachingParanamer implements Paranamer {
                 .append(", classLoaders=")
                 .append(classLoaderCache).append("]").toString();
     }
+
+
+    public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
+        return delegate.isParameterNameDataAvailable(classLoader, className, ctorOrMethodName);
+    }
 }

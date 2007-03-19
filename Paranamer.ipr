@@ -285,7 +285,7 @@
       <module fileurl="file://$PROJECT_DIR$/Paranamer.iml" filepath="$PROJECT_DIR$/Paranamer.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="false" project-jdk-name="1.5" project-jdk-type="JavaSDK" />
   <component name="ProjectRunConfigurationManager" />
   <component name="RmicSettings">
     <option name="IS_EANABLED" value="false" />

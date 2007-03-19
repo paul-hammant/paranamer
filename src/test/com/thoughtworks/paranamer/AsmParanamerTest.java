@@ -1,6 +1,7 @@
 package com.thoughtworks.paranamer;
 
 import java.util.Arrays;
+import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
@@ -9,9 +10,10 @@ public class AsmParanamerTest extends TestCase {
 	public void testRetrievesParameterNamesFromAMethod()
 			throws SecurityException, NoSuchMethodException {
 		AsmParanamer asm = new AsmParanamer();
-		String names = asm
-				.lookupParameterNamesForMethod(SpecificMethodSearchable.class
-						.getMethod("singleString", new Class[] {String.class}));
+        Method method = SpecificMethodSearchable.class
+                .getMethod("singleString", new Class[]{String.class});
+        String names = asm
+				.lookupParameterNamesForMethod(method);
 		assertEquals("s", names);
 	}
 

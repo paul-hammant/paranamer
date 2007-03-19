@@ -10,6 +10,22 @@ import java.lang.reflect.Constructor;
  * @author Paul Hammant
  */
 public interface Paranamer {
+    /**
+     * Parameter names are generally not available
+     */
+    int NO_PARAMETER_NAMES_LIST = 1;
+    /**
+     * Parameter names are available, but not for that class
+     */
+    int NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS = 2;
+    /**
+     * Parameter names are available for that class, but not for that constructor or method
+     */
+    int NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_ARG = 3;
+    /**
+     * Parameter names are available for that class and constructor/method
+     */
+    int PARAMETER_NAME_DATA_FOUND = 0;
 
     /**
      * Lookup a method 
@@ -51,5 +67,16 @@ public interface Paranamer {
      * @return A CSV list of the parameter names
      */
     public String lookupParameterNamesForMethod(Method method);
+
+    /**
+     * Lookup the parameter names of a given method
+     *
+     * @param classLoader the ClassLoader used for the lookup
+     * @param className the name of the class to which the constructor belongs
+     * @param ctorOrMethodName the method or constructor
+     * @return a code suggesting what the availability of parameter name info is
+     */
+    public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName);
+
 
 }

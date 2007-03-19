@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 
-public class CheckedParanamerTestCase extends AbstractParanamerTestCase {
+public class CheckedParanamerTestCase extends AbstractQDoxParanamerTestCase {
 
     public void testCheckedMethodRetrievalFailure() throws IOException {
         try {

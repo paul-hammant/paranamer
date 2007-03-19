@@ -38,6 +38,10 @@ public class CachingParanamerTestCase extends TestCase {
                 count++;
                 return "foo,bar";
             }
+
+            public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
+                return -1;  
+            }
         };
     }
 
