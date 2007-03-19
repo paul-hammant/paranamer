@@ -33,6 +33,13 @@ public abstract class AbstractParanamerTestCase extends TestCase {
         assertNull(method);
         int x = paranamer.isParameterNameDataAvailable(cl,"Blah", "doBlah");
         assertEquals(Paranamer.NO_PARAMETER_NAMES_LIST, x);
+    }
+
+    public void testLookupParanamerCanIndicateAbleToGetParameterNames()
+            throws IOException {
+        int x = paranamer.isParameterNameDataAvailable(QdoxParanamerGenerator.class.getClassLoader(),
+                "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate");
+        assertEquals(Paranamer.PARAMETER_NAME_DATA_FOUND, x);
 
     }
 

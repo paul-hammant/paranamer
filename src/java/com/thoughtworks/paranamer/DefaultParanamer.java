@@ -10,7 +10,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class DefaultParanamer implements Paranamer {
     private static final String EMPTY = "";
@@ -50,7 +49,7 @@ public class DefaultParanamer implements Paranamer {
         }
 
         String classAndMethodAndParameterNames = getClassAndMethodAndParameterNames(className, methodName, paramNames);
-        Reader resource = getResource(classLoader);
+        Reader resource = getParameterListResource(classLoader);
         if (resource == null) {
             return null;
         }
@@ -103,7 +102,7 @@ public class DefaultParanamer implements Paranamer {
         }
 
         String classAndConstructorAndParamNames = className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE + paramNames + SPACE;
-        Reader resource = getResource(classLoader);
+        Reader resource = getParameterListResource(classLoader);
         if (resource == null) {
             return null;
         }
@@ -134,7 +133,7 @@ public class DefaultParanamer implements Paranamer {
      */
     public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
         String classAndMethodName = className + SPACE + methodName + SPACE;
-        List results = filterMappingByPrefix(classAndMethodName, getResource(classLoader));
+        List results = filterMappingByPrefix(classAndMethodName, getParameterListResource(classLoader));
         List matches = new ArrayList();
 
         for (int i = 0; i < results.size(); i++) {
@@ -162,7 +161,7 @@ public class DefaultParanamer implements Paranamer {
         String parameterTypes = stringifyClassArray(method.getParameterTypes());
         String prefix = declaringClass.getName() + SPACE + method.getName();
 
-        List results = filterMappingByPrefix(prefix, getResource(declaringClass.getClassLoader()));
+        List results = filterMappingByPrefix(prefix, getParameterListResource(declaringClass.getClassLoader()));
 
         for (int i = 0; i < results.size(); i++) {
             String definition = (String) results.get(i);
@@ -197,7 +196,7 @@ public class DefaultParanamer implements Paranamer {
         return buffer.toString();
     }
 
-    private Reader getResource(ClassLoader classLoader) {
+    private Reader getParameterListResource(ClassLoader classLoader) {
         InputStream inputStream = classLoader.getResourceAsStream(paranamerResource);
         if (inputStream == null) {
             return null;
@@ -250,19 +249,21 @@ public class DefaultParanamer implements Paranamer {
     }
 
     public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
-        Reader reader = getResource(classLoader);
+        Reader reader = getParameterListResource(classLoader);
         if (reader == null) {
             return NO_PARAMETER_NAMES_LIST;
         }
-        String clazzName = className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE;
+        String clazzName = className + SPACE;
         List list = filterMappingByPrefix(clazzName, reader);
         if (list.size() == 0) {
             return NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS;
         }
-        String classAndConstructorOrMethodNames = className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE + ctorOrMethodName + SPACE;
+        reader = getParameterListResource(classLoader);
+
+        String classAndConstructorOrMethodNames = className + SPACE + ctorOrMethodName + SPACE;
         list = filterMappingByPrefix(classAndConstructorOrMethodNames, reader);
         if (list.size() == 0) {
-            return NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_ARG;
+            return NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER;
         }
 
         return PARAMETER_NAME_DATA_FOUND;

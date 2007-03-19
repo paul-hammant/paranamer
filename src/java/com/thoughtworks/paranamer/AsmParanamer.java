@@ -116,10 +116,10 @@ public class AsmParanamer implements Paranamer {
             creader.accept(visitor, 0);
             if (visitor.isClassFound()) {
                 if (!visitor.isMethodFound()) {
-                    return Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_ARG;
+                    return Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER;
                 }
+            } else {
                 return Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS;
-
             }
             return Paranamer.PARAMETER_NAME_DATA_FOUND;
         } catch (IOException e) {

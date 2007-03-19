@@ -21,7 +21,7 @@ public interface Paranamer {
     /**
      * Parameter names are available for that class, but not for that constructor or method
      */
-    int NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_ARG = 3;
+    int NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER = 3;
     /**
      * Parameter names are available for that class and constructor/method
      */
