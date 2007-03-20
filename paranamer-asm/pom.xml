@@ -40,6 +40,9 @@
                                 <exclude>org.apache.maven:maven-plugin-api</exclude>
                                 <exclude>qdox:qdox</exclude>
                             </excludes>
+                            <dependenciesToHide>
+                                <dependencyHide>asm:asm</dependencyHide>
+                            </dependenciesToHide>
                         </configuration>
                     </execution>
                 </executions>
