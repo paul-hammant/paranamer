@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head profile="http://www.w3.org/2000/08/w3c-synd/#">
+  <style type="text/css">
+.codehauslogo {
+	margin-top:15px;
+	width:180px;
+	text-align:center;
+}
+.codeContent {
+	border: 1px solid #4D87CE;
+	font-size: 1.2em;
+	padding:10px;
+}
+.code-comment {
+  color: #777;
+  font-style: italic;
+}
+
+.code-quote {
+  color: #070;
+}
+
+.code-keyword {
+  color: #700;
+}
+body {
+	margin:0;
+	font-family:"Trebuchet MS", Arial, Verdana;
+	font-size:0.84em;
+	color:#555555;
+	background-color:#FFFFFF;
+	text-align:left;
+}
+
+input {
+	background-color:#FFFFFF;
+	padding:3px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:10px;
+	color:#ffffff;
+	border:1px solid #728c40;
+	background-color:#94ae62;
+	margin-bottom:2px;
+}
+input[type=submit] {
+	background-color:#FFFFFF;
+	padding:3px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:10px;
+	color:#666666;
+	border:1px solid #728c40;
+	margin-bottom:2px;
+}
+
+a {
+	color:#4D87CE;
+	font-weight:bold;
+	text-decoration:none;
+}
+a:hover {
+	color:#2a65ad;
+}
+
+ol,ul {
+
+}
+
+li {
+	list-style-image:url(../images/backgrounds/li.gif);
+	line-height:20px;
+	text-align:left;
+}
+
+#menu {
+	width:100%;
+	padding-top:20px;
+	padding-bottom:20px;
+	background-color:#94AE62;
+	margin-bottom:50px;
+	color:#FFFFFF;
+	text-align:center;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size:11px;
+	font-variant:small-caps;
+	background-image:url(../images/backgrounds/menu.jpg);
+}
+#menu a {
+	color:#FFFFFF;
+	text-decoration:none;
+	padding:10px;
+	padding-top:20px;
+	padding-bottom:20px;
+	
+}
+#menu a:hover {
+	border-bottom:1px solid #ffffff;
+	border-left:1px solid #728d40;
+	border-right:1px solid #e9ffb7;
+	padding-left:9px;
+	padding-right:9px;
+	color:#000000;
+	background-color:#FFFFFF;
+	background-image:url(../images/backgrounds/a_hover.jpg);
+}
+/*google ads*/
+#uads {
+	position:absolute;
+	right:40px;
+	top: 100px;
+}
+#header {
+	margin:0 auto 0 auto;
+	margin-left:30px;
+	margin-bottom:40px;
+}
+#header h1 {
+	font-family:"Century Gothic", "Trebuchet MS", "Arial Narrow", Arial, sans-serif;
+	font-size:30px;
+	text-transform:uppercase;
+	font-weight:normal;
+	margin:0;
+	padding:0;
+	padding-top:5px;
+	color:#736451;
+	margin-bottom:10px;
+	text-align:left;
+}
+#header h2 {
+	font-family:"Century Gothic", "Trebuchet MS", "Arial Narrow", Arial, sans-serif;
+	font-size:15px;
+	text-transform:uppercase;
+	text-align:right;
+	font-weight:normal;	
+	margin:0;
+	padding:0;
+	margin-right:40px;	
+	color:#000000;
+	border-bottom:1px solid #eeeeee;
+}
+
+#content {
+	margin:0 auto 0 auto;
+	margin-left: 30px;	
+	text-align:left;
+}
+
+.introduction {
+	margin-left:0px;
+	margin-right:235px;	
+	font-family:Helvetica, Arial, sans-serif;
+	line-height:20px;
+	font-size:12px;
+	color:#99B198;
+	text-indent:25px;
+	background-image:url(../images/backgrounds/desc.jpg);
+	background-position:bottom left;
+	padding-left:0;
+	padding-right:200px;
+	padding-bottom:35px;
+	padding-top:0;
+	background-repeat:no-repeat;
+	
+}
+.logo {
+	float:right;
+	margin-right:30px;
+}
+.clearer {
+	clear:both;
+}
+
+#sidebar {
+	width:160px;
+	float:right;
+	font-size:95%;
+	color:#6C534A;
+	text-align:left;
+	margin-right:20px;
+	margin-bottom: 100px;
+}
+#sidebar h1 {
+	font-family:"Century Gothic", "Trebuchet MS", "Arial Narrow", Arial, sans-serif;
+	font-size:20px;
+	text-transform:uppercase;
+	font-weight:normal;
+	border-bottom:1px solid #eeeeee;
+	color:#728c40;
+	text-align:right;
+}
+.submenu {
+}
+.submenu a {
+	display:block;
+	width:100%;
+	background-image:url(../images/backgrounds/submenua.gif);
+	background-position:right;
+	background-repeat:no-repeat;
+	padding:5px;
+	padding-right:0;
+}
+.submenu a:hover {
+	background-color:#eeeeee;
+	background-image:url(../images/backgrounds/submenua_hover.jpg);
+	background-repeat:repeat-y;
+}
+#mainbar {
+	margin-right:235px;
+	padding-right:35px;
+	background-image:url(../images/backgrounds/mainbar.jpg);
+	background-position:top right;
+	background-repeat:no-repeat;
+	margin-bottom:100px;
+}
+
+#mainbar h1 {
+	font-family:"Century Gothic", "Trebuchet MS", "Arial Narrow", Arial, sans-serif;
+	font-size:25px;
+	text-transform:uppercase;
+	font-weight:normal;
+	border-bottom:1px solid #eeeeee;
+	color:#728c40;
+}
+
+#mainbar p {
+	padding:15px;
+	line-height:20px;
+}
+
+#mainbar .articleimg {
+	float:right;
+	padding:5px;
+	border:1px solid #eeeeee;
+	margin-left:20px;
+	margin-top:20px;
+	margin-bottom:20px;
+}
+
+#footer {
+	width:100%;
+	background-color:#b6cf84;
+	border-top:1px solid #d8efa6;
+	border-bottom:5px solid #94ae62;
+	padding-top:5px;
+	padding-bottom:5px;
+	margin-top:50px;
+	font-size:0.8em;
+	position:fixed;
+	bottom:0px;
+	color:white;
+	text-align:center;
+}
+#footer a {
+	color:#006600;
+}
+#footer a:hover {
+	color:#009900;
+}  
+h4 {
+	border-bottom: 2px solid #728C40;	
+}
+/* CSS done */
+  </style><!--[if IE]>
+
+  <link rel="stylesheet" type="text/css" href="/css/ie.css" />
+
+<![endif]-->
+  <title>ParaNamer Home Page</title>
+</head>
+<body>
+<a name="top" id="top"></a>
+<div id="header">
+<h1><a href="/"><img src="ParaNamer.jpg" alt="ParaNamer"
+ class="spaceLogo"
+ style="border: 0px solid ; width: 439px; height: 81px;"></a></h1>
+<h2>Method Parameter Name Access for versions of Java PRIOR TO Java 7.0<!-- 			<p class="introduction">				
+
+			</p> -->
+&nbsp;<!-- <div id="upage_title">Quick Start</div> -->
+</h2>
+</div>
+<div id="uads">
+<script type="text/javascript"><!--
+		google_ad_client = "pub-3023399591478482";
+		google_ad_width = 468;
+		google_ad_height = 60;
+		google_ad_format = "468x60_as";
+		google_ad_type = "text_image";
+		google_ad_channel = "7321085054"; //unity-top
+		google_color_border = "FFFFFF";
+		google_color_bg = "FFFFFF";
+		google_color_link = "557755";
+		google_color_url = "557755";
+		google_color_text = "333333";
+		//--></script>
+<script type="text/javascript" src="show_ads.js">
+		</script> </div>
+<div id="content">
+<div id="mainbar">
+<div id="umain" class="content">
+<div id="uads"> </div>
+<div class="section_1">
+<h1>What is it ???</h1>
+<p>It is a mechamism for accessing the parameter names of methods of
+Java classes compiled into jars. Normally the javac compiler drops
+parameter names
+making a method like '<span style="font-family: monospace;">doSometing(mypkg.Person
+toMe)</span>' look like '<span style="font-family: monospace;">doSomething(mypkg.Person
+arg0)</span>' to people using Java's reflection to inspect
+methods.&nbsp; To date this has not been very useful to Java
+application developers, but
+with the advent of advanced scripting languages and web action
+frameworks for the JVM it is of increasing importance to be able to
+leverage a method's parameter names. Scripting languages like <a
+ href="http://groovy.codehaus.org/">Groovy</a> &amp; <a
+ href="http://jruby.codehaus.org/">JRuby</a>,  web action frameworks
+like <a href="http://waffle.sourceforge.net/">Waffle</a> and <a href="#" title="http://www.vraptor.org/">VRaptor</a> (that verge
+on the tranparent) and the compelling <a
+ href="http://grails.codehaus.org/">Grails</a>. <br>
+</p>
+<p>ParaNamer allows you to generate and use parameter name info for
+versions of Java prior to Java 7.0 (when Java <span
+ style="font-style: italic;">may</span> get parameter name
+access).
+Generation and use are two quite separate things.<br>
+</p>
+<h1>Quick Start</h1>
+<div class="section_2">
+<h2>Generating Parameter
+Name
+Meta-data with Ant<br>
+</h2>
+<p>Once you have downloaded the ParaNamer jar, in your Ant script do
+the following after &lt;javac/&gt;:</p>
+<div class="code">
+<div class="codeContent">
+<pre class="code-java">&lt;paranamer sourceDirectory="src/java" outputDirectory="target/classes"/&gt;</pre>
+</div>
+</div>
+<p>Then, when you're making your jar, ensure that
+META-INF/ParameterNames.txt does not get omitted<br>
+<br>
+Download ParaNamer from here - <a
+ href="http://dist.codehaus.org/paranamer/">http://dist.codehaus.org/paranamer/</a><br>
+ParaNamer needs a snapshot of qdox-20060801.022451.jar (which is a
+snapshot release) or qdox-1.6.jar (or above) while generating parameter
+info.<br>
+</p>
+<h2>Generating Parameter
+Name
+Meta-data with Maven 2<br>
+</h2>
+For Maven, it is simpler. Just add this to the
+&lt;build&gt;&lt;plugins&gt; section of your pom.xml:<br>
+<br>
+<div class="code">
+<div class="codeContent">
+<pre>&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer&lt;/artifactId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;version&gt;0.9-SNAPSHOT&lt;/version&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;<span
+ style="font-weight: bold;">${basedir}/src/java</span>&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${basedir}/target/classes&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;run&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;<br>&lt;/plugin&gt;</pre>
+</div>
+</div>
+<br>
+The jar file will automatically be made with parameter name meta-data.<br>
+<br>
+</div>
+<div class="section_2">
+<h2>Using
+Paranamer<br>
+</h2>
+<p>If you are leverging the paranamer Jar at runtime, there is a method
+called 'lookup' that does the business:</p>
+<div class="code">
+<div class="codeHeader"><b>MySomethingOrOther.java</b></div>
+<div class="codeContent">
+<pre class="code-java">  <span class="code-object">Method method = new DefaultParanamer().lookupMethod(AClass.class.getClassLoader(), <br>              "foo.BarAction", "addToShoppingCart", "make,model,qty,onClick");</span><br></pre>
+</div>
+</div>
+<p>It returns null if there are is no method that matches what you're
+looking for.&nbsp; Alternatively, there are similar methods&nbsp;
+'checkedLookup' and 'uncheckedLookup' that throw checked or unchecked
+exceptions when the methods can't be found for any reason. They are in
+adjacent classes CheckedParanamer and UncheckedParanamer. Its your
+preference as to
+which to use. <br>
+</p>
+<p>The unit tests for ParaNamer illustrate some of the ways of using
+it, if you're interested, look here -&gt; <a
+ href="http://svn.paranamer.codehaus.org/browse/%7Eraw,r=9999/paranamer/trunk/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java">http://svn.paranamer.codehaus.org/browse/~raw,r=9999/paranamer/trunk/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java</a><br>
+</p>
+<p>ParaNamer does not have any runtime jar dependecies while looking up
+parameter info previously generated that's been zipped into a jar.<br>
+</p>
+</div>
+<div class="section_2">
+<h2>Using Paranamer without
+using Paranamer's jar</h2>
+<p>There are already too many jar's for day to day Java development
+right?&nbsp; Simply copy the <span style="font-style: italic;">lookupMethod</span>
+method to your codebase. All the
+code is public domain. People are free to do what they like to it, copy
+portions into your GPL or Commercial or Apache licensed project and
+retain GPL, Commercial and Apache licenses (or whatever). <br>
+</p>
+<p>A link
+to the source to copy is here - <a
+ href="http://svn.paranamer.codehaus.org/browse/%7Eraw,r=9999/paranamer/trunk/src/java/com/thoughtworks/paranamer/DefaultParanamer.java">http://svn.paranamer.codehaus.org/browse/~raw,r=9999/paranamer/trunk/src/java/com/thoughtworks/paranamer/DefaultParanamer.java</a><br>
+</p>
+<p>You may also want some of the functionalty from the Caching variant
+- <a
+ href="http://svn.paranamer.codehaus.org/browse/%7Eraw,r=9999/paranamer/trunk/src/java/com/thoughtworks/paranamer/CachingParanamer.java">http://svn.paranamer.codehaus.org/browse/~raw,r=9999/paranamer/trunk/src/java/com/thoughtworks/paranamer/CachingParanamer.java</a><br>
+</p>
+</div>
+<h2>Using Paranamer with ASM</h2>
+<p>If generating meta information on parameter names at compile time is not for you, try Paranamer with ASM as a runtime only solution. ASM allows java code to parse class files, and is useful for Paranamer if debug data is still compiled into the classes. <br>
+</p>
+<div class="codeHeader"><b>MySomethingOrOther.java</b></div>
+<div class="codeContent">
+<pre class="code-java">  <span class="code-object">Method method = new AsmParanamer().lookupMethod(AClass.class.getClassLoader(), <br>              "foo.BarAction", "addToShoppingCart", "make,model,qty,onClick");</span><br></pre>
+</div>
+</div>
+
+</div>
+
+<div class="section_2">
+<h1>How Paranamer works</h1>
+<p>It creates a file in META-INF/ called ParameterNames.list&nbsp; -
+Yes its
+going to add to jar size.</p>
+<div class="code">
+<div class="codeContent">
+<pre class="code-java">packagename.ClassName methodName paramName0,paramName1 Class0,Class1<br>packagename.ClassName anotherMethodName paramName0 Class0<br></pre>
+</div>
+</div>
+</div>
+<br>
+<p>Clearly the method's source is analysed and lines are added per
+method to the ParameterNames.list file.&nbsp; "What if a parameter
+name(s) changes? That's a real possibility. Rather than have to worry
+about a hard choice of breaking backwards compatibility versus never
+change your parameter names after shipping your product, there's a
+reasonable way of allowing changes to parameter names going forward,
+and still supporting the previous parameter names.&nbsp; Add a standard
+doclet tag to illustrate the prior name, which ParaNamer also copies
+into ParameterNames.list:<br>
+</p>
+<div class="code">
+<div class="codeContent">
+<pre class="code-java">/**<br> * Blah blah blah blah<br> *<br> * @previousParamNames d,m,y<br> */<br>public void setDateOfBirth(int day, int month, int year) { ... }<br></pre>
+</div>
+</div>
+<p>ParaNamer will go away in the future when Java gets Reflection
+access to Method parameter names. That is likely to look in the worst
+case like:<br>
+</p>
+<div class="code">
+<div class="codeContent">
+<pre class="code-java">Method method = Foo.class.getMethod(....)<br>String[] parameterNames = method.getParameterNames(); // throws ?? or returns null ???<br></pre>
+</div>
+</div>
+<p>Though there could be some convenience finders like for Paranamer:<br>
+</p>
+<div class="code">
+<div class="codeContent">
+<pre class="code-java">Foo.class.getMethodForParameters("methodName", new String[] {"paramName0","paramName1"});<br>Foo.class.getMethodForParameters("methodName", "paramName0","paramName1"); // varargs<br></pre>
+</div>
+</div>
+<br>
+<div class="section_2">
+<h1>TODO</h1>
+1) FromJavaDoc: Some OSS project may not have added the Parameter Name
+stuff to their project. It would be nice to extract such info from
+JavaDocs and re-add it to the jar.&nbsp; (Maybe for Paranamer 1.1)<br>
+2) Show the know-how for people to get Paranamer into their product's jar with <a href="http://tonicsystems.com/products/jarjar/">JarJar</a> or <a href="http://vafer.org/blog/tag/minijar">MiniJar</a> for less dependencies.<br>
+<br />
+<h1>Projects using it</h1>
+<a href="#" title="http://oval.sourceforge.net/">Oval - Object Validation Framework</a>, <a href="#" title="http://waffle.sourceforge.net/">VRaptor - Web Framework</a>, <a href="#" title="http://waffle.sourceforge.net/">Waffle - Web Framework</a><br>
+<h1>Project INFO<br>
+</h1>
+<p>Developers, Maven 2 repository, lists, sites ... all detailed here:<br>
+&nbsp;&nbsp;&nbsp;<a href="http://xircles.codehaus.org/projects/paranamer">http://xircles.codehaus.org/projects/paranamer</a><br>
+Maven generated info and reports here :<br>
+&nbsp;&nbsp;&nbsp;<a href="http://paranamer.codehaus.org/info/project-info.html">http://paranamer.codehaus.org/info/project-info.html</a><br>
+Jar file for 1.0 release candidate 1 here: <br>
+&nbsp;&nbsp;&nbsp;<a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/1.0-RC-1/">http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/1.0-RC-1/</a>
+</p>
+<!--Creative Commons License--><a rel="license"
+ href="http://creativecommons.org/licenses/publicdomain/"><img
+ alt="Creative Commons License" src="norights-a.png" border="0"></a><br>
+This work is licensed under a <a rel="license"
+ href="http://creativecommons.org/licenses/publicdomain/">Creative
+Commons Public Domain License</a>.<!--/Creative Commons License--></div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
