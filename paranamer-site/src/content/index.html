@@ -341,10 +341,8 @@ the following after &lt;javac/&gt;:</p>
 META-INF/ParameterNames.txt does not get omitted<br>
 <br>
 Download ParaNamer from here - <a
- href="http://dist.codehaus.org/paranamer/">http://dist.codehaus.org/paranamer/</a><br>
-ParaNamer needs a snapshot of qdox-20060801.022451.jar (which is a
-snapshot release) or qdox-1.6.jar (or above) while generating parameter
-info.<br>
+ href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/">http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/</a><br>
+ParaNamer requires <a href="http://repo1.maven.org/maven2/qdox/qdox/1.6.1/qdox-1.6.1.jar">qdox.jar</a>  (1.6 or above) while generating parameter info.<br>
 </p>
 <h2>Generating Parameter
 Name
@@ -355,8 +353,10 @@ For Maven, it is simpler. Just add this to the
 <br>
 <div class="code">
 <div class="codeContent">
-<pre>&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer&lt;/artifactId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;version&gt;0.9-SNAPSHOT&lt;/version&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;<span
- style="font-weight: bold;">${basedir}/src/java</span>&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${basedir}/target/classes&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;run&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;<br>&lt;/plugin&gt;</pre>
+<pre>&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;<span
+ style="font-weight: bold;">${basedir}/src/java</span>&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${basedir}/target/classes&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>
+ &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;run&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;<br>&lt;/plugin&gt;</pre>
 </div>
 </div>
 <br>
@@ -385,7 +385,7 @@ which to use. <br>
 </p>
 <p>The unit tests for ParaNamer illustrate some of the ways of using
 it, if you're interested, look here -&gt; <a
- href="http://svn.paranamer.codehaus.org/browse/%7Eraw,r=9999/paranamer/trunk/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java">http://svn.paranamer.codehaus.org/browse/~raw,r=9999/paranamer/trunk/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java</a><br>
+ href="https://svn.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java">https://svn.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java</a><br>
 </p>
 <p>ParaNamer does not have any runtime jar dependecies while looking up
 parameter info previously generated that's been zipped into a jar.<br>
@@ -401,13 +401,11 @@ code is public domain. People are free to do what they like to it, copy
 portions into your GPL or Commercial or Apache licensed project and
 retain GPL, Commercial and Apache licenses (or whatever). <br>
 </p>
-<p>A link
-to the source to copy is here - <a
- href="http://svn.paranamer.codehaus.org/browse/%7Eraw,r=9999/paranamer/trunk/src/java/com/thoughtworks/paranamer/DefaultParanamer.java">http://svn.paranamer.codehaus.org/browse/~raw,r=9999/paranamer/trunk/src/java/com/thoughtworks/paranamer/DefaultParanamer.java</a><br>
+<p>A link to the source to copy is here - 
+<a href="https://svn.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/DefaultParanamer.java">https://svn.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/DefaultParanamer.java</a>
 </p>
-<p>You may also want some of the functionalty from the Caching variant
-- <a
- href="http://svn.paranamer.codehaus.org/browse/%7Eraw,r=9999/paranamer/trunk/src/java/com/thoughtworks/paranamer/CachingParanamer.java">http://svn.paranamer.codehaus.org/browse/~raw,r=9999/paranamer/trunk/src/java/com/thoughtworks/paranamer/CachingParanamer.java</a><br>
+<p>You may also want some of the functionalty from the Caching variant - 
+<a href="https://svn.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/CachingParanamer.java">https://svn.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/CachingParanamer.java</a>
 </p>
 </div>
 <h2>Using Paranamer with ASM</h2>
