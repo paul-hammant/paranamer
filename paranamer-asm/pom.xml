@@ -1,53 +1,55 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.thoughtworks.paranamer</groupId>
-        <artifactId>paranamer-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent> 
-    <artifactId>paranamer-asm</artifactId>   
-    <name>ParaNamer ASM</name>
-    <description>ParaNamer bundled with ASM dependency</description>
-    <dependencies>
-        <dependency>
-            <groupId>${pom.groupId}</groupId>
-            <artifactId>paranamer</artifactId>
-            <version>${pom.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm</artifactId>
-            <optional>false</optional>
-        </dependency>
-    </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>minijar-maven-plugin</artifactId>
-                <groupId>org.codehaus.mojo</groupId>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>ueberjar</goal>
-                        </goals>
-                        <configuration>
-                            <stripUnusedClasses>
-                                false
-                            </stripUnusedClasses>
-                            <excludes>
-                                <exclude>ant:ant</exclude>
-                                <exclude>org.apache.maven:maven-plugin-api</exclude>
-                                <exclude>qdox:qdox</exclude>
-                            </excludes>
-                            <dependenciesToHide>
-                                <dependencyHide>asm:asm</dependencyHide>
-                            </dependenciesToHide>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-
-    </build>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.thoughtworks.paranamer</groupId>
+    <artifactId>paranamer-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <artifactId>paranamer-asm</artifactId>
+  <name>ParaNamer ASM</name>
+  <description>ParaNamer bundled with ASM dependency</description>
+  <dependencies>
+    <dependency>
+      <groupId>${pom.groupId}</groupId>
+      <artifactId>paranamer</artifactId>
+      <version>${pom.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <optional>false</optional>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>shade-maven-plugin</artifactId>
+        <version>1.0-alpha-5-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>ant:ant</exclude>
+                  <exclude>org.apache.maven:maven-plugin-api</exclude>
+                  <exclude>qdox:qdox</exclude>
+                </excludes>
+              </artifactSet>
+              <relocations>
+                <relocation>
+                  <pattern>org.objectweb.asm</pattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
