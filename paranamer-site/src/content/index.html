@@ -332,6 +332,7 @@ Meta-data with Ant<br>
 </h2>
 <p>You need to download: <ul>
 	<li><a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/">latest paranamer jar</a></li>
+	<li><a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer-generator/">latest paranamer-generator jar</a></li>
 	<li><a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer-ant/">latest paranamer-ant jar</a></li>
 	<li><a href="http://repo1.maven.org/maven2/qdox/qdox/">latest qdox jar</a>  (1.6 or above)</li>
 </ul> 
@@ -358,9 +359,9 @@ For Maven, it is simpler. Just add this to the
 <br>
 <div class="code">
 <div class="codeContent">
-<pre>&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>
+<pre>&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;<span
- style="font-weight: bold;">${basedir}/src/java</span>&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${basedir}/target/classes&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>
+ style="font-weight: bold;">${basedir}/src/java</span>&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${basedir}/target/classes&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;run&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;<br>&lt;/plugin&gt;</pre>
 </div>
 </div>
@@ -481,10 +482,12 @@ JavaDocs and re-add it to the jar.&nbsp; (Maybe for Paranamer 1.1)<br>
 </h1>
 <p>Developers, Maven 2 repository, lists, sites ... all detailed here:<br>
 &nbsp;&nbsp;&nbsp;<a href="http://xircles.codehaus.org/projects/paranamer">http://xircles.codehaus.org/projects/paranamer</a><br>
-Maven generated info and reports here :<br>
+Maven generated info and reports here:<br>
 &nbsp;&nbsp;&nbsp;<a href="http://paranamer.codehaus.org/info/project-info.html">http://paranamer.codehaus.org/info/project-info.html</a><br>
-Jar file for 1.0 release candidate 1 here: <br>
-&nbsp;&nbsp;&nbsp;<a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/1.0-RC-1/">http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/1.0-RC-1/</a>
+Released Jar files here: <br>
+&nbsp;&nbsp;&nbsp;<a href="http://repository.codehaus.org/com/thoughtworks/paranamer/">http://repository.codehaus.org/com/thoughtworks/paranamer/</a> <br>
+Snapshot Jar files here: <br>
+&nbsp;&nbsp;&nbsp;<a href="http://snapshots.repository.codehaus.org/com/thoughtworks/paranamer/">http://snapshots.repository.codehaus.org/com/thoughtworks/paranamer/</a>
 </p>
 <!--Creative Commons License--><a rel="license"
  href="http://creativecommons.org/licenses/publicdomain/"><img
