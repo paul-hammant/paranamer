@@ -3,10 +3,10 @@
     <parent>
         <groupId>com.thoughtworks.paranamer</groupId>
         <artifactId>paranamer-parent</artifactId>
-        <version>1.0-RC-2</version>
+        <version>1.0-RC-3-SNAPSHOT</version>
     </parent> 
     <artifactId>paranamer</artifactId>
-  <version> 1.0-RC-2</version>   
+  <version> 1.0-RC-3-SNAPSHOT</version>   
     <name>ParaNamer</name>
     <dependencies>
         <dependency>

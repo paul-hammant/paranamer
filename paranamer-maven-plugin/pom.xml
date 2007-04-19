@@ -3,10 +3,10 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>1.0-RC-2</version>
+    <version>1.0-RC-3-SNAPSHOT</version>
   </parent>
   <artifactId>paranamer-maven-plugin</artifactId>
-  <version> 1.0-RC-2</version>
+  <version> 1.0-RC-3-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
   <name>ParaNamer Maven plugin</name>
   <description>ParaNamer Maven plugin</description>
