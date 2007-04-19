@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+
 public abstract class AbstractParanamerTestCase extends TestCase {
     protected Paranamer paranamer;
 
@@ -70,30 +71,28 @@ public abstract class AbstractParanamerTestCase extends TestCase {
             throws IOException, NoSuchMethodException {
         Method method = paranamer.lookupMethod(
                 Paranamer.class.getClassLoader(),
-                "com.thoughtworks.paranamer.ParanamerGeneratorMojo", "execute", "");
-        assertEquals(ParanamerGeneratorMojo.class.getMethod("execute", new Class[0]),
+                "com.thoughtworks.paranamer.MethodCollector", "getResult", "");
+        assertEquals(MethodCollector.class.getMethod("getResult", new Class[0]),
                 method);
     }
 
     public void testMethodWithNoArgsCanBeRetrievedAndShowNoParameterNames()
             throws IOException, NoSuchMethodException {
         String[] choices = paranamer.lookupParameterNames(Paranamer.class
-                .getClassLoader(), "com.thoughtworks.paranamer.ParanamerGeneratorMojo",
-                "execute");
+                .getClassLoader(), "com.thoughtworks.paranamer.MethodCollector",
+                "getResult");
         assertEquals(0, choices.length);
     }
 
     public void testLookupParameterNamesForMethod() throws Exception {
         Method method = QdoxParanamerGenerator.class.getMethod("write", new Class[] {String.class, String.class});
         String parameters = paranamer.lookupParameterNamesForMethod(method);
-
         assertEquals("outputPath,content", parameters);
     }
 
     public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
         Method method = DefaultParanamer.class.getMethod("toString", new Class[0]);
         String parameters = paranamer.lookupParameterNamesForMethod(method);
-
         assertEquals("", parameters);
     }
 

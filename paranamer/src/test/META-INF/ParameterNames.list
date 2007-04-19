@@ -22,10 +22,6 @@ com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator
 com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator paranamerResource java.lang.String 
 com.thoughtworks.paranamer.QdoxParanamerGenerator generate sourcePath java.lang.String
 com.thoughtworks.paranamer.QdoxParanamerGenerator write outputPath,content java.lang.String,java.lang.String
-com.thoughtworks.paranamer.ParanamerGeneratorMojo execute 
-com.thoughtworks.paranamer.ParanamerGeneratorTask execute 
-com.thoughtworks.paranamer.ParanamerGeneratorTask setOutputDirectory outputDirectory java.lang.String
-com.thoughtworks.paranamer.ParanamerGeneratorTask setSourceDirectory sourceDirectory java.lang.String
 com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String
 com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer
 com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer delegate com.thoughtworks.paranamer.Paranamer

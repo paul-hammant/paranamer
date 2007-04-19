@@ -1,8 +1,11 @@
-package com.thoughtworks.paranamer;
+package com.thoughtworks.paranamer.mojo;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+
+import com.thoughtworks.paranamer.ParanamerGenerator;
+import com.thoughtworks.paranamer.QdoxParanamerGenerator;
 
 import java.io.IOException;
 

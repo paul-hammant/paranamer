@@ -66,10 +66,6 @@ public class QdoxParanamerGeneratorTestCase extends TestCase {
                     "com.thoughtworks.paranamer.MethodCollector visitTypeInsn arg0,arg1 int,java.lang.String \n" +
                     "com.thoughtworks.paranamer.MethodCollector visitVarInsn arg0,arg1 int,int \n" +
                     "com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String \n" +
-                    "com.thoughtworks.paranamer.ParanamerGeneratorMojo execute \n" +
-                    "com.thoughtworks.paranamer.ParanamerGeneratorTask execute \n" +
-                    "com.thoughtworks.paranamer.ParanamerGeneratorTask setOutputDirectory outputDirectory java.lang.String \n" +
-                    "com.thoughtworks.paranamer.ParanamerGeneratorTask setSourceDirectory sourceDirectory java.lang.String \n" +
                     "com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String \n" +
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator \n" +
                     "com.thoughtworks.paranamer.QdoxParanamerGenerator QdoxParanamerGenerator paranamerResource java.lang.String \n" +

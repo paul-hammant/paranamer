@@ -16,13 +16,14 @@
       <version>${pom.version}</version>
     </dependency>
     <dependency>
-      <groupId>qdox</groupId>
-      <artifactId>qdox</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
       <groupId>ant</groupId>
       <artifactId>ant</artifactId>
+      <version>1.6.5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>qdox</groupId>
+      <artifactId>qdox</artifactId>
       <scope>runtime</scope>
     </dependency>
   </dependencies>
