@@ -1,5 +1,6 @@
-package com.thoughtworks.paranamer;
+package com.thoughtworks.paranamer.generator;
 
+import com.thoughtworks.paranamer.ParanamerConstants;
 import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaClass;

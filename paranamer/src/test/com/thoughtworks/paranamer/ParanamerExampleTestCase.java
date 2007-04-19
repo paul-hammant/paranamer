@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-public class ParanamerExampleTestCase extends AbstractQDoxParanamerTestCase {
+import junit.framework.TestCase;
+
+public class ParanamerExampleTestCase extends TestCase {
 
     // An example of a test that looks something up by it's parameter names
     public void testMethodCanBeRetrievedByParameterNames() throws IOException, NoSuchMethodException {

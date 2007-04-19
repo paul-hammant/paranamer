@@ -9,10 +9,6 @@
     <name>ParaNamer</name>
     <dependencies>
         <dependency>
-            <groupId>qdox</groupId>
-            <artifactId>qdox</artifactId>
-        </dependency>
-        <dependency>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
         </dependency>

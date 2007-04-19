@@ -1,4 +1,4 @@
-package com.thoughtworks.paranamer;
+package com.thoughtworks.paranamer.generator;
 
 import junit.framework.TestCase;
 

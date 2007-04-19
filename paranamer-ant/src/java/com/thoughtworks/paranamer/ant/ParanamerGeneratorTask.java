@@ -3,8 +3,8 @@ package com.thoughtworks.paranamer.ant;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.BuildException;
 
-import com.thoughtworks.paranamer.ParanamerGenerator;
-import com.thoughtworks.paranamer.QdoxParanamerGenerator;
+import com.thoughtworks.paranamer.generator.ParanamerGenerator;
+import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
 
 import java.io.IOException;
 

@@ -1,10 +1,12 @@
 package com.thoughtworks.paranamer;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
-public class CheckedParanamerTestCase extends AbstractQDoxParanamerTestCase {
+import junit.framework.TestCase;
+
+public class CheckedParanamerTestCase extends TestCase {
 
     public void testCheckedMethodRetrievalFailure() throws IOException {
         try {

@@ -4,8 +4,8 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 
-import com.thoughtworks.paranamer.ParanamerGenerator;
-import com.thoughtworks.paranamer.QdoxParanamerGenerator;
+import com.thoughtworks.paranamer.generator.ParanamerGenerator;
+import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
 
 import java.io.IOException;
 

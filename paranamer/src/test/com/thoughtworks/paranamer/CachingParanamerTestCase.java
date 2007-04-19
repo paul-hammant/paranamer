@@ -1,11 +1,10 @@
 package com.thoughtworks.paranamer;
 
-import junit.framework.TestCase;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
-import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
+import junit.framework.TestCase;
 
 public class CachingParanamerTestCase extends TestCase {
     private Method method;
@@ -100,10 +99,10 @@ public class CachingParanamerTestCase extends TestCase {
     }
 
     public void testCanChainToDefaultImpl() throws IOException {
-        //setup
-        ParanamerGenerator generator = new QdoxParanamerGenerator();
-        String parameterSignatures = generator.generate(new File(".").getAbsolutePath() + "/src/java");
-        generator.write(new File(".").getAbsolutePath() + "/target/test-classes/", parameterSignatures);
+//        //setup
+//        ParanamerGenerator generator = new QdoxParanamerGenerator();
+//        String parameterSignatures = generator.generate(new File(".").getAbsolutePath() + "/src/java");
+//        generator.write(new File(".").getAbsolutePath() + "/target/test-classes/", parameterSignatures);
 
         Paranamer cachingParanamer = new CachingParanamer();
         Method m = cachingParanamer.lookupMethod(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookupMethod", "classLoader,className,methodName,paramNames");

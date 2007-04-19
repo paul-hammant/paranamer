@@ -9,6 +9,7 @@
 
     <modules>
         <module>paranamer</module>
+        <module>paranamer-generator</module>
         <module>paranamer-asm</module>
         <module>paranamer-ant</module>
         <module>paranamer-maven-plugin</module>
@@ -17,12 +18,6 @@
     <dependencyManagement>
         <dependencies>
             <!-- Optional dependencies -->
-            <dependency>
-                <groupId>qdox</groupId>
-                <artifactId>qdox</artifactId>
-                <version>1.6.1</version>
-                <scope>provided</scope>                
-            </dependency>
             <dependency>
                 <groupId>asm</groupId>
                 <artifactId>asm</artifactId>

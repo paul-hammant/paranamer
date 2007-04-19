@@ -38,16 +38,16 @@ public abstract class AbstractParanamerTestCase extends TestCase {
 
     public void testLookupParanamerCanIndicateAbleToGetParameterNames()
             throws IOException {
-        int x = paranamer.isParameterNameDataAvailable(QdoxParanamerGenerator.class.getClassLoader(),
-                "com.thoughtworks.paranamer.QdoxParanamerGenerator", "generate");
+        int x = paranamer.isParameterNameDataAvailable(DefaultParanamer.class.getClassLoader(),
+                "com.thoughtworks.paranamer.DefaultParanamer", "lookupParameterNames");
         assertEquals(Paranamer.PARAMETER_NAME_DATA_FOUND, x);
 
     }
 
     public void testLookupParanamerCanIndicateThatUnableToGetParameterNamesForRealClassButBogusMethod()
             throws IOException {
-        int x = paranamer.isParameterNameDataAvailable(QdoxParanamerGenerator.class.getClassLoader(),
-                "com.thoughtworks.paranamer.QdoxParanamerGenerator", "fooo");
+        int x = paranamer.isParameterNameDataAvailable(DefaultParanamer.class.getClassLoader(),
+                "com.thoughtworks.paranamer.DefaultParanamer", "fooo");
         assertEquals(Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER, x);
 
     }
@@ -85,9 +85,9 @@ public abstract class AbstractParanamerTestCase extends TestCase {
     }
 
     public void testLookupParameterNamesForMethod() throws Exception {
-        Method method = QdoxParanamerGenerator.class.getMethod("write", new Class[] {String.class, String.class});
+        Method method = DefaultParanamer.class.getMethod("lookupParameterNames", new Class[] {ClassLoader.class, String.class, String.class});
         String parameters = paranamer.lookupParameterNamesForMethod(method);
-        assertEquals("outputPath,content", parameters);
+        assertEquals("classLoader,className,methodName", parameters);
     }
 
     public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
