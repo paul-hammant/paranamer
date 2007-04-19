@@ -10,6 +10,8 @@
     <modules>
         <module>paranamer</module>
         <module>paranamer-asm</module>
+        <module>paranamer-ant</module>
+        <module>paranamer-maven-plugin</module>
     </modules>
 
     <dependencyManagement>
