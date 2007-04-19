@@ -330,19 +330,24 @@ Generation and use are two quite separate things.<br>
 Name
 Meta-data with Ant<br>
 </h2>
-<p>Once you have downloaded the ParaNamer jar, in your Ant script do
-the following after &lt;javac/&gt;:</p>
+<p>You need to download: <ul>
+	<li><a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/">latest paranamer jar</a></li>
+	<li><a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer-ant/">latest paranamer-ant jar</a></li>
+	<li><a href="http://repo1.maven.org/maven2/qdox/qdox/">latest qdox jar</a>  (1.6 or above)</li>
+</ul> 
+and declare in your Ant script the following after &lt;javac/&gt; (remember to add to the taskdef classpath all the above jars):<br>
 <div class="code">
 <div class="codeContent">
-<pre class="code-java">&lt;paranamer sourceDirectory="src/java" outputDirectory="target/classes"/&gt;</pre>
+<pre class="code-java">
+&lt;taskdef name="paranamer" 
+       classname="com.thoughtworks.paranamer.ant.ParanamerGeneratorTask"/&gt;
+&lt;paranamer sourceDirectory="src/java" outputDirectory="target/classes"/&gt;
+</pre>
 </div>
 </div>
 <p>Then, when you're making your jar, ensure that
 META-INF/ParameterNames.txt does not get omitted<br>
 <br>
-Download ParaNamer from here - <a
- href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/">http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/</a><br>
-ParaNamer requires <a href="http://repo1.maven.org/maven2/qdox/qdox/1.6.1/qdox-1.6.1.jar">qdox.jar</a>  (1.6 or above) while generating parameter info.<br>
 </p>
 <h2>Generating Parameter
 Name
@@ -353,7 +358,7 @@ For Maven, it is simpler. Just add this to the
 <br>
 <div class="code">
 <div class="codeContent">
-<pre>&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>
+<pre>&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>
 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;<span
  style="font-weight: bold;">${basedir}/src/java</span>&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${basedir}/target/classes&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br>
  &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;run&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;<br>&lt;/plugin&gt;</pre>
