@@ -11,7 +11,7 @@ public class UncheckedParanamer {
     }
 
     public UncheckedParanamer() {
-        this.delegate = new DefaultParanamer();
+        this(new DefaultParanamer());
     }
 
     public Method uncheckedMethodLookup(ClassLoader classLoader, String className, String methodName, String paramNames) {
