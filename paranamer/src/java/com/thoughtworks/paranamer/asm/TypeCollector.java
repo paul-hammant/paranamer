@@ -1,4 +1,4 @@
-package com.thoughtworks.paranamer;
+package com.thoughtworks.paranamer.asm;
 
 import java.lang.reflect.Modifier;
 
@@ -14,7 +14,6 @@ import org.objectweb.asm.Type;
  * collector.
  * 
  * @author Guilherme Silveira
- * @since upcoming
  */
 public class TypeCollector implements ClassVisitor {
 

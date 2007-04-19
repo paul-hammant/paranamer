@@ -1,4 +1,4 @@
-package com.thoughtworks.paranamer;
+package com.thoughtworks.paranamer.asm;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -8,7 +8,6 @@ import org.objectweb.asm.MethodVisitor;
 /**
  * Objects of this class collects information from a specific method.  
  * @author Guilherme Silveira
- * @since upcoming
  */
 public class MethodCollector implements MethodVisitor {
 

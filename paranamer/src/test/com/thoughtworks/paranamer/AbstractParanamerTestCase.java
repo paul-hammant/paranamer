@@ -1,21 +1,25 @@
 package com.thoughtworks.paranamer;
 
-import junit.framework.TestCase;
-
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+import junit.framework.TestCase;
 
+/**
+ * 
+ * @author Paul Hammant
+ * @author Mauro Talevi
+ */
 public abstract class AbstractParanamerTestCase extends TestCase {
-    protected Paranamer paranamer;
 
+    protected Paranamer paranamer;
 
     public void testLookupMethodReturnsNullIfMethodNotFound()
             throws IOException {
         Object method = paranamer.lookupMethod(
                 Paranamer.class.getClassLoader(),
-                "com.thoughtworks.paranamer.QdoxParanamerGenerator",
-                "generate", "hello,goodbye");
+                "com.thoughtworks.paranamer.DefaultParanamer",
+                "lookupParameterNames", "hello,goodbye");
         assertNull(method);
     }
 
@@ -62,8 +66,8 @@ public abstract class AbstractParanamerTestCase extends TestCase {
     public void testLookupFailsIfResourceMissing() throws IOException {
         Paranamer paranamer = new DefaultParanamer("/inexistent/resource");
         Method m = paranamer.lookupMethod(Paranamer.class.getClassLoader(),
-                "com.thoughtworks.paranamer.QdoxParanamerGenerator",
-                "generate", "sourcePath,rootPackage");
+                "com.thoughtworks.paranamer.DefaultParanamer",
+                "lookupMethod", "classLoader,c,m,p");
         assertTrue("null expected", m == null);
     }
 
@@ -71,16 +75,16 @@ public abstract class AbstractParanamerTestCase extends TestCase {
             throws IOException, NoSuchMethodException {
         Method method = paranamer.lookupMethod(
                 Paranamer.class.getClassLoader(),
-                "com.thoughtworks.paranamer.MethodCollector", "getResult", "");
-        assertEquals(MethodCollector.class.getMethod("getResult", new Class[0]),
+                "com.thoughtworks.paranamer.DefaultParanamer", "toString", "");
+        assertEquals(DefaultParanamer.class.getMethod("toString", new Class[0]),
                 method);
     }
 
     public void testMethodWithNoArgsCanBeRetrievedAndShowNoParameterNames()
             throws IOException, NoSuchMethodException {
         String[] choices = paranamer.lookupParameterNames(Paranamer.class
-                .getClassLoader(), "com.thoughtworks.paranamer.MethodCollector",
-                "getResult");
+                .getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer",
+                "toString");
         assertEquals(0, choices.length);
     }
 

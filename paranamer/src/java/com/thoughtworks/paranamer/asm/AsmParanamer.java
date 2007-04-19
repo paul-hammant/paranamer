@@ -1,4 +1,4 @@
-package com.thoughtworks.paranamer;
+package com.thoughtworks.paranamer.asm;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,12 +9,13 @@ import java.util.List;
 
 import org.objectweb.asm.ClassReader;
 
+import com.thoughtworks.paranamer.Paranamer;
+
 /**
- * An asm implementation of paranamer. It relies on debug information compiled
+ * An ASM-based implementation of Paranamer. It relies on debug information compiled
  * with the "-g" javac option to retrieve parameter names.
  * 
  * @author Guilherme Silveira
- * @since upcoming
  */
 public class AsmParanamer implements Paranamer {
 
