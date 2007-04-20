@@ -1,0 +1,26 @@
+<assembly>
+	<id>bin</id>
+	<formats>
+		<format>zip</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<directory>..</directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>LICENSE.txt</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>src/content</directory>
+			<outputDirectory>docs</outputDirectory>
+		</fileSet>
+	</fileSets>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/lib</outputDirectory>
+			<unpack>false</unpack>
+			<scope>runtime</scope>
+		</dependencySet>
+	</dependencySets>
+</assembly>

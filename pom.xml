@@ -13,6 +13,7 @@
         <module>paranamer-asm</module>
         <module>paranamer-ant</module>
         <module>paranamer-maven-plugin</module>
+        <module>paranamer-distribution</module>
     </modules>
 
     <dependencyManagement>
