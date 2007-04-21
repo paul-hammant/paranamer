@@ -5,11 +5,18 @@
     <output url="file://$MODULE_DIR$/target/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/it/src/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/src/it/target" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
+      <sourceFolder url="file://$MODULE_DIR$/paranamer-ant/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/paranamer-generator/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/paranamer-generator/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/paranamer-maven-plugin/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/paranamer/src/it" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/paranamer/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/paranamer/src/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/paranamer-ant/target" />
+      <excludeFolder url="file://$MODULE_DIR$/paranamer-asm/target" />
+      <excludeFolder url="file://$MODULE_DIR$/paranamer-generator/target" />
+      <excludeFolder url="file://$MODULE_DIR$/paranamer-maven-plugin/target" />
+      <excludeFolder url="file://$MODULE_DIR$/paranamer/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
