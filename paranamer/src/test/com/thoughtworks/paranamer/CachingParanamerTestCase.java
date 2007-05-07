@@ -34,6 +34,10 @@ public class CachingParanamerTestCase extends TestCase {
                 return new String[]{"foo","bar"};
             }
 
+            public String[] lookupParameterNames(Constructor constructor) {
+                return new String[0];
+            }
+
             public int areParameterNamesAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
                 return -1;  
             }
@@ -107,12 +111,12 @@ public class CachingParanamerTestCase extends TestCase {
 
      public void testLookupOfParameterNamesForMethod() {
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
-        String[] paramNames = cachingParanamer.lookupParameterNames(null);
+        String[] paramNames = cachingParanamer.lookupParameterNames((Method)null);
         assertEquals(Arrays.asList(new String[]{"foo","bar"}), Arrays.asList(paramNames));
         assertEquals(1, count);
 
         // cache hit
-        paramNames = cachingParanamer.lookupParameterNames(null);
+        paramNames = cachingParanamer.lookupParameterNames((Method)null);
         assertEquals(Arrays.asList(new String[]{"foo","bar"}), Arrays.asList(paramNames));
         assertEquals(1, count);
     }

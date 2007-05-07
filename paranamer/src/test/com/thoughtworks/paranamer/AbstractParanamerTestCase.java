@@ -3,6 +3,7 @@ package com.thoughtworks.paranamer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 
 import junit.framework.TestCase;
 
@@ -87,6 +88,12 @@ public abstract class AbstractParanamerTestCase extends TestCase {
         Method method = DefaultParanamer.class.getMethod("toString", new Class[0]);
         String[] names = paranamer.lookupParameterNames(method);
         assertThatParameterNamesMatch("", names);
+    }
+
+    public void testLookupParameterNamesForConstructorWithStringArg() throws Exception {
+        Constructor ctor = DefaultParanamer.class.getConstructor(new Class[] {String.class});
+        String[] names = paranamer.lookupParameterNames(ctor);
+        assertThatParameterNamesMatch("paranamerResource", names);
     }
 
     protected void assertThatParameterNamesMatch(String csv, String[] names) {

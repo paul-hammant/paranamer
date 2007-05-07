@@ -88,6 +88,19 @@ public class AsmParanamer implements Paranamer {
 		}
 	}
 
+    public String[] lookupParameterNames(Constructor constructor) {
+        InputStream content = getClassAsStream(constructor.getDeclaringClass());
+		try {
+			ClassReader reader = new ClassReader(content);
+			TypeCollector visitor = new TypeCollector("<init>", constructor
+					.getParameterTypes());
+			reader.accept(visitor, 0);
+			return visitor.getParameterNamesForMethod();
+		} catch (IOException e) {
+			return null;
+		}
+    }
+
     public String[] lookupParameterNamesForConstructor(Constructor ctor) {
         InputStream content = getClassAsStream(ctor.getDeclaringClass());
         try {

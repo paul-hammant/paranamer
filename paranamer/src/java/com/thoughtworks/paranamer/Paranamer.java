@@ -58,6 +58,15 @@ public interface Paranamer {
     public String[] lookupParameterNames(Method method);
 
     /**
+     * Lookup the parameter names of a given constructor
+     *
+     * @param constructor the Constructor for which the parameter names are looked up
+     * @return A list of the parameter names
+     */
+    public String[] lookupParameterNames(Constructor constructor);
+
+
+    /**
      * Determine if the parameter names are available
      *
      * @param classLoader the ClassLoader used for the lookup

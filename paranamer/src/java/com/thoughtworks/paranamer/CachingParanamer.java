@@ -62,6 +62,17 @@ public class CachingParanamer implements Paranamer {
         return names;
     }
 
+    public String[] lookupParameterNames(Constructor constructor) {
+        if(methodCache.containsKey(constructor)) {
+            return (String[]) methodCache.get(constructor);
+        }
+
+        String[] names = delegate.lookupParameterNames(constructor);
+        methodCache.put(constructor, names);
+
+        return names;
+    }
+
     public int areParameterNamesAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
         return delegate.areParameterNamesAvailable(classLoader, className, ctorOrMethodName);
     }

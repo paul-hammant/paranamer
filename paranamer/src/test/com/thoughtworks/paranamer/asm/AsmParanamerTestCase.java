@@ -1,6 +1,7 @@
 package com.thoughtworks.paranamer.asm;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 
 import com.thoughtworks.paranamer.AbstractParanamerTestCase;
 
@@ -20,6 +21,14 @@ public class AsmParanamerTestCase extends AbstractParanamerTestCase {
         String[] names = asm.lookupParameterNames(method);
         assertThatParameterNamesMatch("s", names);
     }
+
+    public void testRetrievesParameterNamesFromAConstructor() throws SecurityException, NoSuchMethodException {
+        AsmParanamer asm = new AsmParanamer();
+        Constructor ctor = SpecificMethodSearchable.class.getConstructor(new Class[] { String.class });
+        String[] names = asm.lookupParameterNames(ctor);
+        assertThatParameterNamesMatch("foo", names);
+    }
+
 
     public void testRetrievesParameterNamesFromAMethodWithoutParameters() throws SecurityException,
             NoSuchMethodException {
@@ -67,6 +76,14 @@ public class AsmParanamerTestCase extends AbstractParanamerTestCase {
     }
 
     public static class SpecificMethodSearchable {
+
+
+        public SpecificMethodSearchable(String foo) {
+
+        }
+
+        public SpecificMethodSearchable() {
+        }
 
         public void singleString(String s) {
             int k = 3;

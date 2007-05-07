@@ -133,25 +133,34 @@ public class DefaultParanamer implements Paranamer {
         if (method.getParameterTypes().length == 0) { // no arguments ... return empty string
             return EMPTY_NAMES;
         }
-
         Class declaringClass = method.getDeclaringClass();
         String parameterTypes = toNamesCSV(method.getParameterTypes());
         String prefix = declaringClass.getName() + SPACE + method.getName();
+        return getNames(declaringClass, parameterTypes, prefix);
+    }
 
+    public String[] lookupParameterNames(Constructor constructor) {
+        if (constructor.getParameterTypes().length == 0) { // no arguments ... return empty string
+            return EMPTY_NAMES;
+        }
+        Class declaringClass = constructor.getDeclaringClass();
+        String parameterTypes = toNamesCSV(constructor.getParameterTypes());
+        String prefix = declaringClass.getName() + SPACE + constructor.getName().substring(constructor.getName().lastIndexOf(".")+1);
+        return getNames(declaringClass, parameterTypes, prefix);
+    }
+
+    private String[] getNames(Class declaringClass, String parameterTypes, String prefix) {
         List results = filterMappingByPrefix(prefix, getParameterListResource(declaringClass.getClassLoader()));
-
         for (int i = 0; i < results.size(); i++) {
             String definition = (String) results.get(i);
-
             if (definition.endsWith(parameterTypes)) {
                 String csvNames = definition.substring(prefix.length() + 1, definition.lastIndexOf(parameterTypes)).trim();
                 return csvNames.split(COMMA);
             }
         }
-
         return null;
     }
-    
+
     public int areParameterNamesAvailable(ClassLoader classLoader, String className, String constructorOrMethodName) {
         Reader reader = getParameterListResource(classLoader);
         
