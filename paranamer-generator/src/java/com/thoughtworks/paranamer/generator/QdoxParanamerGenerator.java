@@ -14,18 +14,20 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 
 /**
- * Qdox-based implementation of ParanamerGenerator which
- * parses Java source files.
+ * Qdox-based implementation of ParanamerGenerator which parses Java source files to generate
+ * parameter names lists.
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
  */
 public class QdoxParanamerGenerator implements ParanamerGenerator {
+    
+    private static final String DOT = ".";
     private static final String SPACE  = " ";
     private static final String NEWLINE = "\n";
     private static final String COMMA = ",";
     private static final String EMPTY = "";
-    private String paranamerResource;
+    private final String paranamerResource;
 
     public QdoxParanamerGenerator() {
         this(ParanamerConstants.DEFAULT_PARANAMER_RESOURCE);
@@ -36,25 +38,35 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     }
 
     public String generate(String sourcePath) {
-        StringBuffer buffer = new StringBuffer();
+        JavaClass[] classes = getClassesSortedByName(sourcePath);
+        return format(classes);
+    }
+
+    private JavaClass[] getClassesSortedByName(String sourcePath) {
         JavaDocBuilder builder = new JavaDocBuilder();
         builder.addSourceTree(new File(sourcePath));
         JavaClass[] classes = builder.getClasses();
         Arrays.sort(classes);
+        return classes;
+    }
+
+    private String format(JavaClass[] classes) {
+        StringBuffer sb = new StringBuffer();
         for (int i = 0; i < classes.length; i++) {
             JavaClass javaClass = classes[i];
             if (!javaClass.isInterface()) {
-                buffer.append(addMethods(javaClass.getMethods(), javaClass.getPackage() + "." + javaClass.getName()));
+                String className = javaClass.getPackage() + DOT + javaClass.getName();
+                sb.append(addMethods(javaClass.getMethods(), className));
             }
         }
-        return buffer.toString();
+        return sb.toString();
     }
 
     private String addMethods(JavaMethod[] methods, String className) {
-        StringBuffer buffer = new StringBuffer();
         Arrays.sort(methods);
-        for (int j = 0; j < methods.length; j++) {
-            JavaMethod javaMethod = methods[j];
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < methods.length; i++) {
+            JavaMethod javaMethod = methods[i];
             if (Arrays.asList(javaMethod.getModifiers()).contains("public")) {
                 buffer.append(addPublicMethod(javaMethod, className));
             }
@@ -63,57 +75,56 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     }
 
     private String addPublicMethod(JavaMethod method, String className) {
-        StringBuffer buffer = new StringBuffer();
-        JavaParameter[] parms = method.getParameters();
+        JavaParameter[] parameters = method.getParameters();
         DocletTag[] alsoKnownAs = method.getTagsByName("previousParamNames");
-        for (int k = 0; k < alsoKnownAs.length; k++) {
-            String value = alsoKnownAs[k].getValue();
-            buffer.append(className);
-            buffer.append(SPACE);
-            buffer.append((method.getName() + SPACE + value + SPACE + getTypes(parms)).trim());
-            buffer.append(NEWLINE);
-        }
-        String paramNames = getParamNames(parms);
-        String types = getTypes(parms);
-        buffer.append(className);
-        buffer.append(SPACE);
-        buffer.append(method.getName());
-        if (!paramNames.equals(EMPTY)) {
-            buffer.append(SPACE);
-        }
-        buffer.append(paramNames);
-        if (!types.equals(EMPTY)) {
-            buffer.append(SPACE);
-        }
-        buffer.append(types);
-        buffer.append(SPACE);
-        buffer.append(NEWLINE);
-        return buffer.toString();
+        return format(method, className, parameters, alsoKnownAs);
     }
 
-    private String getParamNames(JavaParameter[] parms) {
-        StringBuffer buffer = new StringBuffer();
-        for (int k = 0; k < parms.length; k++) {
-            buffer.append(parms[k].getName());
-            buffer.append(comma(k, parms.length));
+    private String format(JavaMethod method, String className, JavaParameter[] parameters, DocletTag[] alsoKnownAs) {
+        StringBuffer sb = new StringBuffer();
+        String methodName = method.getName();
+        String parameterTypes = getParameterTypes(parameters);
+        for (int i = 0; i < alsoKnownAs.length; i++) {
+            sb.append(formatLine(className, methodName, alsoKnownAs[i].getValue(), parameterTypes));
         }
-        return buffer.toString();
+        sb.append(formatLine(className, methodName, getParameterNames(parameters), parameterTypes));
+        return sb.toString();
+    }
+    
+    private String formatLine(String className, String methodName, String paramNames, String paramTypes){
+        StringBuffer sb = new StringBuffer();
+        sb.append(className).append(SPACE);
+        sb.append(methodName).append(SPACE);
+        if ( paramNames.length() > 0 ) {
+            sb.append(paramNames.trim()).append(SPACE);
+            sb.append(paramTypes.trim()).append(SPACE);
+        }
+        sb.append(NEWLINE);
+        return sb.toString();
     }
 
-    private String getTypes(JavaParameter[] parms) {
-        StringBuffer buffer = new StringBuffer();
-        for (int k = 0; k < parms.length; k++) {
-            buffer.append(parms[k].getType());
-            buffer.append(comma(k, parms.length));
+    private String getParameterNames(JavaParameter[] parameters) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < parameters.length; i++) {
+            sb.append(parameters[i].getName());
+            sb.append(comma(i, parameters.length));
         }
-        return buffer.toString();
+        return sb.toString();
+    }
+
+    private String getParameterTypes(JavaParameter[] parameters) {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < parameters.length; i++) {
+            sb.append(parameters[i].getType());
+            sb.append(comma(i, parameters.length));
+        }
+        return sb.toString();
     }
 
     public void write(String outputPath, String content) throws IOException {
         String path = outputPath + File.separator + paranamerResource;
         ensureParentDirectoriesExist(path);
-        FileWriter fileWriter = new FileWriter(path);
-        PrintWriter pw = new PrintWriter(fileWriter);
+        PrintWriter pw = new PrintWriter(new FileWriter(path));
         pw.println(ParanamerConstants.HEADER);
         pw.println(content);
         pw.close();
@@ -126,8 +137,8 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         }
     }
 
-    private String comma(int k, int size) {
-        return (k + 1 < size) ? COMMA : EMPTY;
+    private String comma(int index, int size) {
+        return (index + 1 < size) ? COMMA : EMPTY;
     }
 
 }
