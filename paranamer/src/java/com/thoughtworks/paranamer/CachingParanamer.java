@@ -6,33 +6,29 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+/**
+ * Implementation of Paranamer which delegate to another Paranamer implementation, adding caching functionality.
+ * 
+ * @author Paul Hammant
+ * @author Mauro Talevi
+ */
 public class CachingParanamer implements Paranamer {
+    private static final String PERIOD = ".";
+    private static final String SPACE = " ";
     private final Paranamer delegate;
     private final WeakHashMap classLoaderCache = new WeakHashMap();
     private final WeakHashMap methodCache = new WeakHashMap();
 
-    public CachingParanamer(Paranamer paranamer) {
-        delegate = paranamer;
-    }
-
     public CachingParanamer() {
-        delegate = new DefaultParanamer();
+        this(new DefaultParanamer());
     }
 
-    public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        String key = className + " " + methodName + " " + paramNames;
-        Method method = (Method) checkCache(classLoader, key);
-
-        if(method == null) {
-            method = delegate.lookupMethod(classLoader, className, methodName, paramNames);
-            cacheIt(classLoader, key, method);
-        }
-
-        return method;
+    public CachingParanamer(Paranamer delegate) {
+        this.delegate = delegate;
     }
 
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
-        String key = className + " " + className.substring(className.lastIndexOf(".") + 1) + " " + paramNames;
+        String key = className + SPACE + className.substring(className.lastIndexOf(PERIOD) + 1) + SPACE + paramNames;
         Constructor constructor = (Constructor) checkCache(classLoader, key);
 
         if(constructor == null) {
@@ -43,28 +39,31 @@ public class CachingParanamer implements Paranamer {
         return constructor;
     }
 
-    public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
-        String key = className + " " + className + " " + methodName;
+    public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
+        String key = className + SPACE + methodName + SPACE + paramNames;
+        Method method = (Method) checkCache(classLoader, key);
 
-        String[] parameterNames = (String[]) checkCache(classLoader, key);
-
-        if(parameterNames == null) {
-            parameterNames = delegate.lookupParameterNames(classLoader, className, methodName);
-            cacheIt(classLoader, key, parameterNames);
+        if(method == null) {
+            method = delegate.lookupMethod(classLoader, className, methodName, paramNames);
+            cacheIt(classLoader, key, method);
         }
 
-        return parameterNames;
+        return method;
     }
 
-    public String lookupParameterNamesForMethod(Method method) {
+    public String[] lookupParameterNames(Method method) {
         if(methodCache.containsKey(method)) {
-            return (String) methodCache.get(method);
+            return (String[]) methodCache.get(method);
         }
 
-        String value = delegate.lookupParameterNamesForMethod(method);
-        methodCache.put(method, value);
+        String[] names = delegate.lookupParameterNames(method);
+        methodCache.put(method, names);
 
-        return value;
+        return names;
+    }
+
+    public int areParameterNamesAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
+        return delegate.areParameterNamesAvailable(classLoader, className, ctorOrMethodName);
     }
 
     private Object checkCache(ClassLoader classLoader, String key) {
@@ -86,15 +85,12 @@ public class CachingParanamer implements Paranamer {
         map.put(key, value);
     }
 
-    public String toString() {
-        return new StringBuffer("[CachingParanamer delegate=")
-                .append(delegate)
-                .append(", classLoaders=")
-                .append(classLoaderCache).append("]").toString();
-    }
+     public String toString() {
+         return new StringBuffer("[CachingParanamer delegate=")
+                 .append(delegate)
+                 .append(", classLoaders=")
+                 .append(classLoaderCache)
+                 .append("]").toString();
+     }
 
-
-    public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
-        return delegate.isParameterNameDataAvailable(classLoader, className, ctorOrMethodName);
-    }
 }

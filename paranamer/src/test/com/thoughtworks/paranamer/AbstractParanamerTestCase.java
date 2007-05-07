@@ -1,6 +1,7 @@
 package com.thoughtworks.paranamer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
@@ -33,27 +34,29 @@ public abstract class AbstractParanamerTestCase extends TestCase {
 
     public void testLookupParanamerCanIndicateThatUnableToGetParameterNamesForBogusClass()
             throws IOException {
-        ClassLoader cl = new ClassLoader(){};
+        ClassLoader cl = new ClassLoader(){
+            public InputStream getResourceAsStream(String resource){
+                return null;
+            }
+        };
         Object method = paranamer.lookupMethod(cl, "Blah", "doBlah", "blah");
         assertNull(method);
-        int x = paranamer.isParameterNameDataAvailable(cl,"Blah", "doBlah");
+        int x = paranamer.areParameterNamesAvailable(cl,"Blah", "doBlah");
         assertEquals(Paranamer.NO_PARAMETER_NAMES_LIST, x);
     }
 
     public void testLookupParanamerCanIndicateAbleToGetParameterNames()
             throws IOException {
-        int x = paranamer.isParameterNameDataAvailable(DefaultParanamer.class.getClassLoader(),
+        int x = paranamer.areParameterNamesAvailable(DefaultParanamer.class.getClassLoader(),
                 "com.thoughtworks.paranamer.DefaultParanamer", "lookupParameterNames");
-        assertEquals(Paranamer.PARAMETER_NAME_DATA_FOUND, x);
-
+        assertEquals(Paranamer.PARAMETER_NAMES_FOUND, x);
     }
 
     public void testLookupParanamerCanIndicateThatUnableToGetParameterNamesForRealClassButBogusMethod()
             throws IOException {
-        int x = paranamer.isParameterNameDataAvailable(DefaultParanamer.class.getClassLoader(),
+        int x = paranamer.areParameterNamesAvailable(DefaultParanamer.class.getClassLoader(),
                 "com.thoughtworks.paranamer.DefaultParanamer", "fooo");
-        assertEquals(Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER, x);
-
+        assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER, x);
     }
 
     public void testLookupMethodEndsWithUnknownClass() throws IOException {
@@ -80,24 +83,24 @@ public abstract class AbstractParanamerTestCase extends TestCase {
                 method);
     }
 
-    public void testMethodWithNoArgsCanBeRetrievedAndShowNoParameterNames()
-            throws IOException, NoSuchMethodException {
-        String[] choices = paranamer.lookupParameterNames(Paranamer.class
-                .getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer",
-                "toString");
-        assertEquals(0, choices.length);
-    }
-
-    public void testLookupParameterNamesForMethod() throws Exception {
-        Method method = DefaultParanamer.class.getMethod("lookupParameterNames", new Class[] {ClassLoader.class, String.class, String.class});
-        String parameters = paranamer.lookupParameterNamesForMethod(method);
-        assertEquals("classLoader,className,methodName", parameters);
-    }
-
     public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
         Method method = DefaultParanamer.class.getMethod("toString", new Class[0]);
-        String parameters = paranamer.lookupParameterNamesForMethod(method);
-        assertEquals("", parameters);
+        String[] names = paranamer.lookupParameterNames(method);
+        assertThatParameterNamesMatch("", names);
     }
 
+    protected void assertThatParameterNamesMatch(String csv, String[] names) {
+        assertEquals(csv, toCSV(names));
+    }
+
+    private String toCSV(String[] names) {
+        StringBuffer sb = new StringBuffer();
+        for ( int i = 0; i < names.length; i++ ){
+            sb.append(names[i]);
+            if ( i < names.length -1 ){
+                sb.append(",");
+            }            
+        }
+        return sb.toString();
+    }
 }

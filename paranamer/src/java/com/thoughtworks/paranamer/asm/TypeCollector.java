@@ -17,7 +17,9 @@ import org.objectweb.asm.Type;
  */
 public class TypeCollector implements ClassVisitor {
 
-	private final String methodName;
+	private static final String COMMA = ",";
+
+    private final String methodName;
 
 	private final Class[] parameterTypes;
 
@@ -69,14 +71,14 @@ public class TypeCollector implements ClassVisitor {
 		return collector;
 	}
 
-	public String getParameterNamesForMethod() {
+	public String[] getParameterNamesForMethod() {
 		if (collector == null) {
 			return null;
 		}
 		if (!collector.isDebugInfoPresent()) {
 			return null;
 		}
-		return collector.getResult();
+		return collector.getResult().split(COMMA);
 	}
 
 	public void visit(int arg0, int arg1, String arg2, String arg3,

@@ -1,10 +1,8 @@
 package com.thoughtworks.paranamer.asm;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 import com.thoughtworks.paranamer.AbstractParanamerTestCase;
-import com.thoughtworks.paranamer.asm.AsmParanamer;
 
 /**
  * 
@@ -19,51 +17,51 @@ public class AsmParanamerTestCase extends AbstractParanamerTestCase {
     public void testRetrievesParameterNamesFromAMethod() throws SecurityException, NoSuchMethodException {
         AsmParanamer asm = new AsmParanamer();
         Method method = SpecificMethodSearchable.class.getMethod("singleString", new Class[] { String.class });
-        String names = asm.lookupParameterNamesForMethod(method);
-        assertEquals("s", names);
+        String[] names = asm.lookupParameterNames(method);
+        assertThatParameterNamesMatch("s", names);
     }
 
     public void testRetrievesParameterNamesFromAMethodWithoutParameters() throws SecurityException,
             NoSuchMethodException {
         AsmParanamer asm = new AsmParanamer();
-        String names = asm.lookupParameterNamesForMethod(SpecificMethodSearchable.class.getMethod("noParameters",
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod("noParameters",
                 new Class[0]));
-        assertEquals("", names);
+        assertThatParameterNamesMatch("", names);
     }
 
     public void testRetrievesParameterNamesFromAMethodWithoutParametersWithLocalVariable() throws SecurityException,
             NoSuchMethodException {
         AsmParanamer asm = new AsmParanamer();
-        String names = asm.lookupParameterNamesForMethod(SpecificMethodSearchable.class.getMethod(
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
                 "noParametersOneLocalVariable", new Class[0]));
-        assertEquals("", names);
+        assertThatParameterNamesMatch("", names);
     }
 
     public void testRetrievesParameterNamesFromAStaticMethod() throws SecurityException, NoSuchMethodException {
         AsmParanamer asm = new AsmParanamer();
-        String names = asm.lookupParameterNamesForMethod(SpecificMethodSearchable.class.getMethod(
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
                 "staticWithParameter", new Class[] { int.class }));
-        assertEquals("i", names);
+        assertThatParameterNamesMatch("i", names);
     }
 
     public void testRetrievesParameterNamesFromMethodWithLong() throws SecurityException, NoSuchMethodException {
         AsmParanamer asm = new AsmParanamer();
-        String names = asm.lookupParameterNamesForMethod(SpecificMethodSearchable.class.getMethod("hasLong",
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod("hasLong",
                 new Class[] { long.class }));
-        assertEquals("l", names);
+        assertThatParameterNamesMatch("l", names);
     }
 
     public void testRetrievesParameterNamesFromMethodWithDoubleMixedInTheParameters() throws SecurityException,
             NoSuchMethodException {
         AsmParanamer asm = new AsmParanamer();
-        String names = asm.lookupParameterNamesForMethod(SpecificMethodSearchable.class.getMethod("mixedParameters",
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod("mixedParameters",
                 new Class[] { double.class, String.class }));
-        assertEquals("d,s", names);
+        assertThatParameterNamesMatch("d,s", names);
     }
 
     public void testDoesNotRetrieveParameterNamedArg0() throws SecurityException, NoSuchMethodException {
         AsmParanamer asm = new AsmParanamer();
-        String names = asm.lookupParameterNamesForMethod(SpecificMethodSearchable.class.getMethod(
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
                 "unsupportedParameterNames", new Class[] { String.class }));
         assertNull(names);
     }
@@ -72,7 +70,6 @@ public class AsmParanamerTestCase extends AbstractParanamerTestCase {
 
         public void singleString(String s) {
             int k = 3;
-            System.out.println("Mycode");
         }
 
         public void noParametersOneLocalVariable() {
@@ -97,23 +94,12 @@ public class AsmParanamerTestCase extends AbstractParanamerTestCase {
         public void unsupportedParameterNames(String arg0) {
 
         }
-
-    }
-
-    public void testRetrievesAllOverloadingMethodParameters() throws SecurityException, NoSuchMethodException {
-        AsmParanamer asm = new AsmParanamer();
-        String[] names = asm.lookupParameterNames(AsmParanamerTestCase.class.getClassLoader(),
-                SearchableTypeByMethodName.class.getName(), "overloaded");
-        assertTrue(Arrays.equals(new String[] { "a", "b" }, names));
     }
 
     public static class SearchableTypeByMethodName {
         public void overloaded(int a) {
-
         }
-
         public void overloaded(String b) {
-
         }
     }
 

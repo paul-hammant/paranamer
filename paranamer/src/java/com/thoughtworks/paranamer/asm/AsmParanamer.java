@@ -25,8 +25,8 @@ public class AsmParanamer implements Paranamer {
             Constructor[] constructors = classLoader.loadClass(className).getConstructors();
             for (int i = 0; i < constructors.length; i++) {
                 Constructor constructor = constructors[i];
-                String parms = lookupParameterNamesForConstructor(constructor);
-                if (parms.equals(paramNames)) {
+                String[] retrievedNames = lookupParameterNamesForConstructor(constructor);
+                if ( parameterNamesMatch(retrievedNames, paramNames) ) {
                     return constructor;
                 }
             }
@@ -45,8 +45,8 @@ public class AsmParanamer implements Paranamer {
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
                 if (method.getName().equals(methodName)) {
-                    String parms = lookupParameterNamesForMethod(method);
-                    if (parms.equals(paramNames)) {
+                    String[] retrievedNames = lookupParameterNames(method);
+                    if ( parameterNamesMatch(retrievedNames, paramNames) ) {
                         return method;
                     }
                 }
@@ -59,73 +59,67 @@ public class AsmParanamer implements Paranamer {
         }
 	}
 
-	public String[] lookupParameterNames(ClassLoader classLoader,
-			String className, String methodName) {
-		try {
-			Method[] methods = classLoader.loadClass(className).getMethods();
-			List names = new ArrayList();
-			for (int i = 0; i < methods.length; i++) {
-				Method method = methods[i];
-				if (method.getName().equals(methodName)) {
-                    String s = lookupParameterNamesForMethod(method);
-                    if (!s.equals("")) {
-                        names.add(s);
-                    }
-                }
-			}
-			return (String[]) names.toArray(new String[names.size()]);
-		} catch (SecurityException e) {
-			return null;
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
-	}
+	private boolean parameterNamesMatch(String[] retrievedNames, String paramNames) {
+        return toCSV(retrievedNames).equals(paramNames);
+    }
 
-	public String lookupParameterNamesForMethod(Method method) {
+    private String toCSV(String[] names) {
+        StringBuffer sb = new StringBuffer();
+        for ( int i = 0; i < names.length; i++ ){
+            sb.append(names[i]);
+            if ( i < names.length - 1 ){
+                sb.append(",");
+            }            
+        }
+        return sb.toString();
+    }
+
+   
+	public String[] lookupParameterNames(Method method) {
         InputStream content = getClassAsStream(method.getDeclaringClass());
 		try {
-			ClassReader creader = new ClassReader(content);
+			ClassReader reader = new ClassReader(content);
 			TypeCollector visitor = new TypeCollector(method.getName(), method
 					.getParameterTypes());
-			creader.accept(visitor, 0);
+			reader.accept(visitor, 0);
 			return visitor.getParameterNamesForMethod();
 		} catch (IOException e) {
 			return null;
 		}
 	}
 
-    public String lookupParameterNamesForConstructor(Constructor ctor) {
+    public String[] lookupParameterNamesForConstructor(Constructor ctor) {
         InputStream content = getClassAsStream(ctor.getDeclaringClass());
         try {
-            ClassReader creader = new ClassReader(content);
+            ClassReader reader = new ClassReader(content);
             TypeCollector visitor = new TypeCollector(ctor.getName(), ctor
                     .getParameterTypes());
-            creader.accept(visitor, 0);
+            reader.accept(visitor, 0);
             return visitor.getParameterNamesForMethod();
         } catch (IOException e) {
             return null;
         }
     }
 
-    public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
+    public int areParameterNamesAvailable(ClassLoader classLoader, String className, String constructorOrMethodName) {
         InputStream content = getClassAsStream(classLoader, className);
         try {
-            ClassReader creader = new ClassReader(content);
+            ClassReader reader = new ClassReader(content);
             //TODO - also for constructors
-            List methods = getMatchingMethods(classLoader, className, ctorOrMethodName);
+            List methods = getMatchingMethods(classLoader, className, constructorOrMethodName);
             if (methods.size() == 0) {
-                return Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER;
+                return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
             }
-            TypeCollector visitor = new TypeCollector(ctorOrMethodName, ((Method) methods.get(0)).getParameterTypes());
-            creader.accept(visitor, 0);
+            TypeCollector visitor = new TypeCollector(constructorOrMethodName, ((Method) methods.get(0)).getParameterTypes());
+            reader.accept(visitor, 0);
             if (visitor.isClassFound()) {
                 if (!visitor.isMethodFound()) {
-                    return Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER;
+                    return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
                 }
             } else {
-                return Paranamer.NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS;
+                return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS;
             }
-            return Paranamer.PARAMETER_NAME_DATA_FOUND;
+            return Paranamer.PARAMETER_NAMES_FOUND;
         } catch (IOException e) {
             return Paranamer.NO_PARAMETER_NAMES_LIST;
         } catch (ClassNotFoundException e) {
@@ -151,15 +145,15 @@ public class AsmParanamer implements Paranamer {
         return asStream;
     }
 
-    private List getMatchingMethods(ClassLoader classLoader, String className, String ctorOrMethodName) throws ClassNotFoundException {
-        List methodz = new ArrayList();
+    private List getMatchingMethods(ClassLoader classLoader, String className, String name) throws ClassNotFoundException {
+        List list = new ArrayList();
         Method[] methods = classLoader.loadClass(className).getMethods();
         for (int i = 0; i < methods.length; i++) {
             Method method = methods[i];
-            if (method.getName().equals(ctorOrMethodName)) {
-                methodz.add(method);
+            if (method.getName().equals(name)) {
+                list.add(method);
             }
         }
-        return methodz;
+        return list;
     }
 }

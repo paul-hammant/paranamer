@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class DefaultParanamer implements Paranamer {
+    private static final String[] EMPTY_NAMES = new String[]{};
     private static final String EMPTY = "";
     private static final String COMMA = ",";
     private static final String SPACE = " ";
@@ -69,7 +70,7 @@ public class DefaultParanamer implements Paranamer {
 
                 if (method.getName().equals(methodName)) {
                     Class[] parameters = method.getParameterTypes();
-                    String paramTypes = stringifyClassArray(parameters);
+                    String paramTypes = toNamesCSV(parameters);
 
                     if (paramTypes.equals(methodParamTypes)) {
                         return method;
@@ -119,7 +120,7 @@ public class DefaultParanamer implements Paranamer {
         for (int i = 0; i < constructors.length; i++) {
             Constructor constructor = constructors[i];
             Class[] parameters = constructor.getParameterTypes();
-            String paramTypes = stringifyClassArray(parameters);
+            String paramTypes = toNamesCSV(parameters);
             if (paramTypes.equals(methodParamTypes)) {
                 return constructor;
             }
@@ -128,37 +129,13 @@ public class DefaultParanamer implements Paranamer {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
-        String classAndMethodName = className + SPACE + methodName + SPACE;
-        List results = filterMappingByPrefix(classAndMethodName, getParameterListResource(classLoader));
-        List matches = new ArrayList();
-
-        for (int i = 0; i < results.size(); i++) {
-            String definition = (String) results.get(i);
-
-            if (classAndMethodName.length() <= definition.length()) {
-                definition = definition.substring(classAndMethodName.length());
-                definition = definition.substring(0, definition.indexOf(SPACE));
-                matches.add(definition);
-            }
-        }
-
-        return (String[]) matches.toArray(new String[matches.size()]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public String lookupParameterNamesForMethod(Method method) {
+    public String[] lookupParameterNames(Method method) {
         if (method.getParameterTypes().length == 0) { // no arguments ... return empty string
-            return EMPTY;
+            return EMPTY_NAMES;
         }
 
         Class declaringClass = method.getDeclaringClass();
-        String parameterTypes = stringifyClassArray(method.getParameterTypes());
+        String parameterTypes = toNamesCSV(method.getParameterTypes());
         String prefix = declaringClass.getName() + SPACE + method.getName();
 
         List results = filterMappingByPrefix(prefix, getParameterListResource(declaringClass.getClassLoader()));
@@ -167,12 +144,36 @@ public class DefaultParanamer implements Paranamer {
             String definition = (String) results.get(i);
 
             if (definition.endsWith(parameterTypes)) {
-                return definition.substring(prefix.length() + 1, definition.lastIndexOf(parameterTypes)).trim();
+                String csvNames = definition.substring(prefix.length() + 1, definition.lastIndexOf(parameterTypes)).trim();
+                return csvNames.split(COMMA);
             }
         }
 
         return null;
     }
+    
+    public int areParameterNamesAvailable(ClassLoader classLoader, String className, String constructorOrMethodName) {
+        Reader reader = getParameterListResource(classLoader);
+        
+        if (reader == null) {
+            return NO_PARAMETER_NAMES_LIST;
+        }
+        String clazzName = className + SPACE;
+        List list = filterMappingByPrefix(clazzName, reader);
+        if (list.size() == 0) {
+            return NO_PARAMETER_NAMES_FOR_CLASS;
+        }
+        reader = getParameterListResource(classLoader);
+
+        String classAndConstructorOrMethodNames = className + SPACE + constructorOrMethodName + SPACE;
+        list = filterMappingByPrefix(classAndConstructorOrMethodNames, reader);
+        if (list.size() == 0) {
+            return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
+        }
+
+        return PARAMETER_NAMES_FOUND;
+    }
+    
 
     private String getClassAndMethodAndParameterNames(String className, String methodName, String paramNames) {
         StringBuffer buffer = new StringBuffer(className).append(SPACE).append(methodName);
@@ -182,18 +183,15 @@ public class DefaultParanamer implements Paranamer {
         return buffer.toString();
     }
 
-    private String stringifyClassArray(Class[] parameterTypes) {
-        StringBuffer buffer = new StringBuffer(EMPTY);
-
+    private String toNamesCSV(Class[] parameterTypes) {
+        StringBuffer sb = new StringBuffer(EMPTY);
         for (int i = 0; i < parameterTypes.length; i++) {
-            buffer.append(parameterTypes[i].getName());
-
+            sb.append(parameterTypes[i].getName());
             if (i < parameterTypes.length - 1) {
-                buffer.append(COMMA);
+                sb.append(COMMA);
             }
         }
-
-        return buffer.toString();
+        return sb.toString();
     }
 
     private Reader getParameterListResource(ClassLoader classLoader) {
@@ -248,24 +246,4 @@ public class DefaultParanamer implements Paranamer {
                 .toString();
     }
 
-    public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
-        Reader reader = getParameterListResource(classLoader);
-        if (reader == null) {
-            return NO_PARAMETER_NAMES_LIST;
-        }
-        String clazzName = className + SPACE;
-        List list = filterMappingByPrefix(clazzName, reader);
-        if (list.size() == 0) {
-            return NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS;
-        }
-        reader = getParameterListResource(classLoader);
-
-        String classAndConstructorOrMethodNames = className + SPACE + ctorOrMethodName + SPACE;
-        list = filterMappingByPrefix(classAndConstructorOrMethodNames, reader);
-        if (list.size() == 0) {
-            return NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER;
-        }
-
-        return PARAMETER_NAME_DATA_FOUND;
-    }
 }

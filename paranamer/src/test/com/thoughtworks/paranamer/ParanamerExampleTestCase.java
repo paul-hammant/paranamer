@@ -14,20 +14,6 @@ public class ParanamerExampleTestCase extends TestCase {
         assertEquals(DefaultParanamer.class.getMethod("lookupMethod", new Class[]{ClassLoader.class, String.class, String.class, String.class}), method);
     }
 
-    // An example of a test that looks a method up based on class/method only
-    public void testParamerNameChoicesCanBeRetrievedForAMethodName() throws IOException, NoSuchMethodException {
-        String[] paramNames = new DefaultParanamer().lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookupMethod");
-        assertEquals(2, paramNames.length);
-        assertEquals("classLoader,c,m,p", paramNames[0]);
-        assertEquals("classLoader,className,methodName,paramNames", paramNames[1]);
-    }
-
-    public void testParamerNameChoicesCannotBeRetrievedForAMissingMethodName() throws IOException, NoSuchMethodException {
-        String[] paramNames = new DefaultParanamer().lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "smdnfmsndf");
-        assertEquals(0, paramNames.length);
-    }
-
-
     // An example of a test that looks a method up by it's OLD parameter names
     // These were encoded via a doclet tag on the method in question:
     //

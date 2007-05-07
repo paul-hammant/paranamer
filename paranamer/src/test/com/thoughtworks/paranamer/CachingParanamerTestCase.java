@@ -3,6 +3,7 @@ package com.thoughtworks.paranamer;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
@@ -28,17 +29,12 @@ public class CachingParanamerTestCase extends TestCase {
                 return constructor;
             }
 
-            public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName) {
+            public String[] lookupParameterNames(Method method) {
                 count++;
-                return new String[] {"foo,bar"};
+                return new String[]{"foo","bar"};
             }
 
-            public String lookupParameterNamesForMethod(Method method) {
-                count++;
-                return "foo,bar";
-            }
-
-            public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
+            public int areParameterNamesAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
                 return -1;  
             }
         };
@@ -109,29 +105,15 @@ public class CachingParanamerTestCase extends TestCase {
         assertNotNull(m);
     }
 
-    public void testLookupOfParameterNames() {
+     public void testLookupOfParameterNamesForMethod() {
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
-        String[] paramNameChoices = cachingParanamer.lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookup");
-        assertEquals(1, paramNameChoices.length);
-        assertEquals("foo,bar", paramNameChoices[0]);
+        String[] paramNames = cachingParanamer.lookupParameterNames(null);
+        assertEquals(Arrays.asList(new String[]{"foo","bar"}), Arrays.asList(paramNames));
         assertEquals(1, count);
 
         // cache hit
-        paramNameChoices = cachingParanamer.lookupParameterNames(Paranamer.class.getClassLoader(), "com.thoughtworks.paranamer.DefaultParanamer", "lookup");
-        assertEquals(1, paramNameChoices.length);
-        assertEquals("foo,bar", paramNameChoices[0]);
-        assertEquals(1, count);
-    }
-
-    public void testLookupOfParameterNamesForMethod() {
-        Paranamer cachingParanamer = new CachingParanamer(paranamer);
-        String paramNames = cachingParanamer.lookupParameterNamesForMethod(null);
-        assertEquals("foo,bar", paramNames);
-        assertEquals(1, count);
-
-        // cache hit
-        paramNames = cachingParanamer.lookupParameterNamesForMethod(null);
-        assertEquals("foo,bar", paramNames);
+        paramNames = cachingParanamer.lookupParameterNames(null);
+        assertEquals(Arrays.asList(new String[]{"foo","bar"}), Arrays.asList(paramNames));
         assertEquals(1, count);
     }
     

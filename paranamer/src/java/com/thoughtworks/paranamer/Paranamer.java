@@ -5,11 +5,16 @@ import java.lang.reflect.Constructor;
 
 /**
  * Paranamer allows lookups of methods and constructors by parameter names.
- * It also provides lookup of all the possible parameter names for a given method. 
  * 
  * @author Paul Hammant
+ * @author Mauro Talevi
  */
 public interface Paranamer {
+
+    /**
+     * Parameter names are available for that class and constructor/method
+     */
+    int PARAMETER_NAMES_FOUND = 0;
     /**
      * Parameter names are generally not available
      */
@@ -17,15 +22,11 @@ public interface Paranamer {
     /**
      * Parameter names are available, but not for that class
      */
-    int NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS = 2;
+    int NO_PARAMETER_NAMES_FOR_CLASS = 2;
     /**
      * Parameter names are available for that class, but not for that constructor or method
      */
-    int NO_PARAMETER_NAME_DATA_FOR_THAT_CLASS_AND_MEMBER = 3;
-    /**
-     * Parameter names are available for that class and constructor/method
-     */
-    int PARAMETER_NAME_DATA_FOUND = 0;
+    int NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER = 3;
 
     /**
      * Lookup a method 
@@ -38,7 +39,6 @@ public interface Paranamer {
      */
     public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames);
 
-
     /**
      * Lookup a constructor
      * 
@@ -49,34 +49,22 @@ public interface Paranamer {
      */
     public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames);
 
-
-    /**
-     * Lookup the possible parameter names of a given method name
-     * 
-     * @param classLoader the ClassLoader used for the lookup
-     * @param className the name of the class to which the method belongs
-     * @param methodName the method name
-     * @return An array of String, each encoding a CSV of the parameter names
-     */
-    public String[] lookupParameterNames(ClassLoader classLoader, String className, String methodName);
-
     /**
      * Lookup the parameter names of a given method
      *
-     * @param method the method to be searched for
-     * @return A CSV list of the parameter names
+     * @param method the Method for which the parameter names are looked up
+     * @return A list of the parameter names
      */
-    public String lookupParameterNamesForMethod(Method method);
+    public String[] lookupParameterNames(Method method);
 
     /**
-     * Lookup the parameter names of a given method
+     * Determine if the parameter names are available
      *
      * @param classLoader the ClassLoader used for the lookup
-     * @param className the name of the class to which the constructor belongs
-     * @param ctorOrMethodName the method or constructor
-     * @return a code suggesting what the availability of parameter name info is
+     * @param className the name of the class to which the method or constructor belongs
+     * @param constructorOrMethodName the name of the method or constructor
+     * @return An int encoding the parameter names availability 
      */
-    public int isParameterNameDataAvailable(ClassLoader classLoader, String className, String ctorOrMethodName);
-
+    public int areParameterNamesAvailable(ClassLoader classLoader, String className, String constructorOrMethodName);
 
 }
