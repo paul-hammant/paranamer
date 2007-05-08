@@ -44,8 +44,8 @@ public class CachingParanamer implements Paranamer {
         return names;
     }
 
-    public int areParameterNamesAvailable(ClassLoader classLoader, String className, String ctorOrMethodName) {
-        return delegate.areParameterNamesAvailable(classLoader, className, ctorOrMethodName);
+    public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String ctorOrMethodName) {
+        return delegate.areParameterNamesAvailable(classLoader, clazz, ctorOrMethodName);
     }
 
     public String toString() {

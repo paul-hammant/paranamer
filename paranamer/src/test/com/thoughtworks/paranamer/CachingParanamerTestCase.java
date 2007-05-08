@@ -22,7 +22,7 @@ public class CachingParanamerTestCase extends TestCase {
                 return new String[0];
             }
 
-            public int areParameterNamesAvailable(ClassLoader classLoader, String className, String name) {
+            public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String ctorOrMethodName) {
                 return -1;  
             }
         };

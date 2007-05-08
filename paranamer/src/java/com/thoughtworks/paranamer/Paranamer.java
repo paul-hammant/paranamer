@@ -29,31 +29,30 @@ public interface Paranamer {
     int NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER = 3;
 
     /**
-     * Lookup the parameter names of a given constructor
-     *
-     * @param constructor the Constructor for which the parameter names are looked up
-     * @return A list of the parameter names
-     * @throws ParameterNamesNotFoundException if no parameter names are found
-     */
-    public String[] lookupParameterNames(Constructor constructor);
-
-    /**
      * Lookup the parameter names of a given method
      *
      * @param method the Method for which the parameter names are looked up
      * @return A list of the parameter names
-     * @throws ParameterNamesNotFoundException if no parameter names are found
      */
     public String[] lookupParameterNames(Method method);
+
+    /**
+     * Lookup the parameter names of a given constructor
+     *
+     * @param constructor the Constructor for which the parameter names are looked up
+     * @return A list of the parameter names
+     */
+    public String[] lookupParameterNames(Constructor constructor);
+
 
     /**
      * Determine if the parameter names are available
      *
      * @param classLoader the ClassLoader used for the lookup
-     * @param className the name of the class to which the method or constructor belongs
+     * @param clazz the name of the class to which the method or constructor belongs
      * @param constructorOrMethodName the name of the method or constructor
      * @return An int encoding the parameter names availability 
      */
-    public int areParameterNamesAvailable(ClassLoader classLoader, String className, String constructorOrMethodName);
+    public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String constructorOrMethodName);
 
 }

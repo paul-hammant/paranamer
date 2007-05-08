@@ -5,10 +5,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.Reader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URL;
 
 /**
  * Default implementation of Paranamer
@@ -72,7 +75,8 @@ public class DefaultParanamer implements Paranamer {
     }
 
     private String[] getNames(Class declaringClass, String parameterTypeNames, String prefix) {
-        List lines = filterLinesByPrefix(getParameterListResource(declaringClass.getClassLoader()), prefix);
+        ClassLoader loader = declaringClass.getClassLoader();
+        List lines = filterLinesByPrefix(getParameterListResource(declaringClass, loader), prefix);
         for (int i = 0; i < lines.size(); i++) {
             String line = (String) lines.get(i);
             String[] parts = line.split(SPACE);
@@ -85,20 +89,20 @@ public class DefaultParanamer implements Paranamer {
         return null;
     }
 
-    public int areParameterNamesAvailable(ClassLoader classLoader, String className, String constructorOrMethodName) {
-        Reader reader = getParameterListResource(classLoader);
+    public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String constructorOrMethodName) {
+        Reader reader = getParameterListResource(clazz, classLoader);
         
         if (reader == null) {
             return NO_PARAMETER_NAMES_LIST;
         }
-        String prefix = join(new String[]{className}, SPACE, true);
+        String prefix = join(new String[]{clazz.getName()}, SPACE, true);
         List lines = filterLinesByPrefix(reader, prefix);
         if (lines.size() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS;
         }
-        reader = getParameterListResource(classLoader);
+        reader = getParameterListResource(clazz, classLoader);
 
-        prefix = join(new String[]{className, constructorOrMethodName}, SPACE, true); 
+        prefix = join(new String[]{clazz.getName(), constructorOrMethodName}, SPACE, true);
         lines = filterLinesByPrefix(reader, prefix);
         if (lines.size() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
@@ -129,8 +133,18 @@ public class DefaultParanamer implements Paranamer {
         return sb.toString();
     }
 
-    private Reader getParameterListResource(ClassLoader classLoader) {
+    private Reader getParameterListResource(Class declaringClass, ClassLoader classLoader) {
+
+        URL location = declaringClass.getProtectionDomain().getCodeSource().getLocation();
+        String jar = location.getFile();
+
         InputStream inputStream = classLoader.getResourceAsStream(paranamerResource);
+        if (inputStream == null) {
+            try {
+                inputStream = new FileInputStream(jar + paranamerResource);
+            } catch (Exception e) {
+            }
+        }
         if (inputStream == null) {
             return null;
         }
