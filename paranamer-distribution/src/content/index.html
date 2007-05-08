@@ -316,7 +316,7 @@ leverage a method's parameter names. Scripting languages like <a
  href="http://jruby.codehaus.org/">JRuby</a>,  web action frameworks
 like <a href="http://waffle.sourceforge.net/">Waffle</a> and <a href="#" title="http://www.vraptor.org/">VRaptor</a> (that verge
 on the tranparent) and the compelling <a
- href="http://grails.codehaus.org/">Grails</a>. <br>
+ href="http://grails.codehaus.org/">Grails</a>. 
 </p>
 <p>ParaNamer allows you to generate and use parameter name info for
 versions of Java prior to Java 7.0 (when Java <span
@@ -378,19 +378,15 @@ called 'lookup' that does the business:</p>
 <div class="code">
 <div class="codeHeader"><b>MySomethingOrOther.java</b></div>
 <div class="codeContent">
-<pre class="code-java">  <span class="code-object">Method method = new DefaultParanamer().lookupMethod(AClass.class.getClassLoader(), <br>              "foo.BarAction", "addToShoppingCart", "make,model,qty,onClick");</span><br></pre>
+<pre class="code-java"> 
+ <span class="code-object">String[] parameterNames = new DefaultParanamer().lookupParameterNames(method)
+ </span><br></pre>
 </div>
 </div>
-<p>It returns null if there are is no method that matches what you're
-looking for.&nbsp; Alternatively, there are similar methods&nbsp;
-'checkedLookup' and 'uncheckedLookup' that throw checked or unchecked
-exceptions when the methods can't be found for any reason. They are in
-adjacent classes CheckedParanamer and UncheckedParanamer. Its your
-preference as to
-which to use. <br>
+<p>It throws a ParameterNamesNotFoundException if no parameter names are found. <br>
 </p>
 <p>The unit tests for ParaNamer illustrate some of the ways of using
-it, if you're interested, look here -&gt; <a
+it: <a
  href="https://svn.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java">https://svn.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java</a><br>
 </p>
 <p>ParaNamer does not have any runtime jar dependecies while looking up
@@ -417,22 +413,14 @@ retain GPL, Commercial and Apache licenses (or whatever). <br>
 <h2>Using Paranamer with ASM</h2>
 <p>If generating meta information on parameter names at compile time is not for you, try Paranamer with ASM as a runtime only solution. ASM allows java code to parse class files, and is useful for Paranamer if debug data is still compiled into the classes. <br>
 </p>
-<div class="codeHeader"><b>MySomethingOrOther.java</b></div>
-<div class="codeContent">
-<pre class="code-java">  <span class="code-object">Method method = new AsmParanamer().lookupMethod(AClass.class.getClassLoader(), <br>              "foo.BarAction", "addToShoppingCart", "make,model,qty,onClick");</span><br></pre>
-</div>
-</div>
-
 </div>
 
 <div class="section_2">
 <h1>How Paranamer works</h1>
-<p>It creates a file in META-INF/ called ParameterNames.list&nbsp; -
-Yes its
-going to add to jar size.</p>
+<p>It creates a file META-INF/ParameterNames.list&nbsp;:</p>
 <div class="code">
 <div class="codeContent">
-<pre class="code-java">packagename.ClassName methodName paramName0,paramName1 Class0,Class1<br>packagename.ClassName anotherMethodName paramName0 Class0<br></pre>
+<pre class="code-java">packagename.ClassName methodName Class0,Class1 paramName0,paramName1 <br>packagename.ClassName anotherMethodName Class0 paramName0 <br></pre>
 </div>
 </div>
 </div>
@@ -458,24 +446,10 @@ case like:<br>
 </p>
 <div class="code">
 <div class="codeContent">
-<pre class="code-java">Method method = Foo.class.getMethod(....)<br>String[] parameterNames = method.getParameterNames(); // throws ?? or returns null ???<br></pre>
-</div>
-</div>
-<p>Though there could be some convenience finders like for Paranamer:<br>
-</p>
-<div class="code">
-<div class="codeContent">
-<pre class="code-java">Foo.class.getMethodForParameters("methodName", new String[] {"paramName0","paramName1"});<br>Foo.class.getMethodForParameters("methodName", "paramName0","paramName1"); // varargs<br></pre>
+<pre class="code-java">Method method = Foo.class.getMethod(....)<br>String[] parameterNames = method.getParameterNames(); <br></pre>
 </div>
 </div>
 <br>
-<div class="section_2">
-<h1>TODO</h1>
-1) FromJavaDoc: Some OSS project may not have added the Parameter Name
-stuff to their project. It would be nice to extract such info from
-JavaDocs and re-add it to the jar.&nbsp; (Maybe for Paranamer 1.1)<br>
-2) Show the know-how for people to get Paranamer into their product's jar with <a href="http://tonicsystems.com/products/jarjar/">JarJar</a> or <a href="http://vafer.org/blog/tag/minijar">MiniJar</a> for less dependencies.<br>
-<br />
 <h1>Projects using it</h1>
 <a href="http://oval.sourceforge.net/">Oval - Object Validation Framework</a>, <a href="http://vraptor.org/">VRaptor - Web Framework</a>, <a href="http://waffle.sourceforge.net/">Waffle - Web Framework</a><br>
 <h1>Project INFO<br>
