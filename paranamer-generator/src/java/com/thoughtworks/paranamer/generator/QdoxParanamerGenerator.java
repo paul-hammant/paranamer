@@ -84,20 +84,21 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         StringBuffer sb = new StringBuffer();
         String methodName = method.getName();
         String parameterTypes = getParameterTypes(parameters);
+        sb.append(formatLine(className, methodName, parameterTypes, getParameterNames(parameters)));
         for (int i = 0; i < alsoKnownAs.length; i++) {
-            sb.append(formatLine(className, methodName, alsoKnownAs[i].getValue(), parameterTypes));
+            sb.append(formatLine(className, methodName, parameterTypes, alsoKnownAs[i].getValue()));
         }
-        sb.append(formatLine(className, methodName, getParameterNames(parameters), parameterTypes));
         return sb.toString();
     }
     
-    private String formatLine(String className, String methodName, String paramNames, String paramTypes){
+    private String formatLine(String className, String methodName, String paramTypes, String paramNames){
         StringBuffer sb = new StringBuffer();
+        // format line structure:  className methodName paramTypes paramNames        
         sb.append(className).append(SPACE);
         sb.append(methodName).append(SPACE);
-        if ( paramNames.length() > 0 ) {
-            sb.append(paramNames.trim()).append(SPACE);
+        if ( paramTypes.length() > 0 ) {
             sb.append(paramTypes.trim()).append(SPACE);
+            sb.append(paramNames.trim()).append(SPACE);
         }
         sb.append(NEWLINE);
         return sb.toString();

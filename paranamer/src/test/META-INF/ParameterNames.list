@@ -1,16 +1,13 @@
-format version 1.0
+Paranamer version=1.0
 com.thoughtworks.paranamer.CachingParanamer CachingParanamer
-com.thoughtworks.paranamer.CachingParanamer CachingParanamer paranamer com.thoughtworks.paranamer.Paranamer
+com.thoughtworks.paranamer.CachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer paranamer
 com.thoughtworks.paranamer.CachingParanamer toString 
-com.thoughtworks.paranamer.CachingParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.CachingParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.CachingParanamer lookupParameterNames method java.lang.Method
+com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.Constructor constructor
+com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.Method method
 com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer 
-com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer paranamerResource java.lang.String 
+com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer java.lang.String paranamerResource
 com.thoughtworks.paranamer.DefaultParanamer toString 
-com.thoughtworks.paranamer.DefaultParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,c,m,p java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames method java.lang.Method
+com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames java.lang.Constructor constructor
+com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames java.lang.Method method
 com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String
 com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String

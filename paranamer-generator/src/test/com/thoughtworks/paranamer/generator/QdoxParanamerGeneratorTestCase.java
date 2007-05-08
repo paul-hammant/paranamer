@@ -9,11 +9,11 @@ import com.thoughtworks.paranamer.ParanamerConstants;
 
 public class QdoxParanamerGeneratorTestCase extends AbstractQDoxParanamerTestCase {
 
-    String allParameters =
-                    "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator QdoxParanamerGenerator \n" +
-                    "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator QdoxParanamerGenerator paranamerResource java.lang.String \n" +
-                    "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator generate sourcePath java.lang.String \n" +
-                    "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator write outputPath,content java.lang.String,java.lang.String \n";
+    String allParameters = 
+              "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator QdoxParanamerGenerator \n"
+            + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator QdoxParanamerGenerator java.lang.String paranamerResource \n"
+            + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator generate java.lang.String sourcePath \n"
+            + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator write java.lang.String,java.lang.String outputPath,content \n";
 
     private ParanamerGenerator generator;
     

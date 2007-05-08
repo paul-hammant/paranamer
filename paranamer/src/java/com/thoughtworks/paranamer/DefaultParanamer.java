@@ -65,9 +65,9 @@ public class DefaultParanamer implements Paranamer {
         for (int i = 0; i < lines.size(); i++) {
             String line = (String) lines.get(i);
             String[] parts = line.split(SPACE);
-            // assumes line structure:  package method parameterNames parameterTypeNames
-            if ( parts.length == 4 && parts[3].equals(parameterTypeNames) ){
-              String parameterNames = parts[2];
+            // assumes line structure:  className methodName parameterTypeNames parameterNames
+            if ( parts.length == 4 && parts[2].equals(parameterTypeNames) ){
+              String parameterNames = parts[3];
               return parameterNames.split(COMMA);                
             }
         }
