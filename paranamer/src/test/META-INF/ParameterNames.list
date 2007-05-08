@@ -9,4 +9,4 @@ com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer java.lang.String pa
 com.thoughtworks.paranamer.DefaultParanamer toString 
 com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames java.lang.Constructor constructor
 com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames java.lang.Method method
-com.thoughtworks.paranamer.ParanamerException ParanamerException java.lang.String message
+com.thoughtworks.paranamer.ParameterNamesNotFoundException ParameterNamesNotFoundException java.lang.String message

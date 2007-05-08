@@ -44,7 +44,7 @@ public class DefaultParanamer implements Paranamer {
         String prefix = join(new String[]{declaringClass.getName(), methodName}, SPACE, false);
         String[] names = getNames(declaringClass, parameterTypeNames, prefix);
         if ( names == null ){
-            throw new ParanamerException("No parameter names found for class '"+declaringClass+"', method "+methodName
+            throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', method "+methodName
                                         +" and parameter types "+parameterTypeNames);
         }
         return names;
@@ -61,7 +61,7 @@ public class DefaultParanamer implements Paranamer {
         String prefix = join(new String[]{declaringClass.getName(),  methodName}, SPACE, false);
         String[] names = getNames(declaringClass, parameterTypeNames, prefix);
         if ( names == null ){
-            throw new ParanamerException("No parameter names found for class '"+declaringClass+"', constructor "+methodName
+            throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', constructor "+methodName
                     +" and parameter types "+parameterTypeNames);
         }
         return names;

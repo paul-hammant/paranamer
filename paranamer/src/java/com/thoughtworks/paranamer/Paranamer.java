@@ -33,7 +33,7 @@ public interface Paranamer {
      *
      * @param constructor the Constructor for which the parameter names are looked up
      * @return A list of the parameter names
-     * @throws ParanamerException if no parameter names are found
+     * @throws ParameterNamesNotFoundException if no parameter names are found
      */
     public String[] lookupParameterNames(Constructor constructor);
 
@@ -42,7 +42,7 @@ public interface Paranamer {
      *
      * @param method the Method for which the parameter names are looked up
      * @return A list of the parameter names
-     * @throws ParanamerException if no parameter names are found
+     * @throws ParameterNamesNotFoundException if no parameter names are found
      */
     public String[] lookupParameterNames(Method method);
 
