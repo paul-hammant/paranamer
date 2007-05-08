@@ -8,13 +8,20 @@ import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+/**
+ * Default implementation of Paranamer
+ * 
+ * @author Paul Hammant
+ * @author Mauro Talevi
+ */
 public class DefaultParanamer implements Paranamer {
+    
     private static final String[] EMPTY_NAMES = new String[]{};
     private static final String EMPTY = "";
     private static final String COMMA = ",";
+    private static final String DOT = ".";
     private static final String SPACE = " ";
 
     private String paranamerResource;
@@ -28,31 +35,33 @@ public class DefaultParanamer implements Paranamer {
     }
 
     public String[] lookupParameterNames(Method method) {
-        if (method.getParameterTypes().length == 0) { // no arguments ... return empty string
+        if (method.getParameterTypes().length == 0) { 
+            // no arguments ... return empty names
             return EMPTY_NAMES;
         }
         Class declaringClass = method.getDeclaringClass();
-        String parameterTypes = toNamesCSV(method.getParameterTypes());
+        String parameterTypeNames = toNamesCSV(method.getParameterTypes());
         String prefix = declaringClass.getName() + SPACE + method.getName();
-        return getNames(declaringClass, parameterTypes, prefix);
+        return getNames(declaringClass, parameterTypeNames, prefix);
     }
 
     public String[] lookupParameterNames(Constructor constructor) {
-        if (constructor.getParameterTypes().length == 0) { // no arguments ... return empty string
+        if (constructor.getParameterTypes().length == 0) { 
+            // no arguments ... return empty names
             return EMPTY_NAMES;
         }
         Class declaringClass = constructor.getDeclaringClass();
-        String parameterTypes = toNamesCSV(constructor.getParameterTypes());
-        String prefix = declaringClass.getName() + SPACE + constructor.getName().substring(constructor.getName().lastIndexOf(".")+1);
-        return getNames(declaringClass, parameterTypes, prefix);
+        String parameterTypeNames = toNamesCSV(constructor.getParameterTypes());
+        String prefix = declaringClass.getName() + SPACE + constructor.getName().substring(constructor.getName().lastIndexOf(DOT)+1);
+        return getNames(declaringClass, parameterTypeNames, prefix);
     }
 
-    private String[] getNames(Class declaringClass, String parameterTypes, String prefix) {
-        List results = filterMappingByPrefix(prefix, getParameterListResource(declaringClass.getClassLoader()));
+    private String[] getNames(Class declaringClass, String parameterTypeNames, String prefix) {
+        List results = filterLinesByPrefix(getParameterListResource(declaringClass.getClassLoader()), prefix);
         for (int i = 0; i < results.size(); i++) {
             String definition = (String) results.get(i);
-            if (definition.endsWith(parameterTypes)) {
-                String csvNames = definition.substring(prefix.length() + 1, definition.lastIndexOf(parameterTypes)).trim();
+            if (definition.endsWith(parameterTypeNames)) {
+                String csvNames = definition.substring(prefix.length() + 1, definition.lastIndexOf(parameterTypeNames)).trim();
                 return csvNames.split(COMMA);
             }
         }
@@ -66,15 +75,15 @@ public class DefaultParanamer implements Paranamer {
             return NO_PARAMETER_NAMES_LIST;
         }
         String clazzName = className + SPACE;
-        List list = filterMappingByPrefix(clazzName, reader);
-        if (list.size() == 0) {
+        List lines = filterLinesByPrefix(reader, clazzName);
+        if (lines.size() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS;
         }
         reader = getParameterListResource(classLoader);
 
         String classAndConstructorOrMethodNames = className + SPACE + constructorOrMethodName + SPACE;
-        list = filterMappingByPrefix(classAndConstructorOrMethodNames, reader);
-        if (list.size() == 0) {
+        lines = filterLinesByPrefix(reader, classAndConstructorOrMethodNames);
+        if (lines.size() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
         }
 
@@ -102,22 +111,24 @@ public class DefaultParanamer implements Paranamer {
     }
 
     /**
-     * Filter the paranamer mappings and only return lines matching the prefix passed in.
+     * Filter the mappings and only return lines matching the prefix passed in.
+     * @param resource the Reader encoding the mappings
+     * @param prefix the String prefix
+     * @return A list of lines that match the prefix
      */
-    private List filterMappingByPrefix(String prefix, Reader resource) {
-        List results = new ArrayList();
-
+    private List filterLinesByPrefix(Reader resource, String prefix) {
+        List lines = new ArrayList();
         try {
             LineNumberReader lineReader = new LineNumberReader(resource);
             String line = readLine(lineReader);
 
             while (line != null) {
                 if (line.startsWith(prefix)) {
-                    results.add(line.trim());
+                    lines.add(line.trim());
                 }
                 line = readLine(lineReader);
             }
-            return results;
+            return lines;
         } finally {
             try {
                 if (resource != null) {

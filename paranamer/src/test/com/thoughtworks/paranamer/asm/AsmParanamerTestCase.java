@@ -86,11 +86,9 @@ public class AsmParanamerTestCase extends AbstractParanamerTestCase {
         }
 
         public void singleString(String s) {
-            int k = 3;
         }
 
         public void noParametersOneLocalVariable() {
-            int k = 3;
         }
 
         public static void staticWithParameter(int i) {

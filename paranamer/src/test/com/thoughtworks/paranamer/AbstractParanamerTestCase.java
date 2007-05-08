@@ -1,9 +1,8 @@
 package com.thoughtworks.paranamer;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
