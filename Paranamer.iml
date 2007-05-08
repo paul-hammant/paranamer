@@ -14,6 +14,7 @@
       <sourceFolder url="file://$MODULE_DIR$/paranamer/src/test" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/paranamer-ant/target" />
       <excludeFolder url="file://$MODULE_DIR$/paranamer-asm/target" />
+      <excludeFolder url="file://$MODULE_DIR$/paranamer-distribution/target" />
       <excludeFolder url="file://$MODULE_DIR$/paranamer-generator/target" />
       <excludeFolder url="file://$MODULE_DIR$/paranamer-maven-plugin/target" />
       <excludeFolder url="file://$MODULE_DIR$/paranamer/target" />

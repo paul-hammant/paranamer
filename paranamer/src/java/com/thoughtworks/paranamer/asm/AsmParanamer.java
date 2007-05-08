@@ -19,63 +19,8 @@ import com.thoughtworks.paranamer.Paranamer;
  */
 public class AsmParanamer implements Paranamer {
 
-	public Constructor lookupConstructor(ClassLoader classLoader,
-			String className, String paramNames) {
-        try {
-            Constructor[] constructors = classLoader.loadClass(className).getConstructors();
-            for (int i = 0; i < constructors.length; i++) {
-                Constructor constructor = constructors[i];
-                String[] retrievedNames = lookupParameterNamesForConstructor(constructor);
-                if ( parameterNamesMatch(retrievedNames, paramNames) ) {
-                    return constructor;
-                }
-            }
-            return null;
-        } catch (SecurityException e) {
-            return null;
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-	}
 
-	public Method lookupMethod(ClassLoader classLoader, String className,
-			String methodName, String paramNames) {
-        try {
-            Method[] methods = classLoader.loadClass(className).getMethods();
-            for (int i = 0; i < methods.length; i++) {
-                Method method = methods[i];
-                if (method.getName().equals(methodName)) {
-                    String[] retrievedNames = lookupParameterNames(method);
-                    if ( parameterNamesMatch(retrievedNames, paramNames) ) {
-                        return method;
-                    }
-                }
-            }
-            return null;
-        } catch (SecurityException e) {
-            return null;
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-	}
-
-	private boolean parameterNamesMatch(String[] retrievedNames, String paramNames) {
-        return toCSV(retrievedNames).equals(paramNames);
-    }
-
-    private String toCSV(String[] names) {
-        StringBuffer sb = new StringBuffer();
-        for ( int i = 0; i < names.length; i++ ){
-            sb.append(names[i]);
-            if ( i < names.length - 1 ){
-                sb.append(",");
-            }            
-        }
-        return sb.toString();
-    }
-
-   
-	public String[] lookupParameterNames(Method method) {
+    public String[] lookupParameterNames(Method method) {
         InputStream content = getClassAsStream(method.getDeclaringClass());
 		try {
 			ClassReader reader = new ClassReader(content);

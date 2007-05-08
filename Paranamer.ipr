@@ -75,15 +75,15 @@
         <used_levels>
           <error>
             <option name="myName" value="ERROR" />
-            <option name="myVal" value="200" />
+            <option name="myVal" value="300" />
           </error>
           <warning>
             <option name="myName" value="WARNING" />
-            <option name="myVal" value="100" />
+            <option name="myVal" value="200" />
           </warning>
           <information>
             <option name="myName" value="INFO" />
-            <option name="myVal" value="200" />
+            <option name="myVal" value="100" />
           </information>
           <server>
             <option name="myName" value="SERVER PROBLEM" />

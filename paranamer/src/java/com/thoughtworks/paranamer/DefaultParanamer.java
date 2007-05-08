@@ -27,108 +27,6 @@ public class DefaultParanamer implements Paranamer {
         this.paranamerResource = paranamerResource;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @previousParamNames classLoader,c,m,p
-     */
-    public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames) {
-        Class loadedClass;
-        try {
-            loadedClass = classLoader.loadClass(className);
-        } catch (ClassNotFoundException e) {
-            return null; // or could throw a/the exception
-        }
-
-        // handle no arg method
-        try {
-            if (EMPTY.equals(paramNames)) {
-                return loadedClass.getMethod(methodName, new Class[0]);
-            }
-        } catch (NoSuchMethodException ignore) {
-            return null;
-        }
-
-        String classAndMethodAndParameterNames = getClassAndMethodAndParameterNames(className, methodName, paramNames);
-        Reader resource = getParameterListResource(classLoader);
-        if (resource == null) {
-            return null;
-        }
-        List results = filterMappingByPrefix(classAndMethodAndParameterNames, resource);
-
-        if (results.isEmpty()) {
-            return null;
-        }
-
-        for (Iterator iterator = results.iterator(); iterator.hasNext();) {
-            String definition = (String) iterator.next();
-            String methodParamTypes = definition.substring(classAndMethodAndParameterNames.length() + 1);
-            Method methods[] = loadedClass.getMethods();
-
-            for (int i = 0; i < methods.length; i++) {
-                Method method = methods[i];
-
-                if (method.getName().equals(methodName)) {
-                    Class[] parameters = method.getParameterTypes();
-                    String paramTypes = toNamesCSV(parameters);
-
-                    if (paramTypes.equals(methodParamTypes)) {
-                        return method;
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames) {
-        Class loadedClass;
-        try {
-            loadedClass = classLoader.loadClass(className);
-        } catch (ClassNotFoundException e) {
-            return null; // or could throw a/the exception
-        }
-
-        // handle no arg ctor
-        try {
-            if (EMPTY.equals(paramNames)) {
-                return loadedClass.getConstructor(new Class[0]);
-            }
-        } catch (NoSuchMethodException ignore) {
-            return null;
-        }
-
-        String classAndConstructorAndParamNames = className + SPACE + className.substring(className.lastIndexOf(".") + 1) + SPACE + paramNames + SPACE;
-        Reader resource = getParameterListResource(classLoader);
-        if (resource == null) {
-            return null;
-        }
-        List results = filterMappingByPrefix(classAndConstructorAndParamNames, resource);
-
-        if (results.isEmpty()) {
-            return null;
-        }
-
-        String definition = (String) results.get(0);
-        String methodParamTypes = definition.substring(classAndConstructorAndParamNames.length());
-        Constructor constructors[] = loadedClass.getConstructors();
-
-        for (int i = 0; i < constructors.length; i++) {
-            Constructor constructor = constructors[i];
-            Class[] parameters = constructor.getParameterTypes();
-            String paramTypes = toNamesCSV(parameters);
-            if (paramTypes.equals(methodParamTypes)) {
-                return constructor;
-            }
-        }
-
-        return null;
-    }
-
     public String[] lookupParameterNames(Method method) {
         if (method.getParameterTypes().length == 0) { // no arguments ... return empty string
             return EMPTY_NAMES;
@@ -182,15 +80,7 @@ public class DefaultParanamer implements Paranamer {
 
         return PARAMETER_NAMES_FOUND;
     }
-    
 
-    private String getClassAndMethodAndParameterNames(String className, String methodName, String paramNames) {
-        StringBuffer buffer = new StringBuffer(className).append(SPACE).append(methodName);
-        if (!paramNames.equals(EMPTY)) {
-            buffer.append(SPACE).append(paramNames);
-        }
-        return buffer.toString();
-    }
 
     private String toNamesCSV(Class[] parameterTypes) {
         StringBuffer sb = new StringBuffer(EMPTY);

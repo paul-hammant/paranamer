@@ -29,27 +29,6 @@ public interface Paranamer {
     int NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER = 3;
 
     /**
-     * Lookup a method 
-     * 
-     * @param classLoader the ClassLoader used for the lookup
-     * @param className the name of the class to which the method belongs
-     * @param methodName the method names
-     * @param paramNames the CSV of the parameters of the method 
-     * @return A Method or <code>null</null> if method not found 
-     */
-    public Method lookupMethod(ClassLoader classLoader, String className, String methodName, String paramNames);
-
-    /**
-     * Lookup a constructor
-     * 
-     * @param classLoader the ClassLoader used for the lookup
-     * @param className the name of the class to which the constructor belongs
-     * @param paramNames the CSV of the parameters of the constructor
-     * @return A Constructor or <code>null</null> if constructor not found 
-     */
-    public Constructor lookupConstructor(ClassLoader classLoader, String className, String paramNames);
-
-    /**
      * Lookup the parameter names of a given method
      *
      * @param method the Method for which the parameter names are looked up
