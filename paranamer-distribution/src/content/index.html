@@ -378,8 +378,10 @@ called 'lookup' that does the business:</p>
 <div class="code">
 <div class="codeHeader"><b>MySomethingOrOther.java</b></div>
 <div class="codeContent">
-<pre class="code-java"> 
- <span class="code-object">String[] parameterNames = new DefaultParanamer().lookupParameterNames(method)
+<pre class="code-java"><span class="code-object">
+ Method method = Foo.class.getMethod(...);<br>
+ Paranamer paranamer = new DefaultParanamer();<br> 
+ String[] parameterNames = paranamer.lookupParameterNames(method)
  </span><br></pre>
 </div>
 </div>
