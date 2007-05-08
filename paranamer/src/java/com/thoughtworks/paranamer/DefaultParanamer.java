@@ -19,7 +19,6 @@ import java.util.List;
 public class DefaultParanamer implements Paranamer {
     
     private static final String[] EMPTY_NAMES = new String[]{};
-    private static final String EMPTY = "";
     private static final String COMMA = ",";
     private static final String DOT = ".";
     private static final String SPACE = " ";
@@ -108,7 +107,7 @@ public class DefaultParanamer implements Paranamer {
     }
 
     private String parameterNamesCSV(Class[] parameterTypes) {
-        StringBuffer sb = new StringBuffer(EMPTY);
+        StringBuffer sb = new StringBuffer();
         for (int i = 0; i < parameterTypes.length; i++) {
             sb.append(parameterTypes[i].getName());
             if (i < parameterTypes.length - 1) {
