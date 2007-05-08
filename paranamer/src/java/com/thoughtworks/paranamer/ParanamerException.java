@@ -1,12 +1,12 @@
 package com.thoughtworks.paranamer;
 
 /**
- * Based expection for all checked Paranamer exceptions
+ * Base expection for all Paranamer exceptions
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
  */
-public class ParanamerException extends Exception {
+public class ParanamerException extends RuntimeException {
     public ParanamerException(String message) {
         super(message);
     }
