@@ -40,29 +40,35 @@ public class DefaultParanamer implements Paranamer {
             return EMPTY_NAMES;
         }
         Class declaringClass = method.getDeclaringClass();
-        String parameterTypeNames = toNamesCSV(method.getParameterTypes());
-        String prefix = declaringClass.getName() + SPACE + method.getName();
+        String parameterTypeNames = parameterNamesCSV(method.getParameterTypes());
+        String prefix = join(new String[]{declaringClass.getName(), method.getName()}, SPACE, false);
         return getNames(declaringClass, parameterTypeNames, prefix);
     }
-
+    
     public String[] lookupParameterNames(Constructor constructor) {
         if (constructor.getParameterTypes().length == 0) { 
             // no arguments ... return empty names
             return EMPTY_NAMES;
         }
         Class declaringClass = constructor.getDeclaringClass();
-        String parameterTypeNames = toNamesCSV(constructor.getParameterTypes());
-        String prefix = declaringClass.getName() + SPACE + constructor.getName().substring(constructor.getName().lastIndexOf(DOT)+1);
+        String parameterTypeNames = parameterNamesCSV(constructor.getParameterTypes());
+        String prefix = join(new String[]{declaringClass.getName(),  methodName(constructor)}, SPACE, false);
         return getNames(declaringClass, parameterTypeNames, prefix);
     }
 
+    private String methodName(Constructor constructor) {
+        return constructor.getName().substring(constructor.getName().lastIndexOf(DOT)+1);
+    }
+
     private String[] getNames(Class declaringClass, String parameterTypeNames, String prefix) {
-        List results = filterLinesByPrefix(getParameterListResource(declaringClass.getClassLoader()), prefix);
-        for (int i = 0; i < results.size(); i++) {
-            String definition = (String) results.get(i);
-            if (definition.endsWith(parameterTypeNames)) {
-                String csvNames = definition.substring(prefix.length() + 1, definition.lastIndexOf(parameterTypeNames)).trim();
-                return csvNames.split(COMMA);
+        List lines = filterLinesByPrefix(getParameterListResource(declaringClass.getClassLoader()), prefix);
+        for (int i = 0; i < lines.size(); i++) {
+            String line = (String) lines.get(i);
+            String[] parts = line.split(SPACE);
+            // assumes line structure:  package method parameterNames parameterTypeNames
+            if ( parts.length == 4 && parts[3].equals(parameterTypeNames) ){
+              String parameterNames = parts[2];
+              return parameterNames.split(COMMA);                
             }
         }
         return null;
@@ -74,15 +80,15 @@ public class DefaultParanamer implements Paranamer {
         if (reader == null) {
             return NO_PARAMETER_NAMES_LIST;
         }
-        String clazzName = className + SPACE;
-        List lines = filterLinesByPrefix(reader, clazzName);
+        String prefix = join(new String[]{className}, SPACE, true);
+        List lines = filterLinesByPrefix(reader, prefix);
         if (lines.size() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS;
         }
         reader = getParameterListResource(classLoader);
 
-        String classAndConstructorOrMethodNames = className + SPACE + constructorOrMethodName + SPACE;
-        lines = filterLinesByPrefix(reader, classAndConstructorOrMethodNames);
+        prefix = join(new String[]{className, constructorOrMethodName}, SPACE, true); 
+        lines = filterLinesByPrefix(reader, prefix);
         if (lines.size() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
         }
@@ -90,8 +96,18 @@ public class DefaultParanamer implements Paranamer {
         return PARAMETER_NAMES_FOUND;
     }
 
+    private String join(String[] parts, String separator, boolean trailingSeparator){
+        StringBuffer sb = new StringBuffer();
+        for ( int i = 0; i < parts.length; i++ ){
+            sb.append(parts[i]);
+            if ( i < parts.length - 1 || trailingSeparator ){
+                sb.append(separator);
+            }
+        }
+        return sb.toString();
+    }
 
-    private String toNamesCSV(Class[] parameterTypes) {
+    private String parameterNamesCSV(Class[] parameterTypes) {
         StringBuffer sb = new StringBuffer(EMPTY);
         for (int i = 0; i < parameterTypes.length; i++) {
             sb.append(parameterTypes[i].getName());
@@ -144,16 +160,15 @@ public class DefaultParanamer implements Paranamer {
         try {
             return lineReader.readLine();
         } catch (IOException e) {
-            return null; // or throw an exception if you prefer
+            return null; 
         }
     }
 
     public String toString() {
         return new StringBuffer()
-                .append("[DefaultParanamer paranamerResource=")
-                .append(paranamerResource)
-                .append("]")
-                .toString();
+        .append("[DefaultParanamer paranamerResource=")
+        .append(paranamerResource)
+        .append("]").toString();
     }
 
 }

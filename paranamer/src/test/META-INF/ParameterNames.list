@@ -5,11 +5,6 @@ com.thoughtworks.paranamer.CachingParanamer toString
 com.thoughtworks.paranamer.CachingParanamer lookupConstructor classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String
 com.thoughtworks.paranamer.CachingParanamer lookupMethod classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
 com.thoughtworks.paranamer.CachingParanamer lookupParameterNames method java.lang.Method
-com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer
-com.thoughtworks.paranamer.CheckedParanamer CheckedParanamer delegate com.thoughtworks.paranamer.Paranamer
-com.thoughtworks.paranamer.CheckedParanamer toString 
-com.thoughtworks.paranamer.CheckedParanamer checkedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.CheckedParanamer checkedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
 com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer 
 com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer paranamerResource java.lang.String 
 com.thoughtworks.paranamer.DefaultParanamer toString 
@@ -19,9 +14,3 @@ com.thoughtworks.paranamer.DefaultParanamer lookupMethod classLoader,className,m
 com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames method java.lang.Method
 com.thoughtworks.paranamer.ParanamerException ParanamerException message java.lang.String
 com.thoughtworks.paranamer.ParanamerRuntimeException ParanamerRuntimeException message java.lang.String
-com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer
-com.thoughtworks.paranamer.UncheckedParanamer UncheckedParanamer delegate com.thoughtworks.paranamer.Paranamer
-com.thoughtworks.paranamer.UncheckedParanamer toString 
-com.thoughtworks.paranamer.UncheckedParanamer uncheckedConstructorLookup classLoader,className,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String
-com.thoughtworks.paranamer.UncheckedParanamer uncheckedMethodLookup classLoader,className,methodName,paramNames java.lang.ClassLoader,java.lang.String,java.lang.String,java.lang.String
-
