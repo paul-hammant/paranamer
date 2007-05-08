@@ -50,9 +50,7 @@ public class CachingParanamer implements Paranamer {
 
     public String toString() {
          return new StringBuffer("[CachingParanamer delegate=")
-                 .append(delegate)
-                 .append(", classLoaders=")
-                 .append("]").toString();
+         .append(delegate).append("]").toString();
      }
 
 }
