@@ -11,6 +11,14 @@ import java.util.WeakHashMap;
  * @author Mauro Talevi
  */
 public class CachingParanamer implements Paranamer {
+
+    private static final String __PARANAMER_DATA = "Paranamer version=1.0 \n"
+        + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer \n"
+        + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer delegate \n"
+        + "com.thoughtworks.paranamer.CachingParanamer toString \n"
+        + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.Constructor constructor \n"
+        + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.Method method \n";
+
     private final Paranamer delegate;
     private final WeakHashMap methodCache = new WeakHashMap();
 

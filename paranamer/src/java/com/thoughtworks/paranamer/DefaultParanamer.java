@@ -1,14 +1,10 @@
 package com.thoughtworks.paranamer;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
-import java.io.Reader;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.net.URL;
@@ -18,6 +14,7 @@ import java.net.URL;
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
+ * @author Guilherme Silveira
  */
 public class DefaultParanamer implements Paranamer {
     
@@ -25,6 +22,13 @@ public class DefaultParanamer implements Paranamer {
     private static final String COMMA = ",";
     private static final String DOT = ".";
     private static final String SPACE = " ";
+
+    private static final String __PARANAMER_DATA = "Paranamer version=1.0 \n"
+        + "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer \n"
+        + "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer java.lang.String paranamerResource \n"
+        + "com.thoughtworks.paranamer.DefaultParanamer toString \n"
+        + "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames java.lang.Constructor constructor \n"
+        + "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames java.lang.Method method \n";
 
     private String paranamerResource;
 
@@ -134,21 +138,22 @@ public class DefaultParanamer implements Paranamer {
     }
 
     private Reader getParameterListResource(Class declaringClass, ClassLoader classLoader) {
-
-        URL location = declaringClass.getProtectionDomain().getCodeSource().getLocation();
-        String jar = location.getFile();
-
-        InputStream inputStream = classLoader.getResourceAsStream(paranamerResource);
-        if (inputStream == null) {
-            try {
-                inputStream = new FileInputStream(jar + paranamerResource);
-            } catch (Exception e) {
+        try {
+            Field field = declaringClass.getDeclaredField("__PARANAMER_DATA");
+            // TODO create acc test which finds field?
+            // TODO create acc test which does not find field?
+            // TODO create acc test what to do with private? access anyway?
+            // TODO create acc test with non static field?
+            // TODO create acc test with another type of field?
+            if(!Modifier.isStatic(field.getModifiers()) || !field.getType().equals(String.class)) {
+                return null;
             }
-        }
-        if (inputStream == null) {
+            return new StringReader((String) field.get(null));
+        } catch (NoSuchFieldException e) {
+            return null;
+        } catch (IllegalAccessException e) {
             return null;
         }
-        return new InputStreamReader(inputStream);
     }
 
     /**

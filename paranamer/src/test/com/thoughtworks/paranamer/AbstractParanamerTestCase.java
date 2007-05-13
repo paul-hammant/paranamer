@@ -11,6 +11,7 @@ import junit.framework.TestCase;
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
+ * @author Guilherme Silveira
  */
 public abstract class AbstractParanamerTestCase extends TestCase {
 

@@ -10,7 +10,8 @@ import com.thoughtworks.paranamer.ParanamerConstants;
 public class QdoxParanamerGeneratorTestCase extends AbstractQDoxParanamerTestCase {
 
     String allParameters = 
-              "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator QdoxParanamerGenerator \n"
+              "com.thoughtworks.paranamer.generator.Enhancer enhance java.io.File,java.lang.String file,content \n"
+            + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator QdoxParanamerGenerator \n"
             + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator QdoxParanamerGenerator java.lang.String paranamerResource \n"
             + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator generate java.lang.String sourcePath \n"
             + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator write java.lang.String,java.lang.String outputPath,content \n";
@@ -22,8 +23,11 @@ public class QdoxParanamerGeneratorTestCase extends AbstractQDoxParanamerTestCas
     }
 
     public void testCanGenerateParameterNamesFromSource() throws Exception {
+        System.out.println(generator.generate(getSourcePath()));
         assertEquals(allParameters, generator.generate(getSourcePath()));
     }
+
+
 
     private String getSourcePath() {
         return new File(".").getAbsolutePath() + "/src/java";
@@ -44,5 +48,6 @@ public class QdoxParanamerGeneratorTestCase extends AbstractQDoxParanamerTestCas
         dir.mkdirs();
         return dir;
     }
- 
+
+
 }

@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Qdox-based implementation of ParanamerGenerator which parses Java source files to generate
@@ -19,6 +19,7 @@ import java.util.Arrays;
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
+ * @author Guilherme Silveira
  */
 public class QdoxParanamerGenerator implements ParanamerGenerator {
     
@@ -28,6 +29,7 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     private static final String COMMA = ",";
     private static final String EMPTY = "";
     private final String paranamerResource;
+    private final Map types = new HashMap();
 
     public QdoxParanamerGenerator() {
         this(ParanamerConstants.DEFAULT_PARANAMER_RESOURCE);
@@ -56,7 +58,9 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
             JavaClass javaClass = classes[i];
             if (!javaClass.isInterface()) {
                 String className = javaClass.getPackage() + DOT + javaClass.getName();
-                sb.append(addMethods(javaClass.getMethods(), className));
+                String content = addMethods(javaClass.getMethods(), className);
+                this.types.put(javaClass.getFullyQualifiedName(), content);
+                sb.append(content);
             }
         }
         return sb.toString();
@@ -129,6 +133,14 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         pw.println(ParanamerConstants.HEADER);
         pw.println(content);
         pw.close();
+        Enhancer enhancer = new Enhancer();
+        for(Iterator it = types.entrySet().iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            String fullyQualifiedName = (String) entry.getKey();
+            // TODO problem with inner classes
+            File file = new File(outputPath, fullyQualifiedName.replace('.',File.separatorChar));
+            enhancer.enhance(file, (String) entry.getValue());
+        }
     }
 
     private void ensureParentDirectoriesExist(String path) {
