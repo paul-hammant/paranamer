@@ -127,6 +127,7 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     }
 
     public void write(String outputPath, String content) throws IOException {
+        //System.err.println("--> " + content + " <--");
         String path = outputPath + File.separator + paranamerResource;
         ensureParentDirectoriesExist(path);
         PrintWriter pw = new PrintWriter(new FileWriter(path));

@@ -10,7 +10,7 @@ import com.thoughtworks.paranamer.ParanamerConstants;
 public class QdoxParanamerGeneratorTestCase extends AbstractQDoxParanamerTestCase {
 
     String allParameters = 
-              "com.thoughtworks.paranamer.generator.Enhancer enhance java.io.File,java.lang.String file,content \n"
+              "com.thoughtworks.paranamer.generator.Enhancer enhance java.io.File,java.lang.String classFile,parameterNameData \n"
             + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator QdoxParanamerGenerator \n"
             + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator QdoxParanamerGenerator java.lang.String paranamerResource \n"
             + "com.thoughtworks.paranamer.generator.QdoxParanamerGenerator generate java.lang.String sourcePath \n"
