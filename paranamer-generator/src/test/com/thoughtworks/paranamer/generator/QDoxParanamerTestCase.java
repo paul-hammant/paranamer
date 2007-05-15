@@ -1,33 +1,19 @@
 package com.thoughtworks.paranamer.generator;
 
-import junit.framework.TestCase;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.Attribute;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.MethodVisitor;
+import junit.framework.TestCase;
 
 public class QDoxParanamerTestCase extends TestCase {
 
     private String root;
 
     protected void setUp() throws Exception {
-        String filePath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-        File path = new File(filePath);
-        while(!path.getAbsolutePath().endsWith("trunk")) {
-            path = path.getParentFile();
-        }
-
         ParanamerGenerator generator = new QdoxParanamerGenerator();
-        root = new File(path, "paranamer-generator").getAbsolutePath();
+        root = new File(".").getAbsolutePath();
         generator.processSourcePath(root + "/src/test", root + "/target/test-classes/");
     }
 
@@ -50,8 +36,8 @@ public class QDoxParanamerTestCase extends TestCase {
     }
 
     private static class MyClassLoader extends ClassLoader {
-        public Class defineEnhancerClass(byte[] b, int len) {
-            return defineClass("com.thoughtworks.paranamer.generator.Elephant", b, 0, b.length);
+        public Class defineEnhancerClass(byte[] bytes, int length) {
+            return defineClass("com.thoughtworks.paranamer.generator.Elephant", bytes, 0, bytes.length);
         }
     }
 }
