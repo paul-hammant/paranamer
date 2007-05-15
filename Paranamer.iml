@@ -69,10 +69,12 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/asm/asm/3.0_RC1/asm-3.0_RC1.jar!/" />
+          <root url="jar://$M2_REPOSITORY$/asm/asm/3.0/asm-3.0.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../../Desktop/asm-3.0/src.zip!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntryProperties />

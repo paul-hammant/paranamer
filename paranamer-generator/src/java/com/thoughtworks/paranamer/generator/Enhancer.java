@@ -13,6 +13,7 @@ import java.io.*;
 public class Enhancer implements Opcodes {
 
     public void enhance(File classFile, String parameterNameData) throws IOException {
+
         byte[] classBytecode = addExtraStaticField(classFile, parameterNameData);
         FileOutputStream os = new FileOutputStream(classFile);
         os.write(classBytecode);

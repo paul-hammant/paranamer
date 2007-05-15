@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
-import java.net.URL;
+import java.util.Collections;
 
 /**
  * Default implementation of Paranamer
@@ -23,21 +23,14 @@ public class DefaultParanamer implements Paranamer {
     private static final String DOT = ".";
     private static final String SPACE = " ";
 
-    private static final String __PARANAMER_DATA = "Paranamer version=1.0 \n"
-        + "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer \n"
-        + "com.thoughtworks.paranamer.DefaultParanamer DefaultParanamer java.lang.String paranamerResource \n"
-        + "com.thoughtworks.paranamer.DefaultParanamer toString \n"
-        + "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames java.lang.Constructor constructor \n"
-        + "com.thoughtworks.paranamer.DefaultParanamer lookupParameterNames java.lang.Method method \n";
-
-    private String paranamerResource;
+    private static final String __PARANAMER_DATA = "v1.0 \n"
+        + "DefaultParanamer \n"
+        + "DefaultParanamer java.lang.String paranamerResource \n"
+        + "toString \n"
+        + "lookupParameterNames java.lang.Constructor constructor \n"
+        + "lookupParameterNames java.lang.Method method \n";
 
     public DefaultParanamer() {
-        this(ParanamerConstants.DEFAULT_PARANAMER_RESOURCE);
-    }
-
-    public DefaultParanamer(String paranamerResource) {
-        this.paranamerResource = paranamerResource;
     }
 
     public String[] lookupParameterNames(Method method) {
@@ -48,7 +41,7 @@ public class DefaultParanamer implements Paranamer {
         Class declaringClass = method.getDeclaringClass();
         String methodName = method.getName();
         String parameterTypeNames = parameterNamesCSV(method.getParameterTypes());
-        String prefix = join(new String[]{declaringClass.getName(), methodName}, SPACE, false);
+        String prefix = join(new String[]{methodName}, SPACE, false);
         String[] names = getNames(declaringClass, parameterTypeNames, prefix);
         if ( names == null ){
             throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', method "+methodName
@@ -65,7 +58,7 @@ public class DefaultParanamer implements Paranamer {
         Class declaringClass = constructor.getDeclaringClass();
         String methodName = methodName(constructor);
         String parameterTypeNames = parameterNamesCSV(constructor.getParameterTypes());
-        String prefix = join(new String[]{declaringClass.getName(),  methodName}, SPACE, false);
+        String prefix = join(new String[]{methodName}, SPACE, false);
         String[] names = getNames(declaringClass, parameterTypeNames, prefix);
         if ( names == null ){
             throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', constructor "+methodName
@@ -78,15 +71,16 @@ public class DefaultParanamer implements Paranamer {
         return constructor.getName().substring(constructor.getName().lastIndexOf(DOT)+1);
     }
 
-    private String[] getNames(Class declaringClass, String parameterTypeNames, String prefix) {
+    private String[] getNames(Class declaringClass, String parameterTypes, String prefix) {
         ClassLoader loader = declaringClass.getClassLoader();
-        List lines = filterLinesByPrefix(getParameterListResource(declaringClass, loader), prefix);
+        String data = getParameterListResource(declaringClass, loader);
+        List lines = filterLinesByPrefix(data, prefix);
         for (int i = 0; i < lines.size(); i++) {
             String line = (String) lines.get(i);
             String[] parts = line.split(SPACE);
-            // assumes line structure:  className methodName parameterTypeNames parameterNames
-            if ( parts.length == 4 && parts[2].equals(parameterTypeNames) ){
-              String parameterNames = parts[3];
+            // assumes line structure: methodName parameterTypes parameterNames
+            if ( parts.length == 3 && parts[1].equals(parameterTypes) ){
+              String parameterNames = parts[2];
               return parameterNames.split(COMMA);                
             }
         }
@@ -94,20 +88,14 @@ public class DefaultParanamer implements Paranamer {
     }
 
     public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String constructorOrMethodName) {
-        Reader reader = getParameterListResource(clazz, classLoader);
+        String data = getParameterListResource(clazz, classLoader);
         
-        if (reader == null) {
+        if (data == null) {
             return NO_PARAMETER_NAMES_LIST;
         }
-        String prefix = join(new String[]{clazz.getName()}, SPACE, true);
-        List lines = filterLinesByPrefix(reader, prefix);
-        if (lines.size() == 0) {
-            return NO_PARAMETER_NAMES_FOR_CLASS;
-        }
-        reader = getParameterListResource(clazz, classLoader);
 
-        prefix = join(new String[]{clazz.getName(), constructorOrMethodName}, SPACE, true);
-        lines = filterLinesByPrefix(reader, prefix);
+        String prefix = join(new String[]{constructorOrMethodName}, SPACE, true);
+        List lines = filterLinesByPrefix(data, prefix);
         if (lines.size() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
         }
@@ -137,7 +125,7 @@ public class DefaultParanamer implements Paranamer {
         return sb.toString();
     }
 
-    private Reader getParameterListResource(Class declaringClass, ClassLoader classLoader) {
+    private String getParameterListResource(Class declaringClass, ClassLoader classLoader) {
         try {
             Field field = declaringClass.getDeclaredField("__PARANAMER_DATA");
             // TODO create acc test which finds field?
@@ -148,7 +136,8 @@ public class DefaultParanamer implements Paranamer {
             if(!Modifier.isStatic(field.getModifiers()) || !field.getType().equals(String.class)) {
                 return null;
             }
-            return new StringReader((String) field.get(null));
+            String s = (String) field.get(null);
+            return s;
         } catch (NoSuchFieldException e) {
             return null;
         } catch (IllegalAccessException e) {
@@ -158,14 +147,19 @@ public class DefaultParanamer implements Paranamer {
 
     /**
      * Filter the mappings and only return lines matching the prefix passed in.
-     * @param resource the Reader encoding the mappings
+     * @param data the data encoding the mappings
      * @param prefix the String prefix
      * @return A list of lines that match the prefix
      */
-    private List filterLinesByPrefix(Reader resource, String prefix) {
+    private List filterLinesByPrefix(String data, String prefix) {
         List lines = new ArrayList();
+        if (data == null) {
+            return Collections.EMPTY_LIST;
+        }
+        StringReader sr = new StringReader(data);
+
         try {
-            LineNumberReader lineReader = new LineNumberReader(resource);
+            LineNumberReader lineReader = new LineNumberReader(sr);
             String line = readLine(lineReader);
 
             while (line != null) {
@@ -176,12 +170,8 @@ public class DefaultParanamer implements Paranamer {
             }
             return lines;
         } finally {
-            try {
-                if (resource != null) {
-                    resource.close();
-                }
-            } catch (IOException ignore) {
-                // ignore
+            if (sr != null) {
+                sr.close();
             }
         }
     }
@@ -197,7 +187,6 @@ public class DefaultParanamer implements Paranamer {
     public String toString() {
         return new StringBuffer()
         .append("[DefaultParanamer paranamerResource=")
-        .append(paranamerResource)
         .append("]").toString();
     }
 

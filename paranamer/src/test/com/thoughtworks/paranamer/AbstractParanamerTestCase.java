@@ -38,9 +38,9 @@ public abstract class AbstractParanamerTestCase extends TestCase {
     }
 
     public void testLookupParameterNamesForConstructorWithStringArg() throws Exception {
-        Constructor ctor = DefaultParanamer.class.getConstructor(new Class[] {String.class});
+        Constructor ctor = ParameterNamesNotFoundException.class.getConstructor(new Class[] {String.class});
         String[] names = paranamer.lookupParameterNames(ctor);
-        assertThatParameterNamesMatch("paranamerResource", names);
+        assertThatParameterNamesMatch("message", names);
     }
 
     protected void assertThatParameterNamesMatch(String csv, String[] names) {

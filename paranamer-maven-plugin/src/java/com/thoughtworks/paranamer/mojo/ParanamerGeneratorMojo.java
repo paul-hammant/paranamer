@@ -14,7 +14,7 @@ import java.io.IOException;
  * Mojo to generate parameter names via ParanamerGenerator
  *
  * @author Mauro Talevi
- * @goal generate
+ * @goal processSourcePath
  * @phase compile
  * @requiresDependencyResolution compile
  */
@@ -44,9 +44,9 @@ public class ParanamerGeneratorMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         getLog().debug("Generating parameter names from " + sourceDirectory + " to " + outputDirectory);
         try {
-            generator.write(outputDirectory, generator.generate(sourceDirectory));
+            generator.processSourcePath(sourceDirectory, outputDirectory);
         } catch (IOException e) {
-            throw new MojoExecutionException("Failed to generate parameter names", e);
+            throw new MojoExecutionException("Failed to processSourcePath parameter names", e);
         }
     }
 

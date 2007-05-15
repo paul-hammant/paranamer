@@ -9,7 +9,7 @@ import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
 import java.io.IOException;
 
 /**
-* Ant Task to generate parameter names via ParanamerGenerator
+* Ant Task to processSourcePath parameter names via ParanamerGenerator
 * 
 * @author Paul Hammant
 * @author Mauro Talevi
@@ -20,10 +20,9 @@ public class ParanamerGeneratorTask extends Task {
     private String outputDirectory;
 
     public void execute() throws BuildException {
-        String parameterText = generator.generate(sourceDirectory);
         try {
-            generator.write(outputDirectory, parameterText);
-            System.out.println("Generated " + parameterText.length() + " characters of Parameter Name Data in '" + outputDirectory + "'");
+            generator.processSourcePath(sourceDirectory, outputDirectory);
+            System.out.println("Generated Parameter Name Data for '"+sourceDirectory+"' in '" + outputDirectory + "'");
         } catch (IOException e) {
             throw new BuildException("Paranamer encountered an IOException", e);
         }

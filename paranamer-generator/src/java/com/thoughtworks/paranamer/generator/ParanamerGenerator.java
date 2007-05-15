@@ -11,8 +11,6 @@ import java.io.IOException;
  */
 public interface ParanamerGenerator {
 
-    String generate(String sourcePath);
-
-    void write(String outputPath, String content) throws IOException;
+    void processSourcePath(String sourcePath, String outputPath) throws IOException;
 
 }

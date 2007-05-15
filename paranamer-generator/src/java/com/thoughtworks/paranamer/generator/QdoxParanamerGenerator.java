@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 /**
- * Qdox-based implementation of ParanamerGenerator which parses Java source files to generate
+ * Qdox-based implementation of ParanamerGenerator which parses Java source files to processSourcePath
  * parameter names lists.
  * 
  * @author Paul Hammant
@@ -23,25 +23,17 @@ import java.util.*;
  */
 public class QdoxParanamerGenerator implements ParanamerGenerator {
     
-    private static final String DOT = ".";
     private static final String SPACE  = " ";
     private static final String NEWLINE = "\n";
     private static final String COMMA = ",";
     private static final String EMPTY = "";
-    private final String paranamerResource;
-    private final Map types = new HashMap();
 
     public QdoxParanamerGenerator() {
-        this(ParanamerConstants.DEFAULT_PARANAMER_RESOURCE);
     }
 
-    public QdoxParanamerGenerator(String paranamerResource) {
-        this.paranamerResource = paranamerResource;
-    }
-
-    public String generate(String sourcePath) {
+    public void processSourcePath(String sourcePath, String outputPath) throws IOException {
         JavaClass[] classes = getClassesSortedByName(sourcePath);
-        return format(classes);
+        processClasses(classes, outputPath);
     }
 
     private JavaClass[] getClassesSortedByName(String sourcePath) {
@@ -52,53 +44,52 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         return classes;
     }
 
-    private String format(JavaClass[] classes) {
-        StringBuffer sb = new StringBuffer();
+    private void processClasses(JavaClass[] classes, String outputPath) throws IOException {
         for (int i = 0; i < classes.length; i++) {
             JavaClass javaClass = classes[i];
             if (!javaClass.isInterface()) {
-                String className = javaClass.getPackage() + DOT + javaClass.getName();
-                String content = addMethods(javaClass.getMethods(), className);
-                this.types.put(javaClass.getFullyQualifiedName(), content);
-                sb.append(content);
+                String content = addMethods(javaClass.getMethods());
+                Enhancer enhancer = new Enhancer();
+                // TODO problem with inner classes
+                File classFile = new File(outputPath, javaClass.getFullyQualifiedName().replace('.',File.separatorChar) + ".class");
+                enhancer.enhance(classFile, content);
+
             }
         }
-        return sb.toString();
     }
 
-    private String addMethods(JavaMethod[] methods, String className) {
+    private String addMethods(JavaMethod[] methods) {
         Arrays.sort(methods);
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < methods.length; i++) {
             JavaMethod javaMethod = methods[i];
             if (Arrays.asList(javaMethod.getModifiers()).contains("public")) {
-                buffer.append(addPublicMethod(javaMethod, className));
+                buffer.append(addPublicMethod(javaMethod));
             }
         }
         return buffer.toString();
     }
 
-    private String addPublicMethod(JavaMethod method, String className) {
+    private String addPublicMethod(JavaMethod method) {
         JavaParameter[] parameters = method.getParameters();
         DocletTag[] alsoKnownAs = method.getTagsByName("previousParamNames");
-        return format(method, className, parameters, alsoKnownAs);
+        return format(method, parameters, alsoKnownAs);
     }
 
-    private String format(JavaMethod method, String className, JavaParameter[] parameters, DocletTag[] alsoKnownAs) {
+    private String format(JavaMethod method, JavaParameter[] parameters, DocletTag[] alsoKnownAs) {
         StringBuffer sb = new StringBuffer();
         String methodName = method.getName();
         String parameterTypes = getParameterTypes(parameters);
-        sb.append(formatLine(className, methodName, parameterTypes, getParameterNames(parameters)));
+        sb.append(formatLine(methodName, parameterTypes, getParameterNames(parameters)));
         for (int i = 0; i < alsoKnownAs.length; i++) {
-            sb.append(formatLine(className, methodName, parameterTypes, alsoKnownAs[i].getValue()));
+            sb.append(formatLine(methodName, parameterTypes, alsoKnownAs[i].getValue()));
         }
         return sb.toString();
     }
     
-    private String formatLine(String className, String methodName, String paramTypes, String paramNames){
+    private String formatLine(String methodName, String paramTypes, String paramNames){
         StringBuffer sb = new StringBuffer();
-        // format line structure:  className methodName paramTypes paramNames        
-        sb.append(className).append(SPACE);
+        // processClasses line structure:  methodName paramTypes paramNames
         sb.append(methodName).append(SPACE);
         if ( paramTypes.length() > 0 ) {
             sb.append(paramTypes.trim()).append(SPACE);
@@ -124,31 +115,6 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
             sb.append(comma(i, parameters.length));
         }
         return sb.toString();
-    }
-
-    public void write(String outputPath, String content) throws IOException {
-        //System.err.println("--> " + content + " <--");
-        String path = outputPath + File.separator + paranamerResource;
-        ensureParentDirectoriesExist(path);
-        PrintWriter pw = new PrintWriter(new FileWriter(path));
-        pw.println(ParanamerConstants.HEADER);
-        pw.println(content);
-        pw.close();
-        Enhancer enhancer = new Enhancer();
-        for(Iterator it = types.entrySet().iterator(); it.hasNext();) {
-            Map.Entry entry = (Map.Entry) it.next();
-            String fullyQualifiedName = (String) entry.getKey();
-            // TODO problem with inner classes
-            File file = new File(outputPath, fullyQualifiedName.replace('.',File.separatorChar));
-            enhancer.enhance(file, (String) entry.getValue());
-        }
-    }
-
-    private void ensureParentDirectoriesExist(String path) {
-        File file = new File(path);
-        if ( file.getParentFile() != null ){
-            file.getParentFile().mkdirs();
-        }
     }
 
     private String comma(int index, int size) {
