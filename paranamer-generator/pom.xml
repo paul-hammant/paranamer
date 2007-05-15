@@ -16,7 +16,7 @@
       <version>${pom.version}</version>
     </dependency>
     <dependency>
-      <groupId>qdox</groupId>
+      <groupId>com.thoughtworks.qdox</groupId>
       <artifactId>qdox</artifactId>
       <version>1.7-SNAPSHOT</version>
       <scope>compile</scope>
