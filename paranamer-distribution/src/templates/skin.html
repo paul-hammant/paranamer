@@ -1,0 +1,62 @@
+<head>
+    <title>Paranamer - ${title}</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+        ${head}
+
+	<script type="text/javascript"><!--
+		google_ad_client = "pub-3023399591478482";
+		google_ad_width = 468;
+		google_ad_height = 60;
+		google_ad_format = "468x60_as";
+		google_ad_type = "text_image";
+		google_ad_channel = "7321085054"; //unity-top
+		google_color_border = "FFFFFF";
+		google_color_bg = "FFFFFF";
+		google_color_link = "557755";
+		google_color_url = "557755";
+		google_color_text = "333333";
+		//--></script>
+	<script type="text/javascript" src="show_ads.js">
+		</script> 
+</head>
+
+<body>
+
+<div id="header">
+
+<h1><a href="/"><img src="ParaNamer.jpg" alt="ParaNamer"
+ class="spaceLogo"
+ style="border: 0px solid ; width: 439px; height: 81px;"></a></h1>
+
+<h2>Method Parameter Name Access for versions of Java PRIOR TO Java 7.0
+</h2>
+</div>
+
+
+        <div id="center" class="Content2Column">  <!-- Content3Column for index -->
+            <div id="content">
+                ${body}
+
+            </div>
+        </div>
+
+        <div class="SidePanel" id="left">
+            <#list sitemap.sections as section>
+                <div class="MenuGroup">
+                    <h1>${section.name}</h1>
+                    <ul>
+                        <#list section.pages as otherPage>
+                            <#if otherPage = page>
+                                <li class="currentLink">${otherPage.title}</li>
+                            <#else>
+                                <li><a href="${otherPage.href}">${otherPage.title}</a></li>
+                            </#if>
+                        </#list>
+                    </ul>
+                </div>
+            </#list>
+        </div>
+
+
+</body>
+</html>
