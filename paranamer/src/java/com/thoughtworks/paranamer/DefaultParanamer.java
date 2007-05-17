@@ -69,15 +69,12 @@ public class DefaultParanamer implements Paranamer {
 
     private String[] getNames(Class declaringClass, String parameterTypes, String prefix) {
         String data = getParameterListResource(declaringClass);
-        List lines = filterLinesByPrefix(data, prefix + parameterTypes);
-        for (int i = 0; i < lines.size(); i++) {
-            String line = (String) lines.get(i);
-            String[] parts = line.split(SPACE);
-            // assumes line structure: constructorName parameterTypes parameterNames
-            if ( parts.length == 3 && parts[1].equals(parameterTypes) ){
-              String parameterNames = parts[2];
-              return parameterNames.split(COMMA);                
-            }
+        String line = filterLinesByPrefix(data, prefix + parameterTypes);
+        String[] parts = line.split(SPACE);
+        // assumes line structure: constructorName parameterTypes parameterNames
+        if (parts.length == 3 && parts[1].equals(parameterTypes)) {
+            String parameterNames = parts[2];
+            return parameterNames.split(COMMA);
         }
         return null;
     }
@@ -89,8 +86,8 @@ public class DefaultParanamer implements Paranamer {
             return NO_PARAMETER_NAMES_LIST;
         }
 
-        List lines = filterLinesByPrefix(data, constructorOrMethodName + SPACE);
-        if (lines.size() == 0) {
+        String line = filterLinesByPrefix(data, constructorOrMethodName + SPACE);
+        if (line.length() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
         }
 
@@ -134,10 +131,9 @@ public class DefaultParanamer implements Paranamer {
      * @param prefix the String prefix
      * @return A list of lines that match the prefix
      */
-    private List filterLinesByPrefix(String data, String prefix) {
-        List lines = new ArrayList();
+    private String filterLinesByPrefix(String data, String prefix) {
         if (data == null) {
-            return Collections.EMPTY_LIST;
+            return "";
         }
         StringReader sr = new StringReader(data);
 
@@ -147,11 +143,11 @@ public class DefaultParanamer implements Paranamer {
 
             while (line != null) {
                 if (line.startsWith(prefix)) {
-                    lines.add(line.trim());
+                    return line.trim();
                 }
                 line = readLine(lineReader);
             }
-            return lines;
+            return "";
         } finally {
             if (sr != null) {
                 sr.close();
