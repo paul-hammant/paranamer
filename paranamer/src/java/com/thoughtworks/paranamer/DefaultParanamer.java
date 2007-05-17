@@ -5,9 +5,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
 
 /**
  * Default implementation of Paranamer
@@ -69,7 +66,7 @@ public class DefaultParanamer implements Paranamer {
 
     private String[] getNames(Class declaringClass, String parameterTypes, String prefix) {
         String data = getParameterListResource(declaringClass);
-        String line = filterLinesByPrefix(data, prefix + parameterTypes);
+        String line = findFirstMatchingLine(data, prefix + parameterTypes);
         String[] parts = line.split(SPACE);
         // assumes line structure: constructorName parameterTypes parameterNames
         if (parts.length == 3 && parts[1].equals(parameterTypes)) {
@@ -86,7 +83,7 @@ public class DefaultParanamer implements Paranamer {
             return NO_PARAMETER_NAMES_LIST;
         }
 
-        String line = filterLinesByPrefix(data, constructorOrMethodName + SPACE);
+        String line = findFirstMatchingLine(data, constructorOrMethodName + SPACE);
         if (line.length() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
         }
@@ -131,7 +128,7 @@ public class DefaultParanamer implements Paranamer {
      * @param prefix the String prefix
      * @return A list of lines that match the prefix
      */
-    private String filterLinesByPrefix(String data, String prefix) {
+    private String findFirstMatchingLine(String data, String prefix) {
         if (data == null) {
             return "";
         }
