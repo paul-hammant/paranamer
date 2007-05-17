@@ -39,13 +39,11 @@ public class DefaultParanamer implements Paranamer {
             return EMPTY_NAMES;
         }
         Class declaringClass = method.getDeclaringClass();
-        String methodName = method.getName();
         String parameterTypeNames = parameterNamesCSV(method.getParameterTypes());
-        String prefix = join(new String[]{methodName}, SPACE, false);
-        String[] names = getNames(declaringClass, parameterTypeNames, prefix);
+        String[] names = getNames(declaringClass, parameterTypeNames, method.getName() + SPACE);
         if ( names == null ){
-            throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', method "+methodName
-                                        +" and parameter types "+parameterTypeNames);
+            throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', method "+ method.getName()
+                    +" and parameter types "+parameterTypeNames);
         }
         return names;
     }
@@ -56,29 +54,26 @@ public class DefaultParanamer implements Paranamer {
             return EMPTY_NAMES;
         }
         Class declaringClass = constructor.getDeclaringClass();
-        String methodName = methodName(constructor);
         String parameterTypeNames = parameterNamesCSV(constructor.getParameterTypes());
-        String prefix = join(new String[]{methodName}, SPACE, false);
-        String[] names = getNames(declaringClass, parameterTypeNames, prefix);
+        String[] names = getNames(declaringClass, parameterTypeNames, constructorName(constructor) + SPACE);
         if ( names == null ){
-            throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', constructor "+methodName
+            throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', constructor "+ constructorName(constructor)
                     +" and parameter types "+parameterTypeNames);
         }
         return names;
     }
 
-    private String methodName(Constructor constructor) {
+    private String constructorName(Constructor constructor) {
         return constructor.getName().substring(constructor.getName().lastIndexOf(DOT)+1);
     }
 
     private String[] getNames(Class declaringClass, String parameterTypes, String prefix) {
-        ClassLoader loader = declaringClass.getClassLoader();
-        String data = getParameterListResource(declaringClass, loader);
-        List lines = filterLinesByPrefix(data, prefix);
+        String data = getParameterListResource(declaringClass);
+        List lines = filterLinesByPrefix(data, prefix + parameterTypes);
         for (int i = 0; i < lines.size(); i++) {
             String line = (String) lines.get(i);
             String[] parts = line.split(SPACE);
-            // assumes line structure: methodName parameterTypes parameterNames
+            // assumes line structure: constructorName parameterTypes parameterNames
             if ( parts.length == 3 && parts[1].equals(parameterTypes) ){
               String parameterNames = parts[2];
               return parameterNames.split(COMMA);                
@@ -88,30 +83,18 @@ public class DefaultParanamer implements Paranamer {
     }
 
     public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String constructorOrMethodName) {
-        String data = getParameterListResource(clazz, classLoader);
+        String data = getParameterListResource(clazz);
         
         if (data == null) {
             return NO_PARAMETER_NAMES_LIST;
         }
 
-        String prefix = join(new String[]{constructorOrMethodName}, SPACE, true);
-        List lines = filterLinesByPrefix(data, prefix);
+        List lines = filterLinesByPrefix(data, constructorOrMethodName + SPACE);
         if (lines.size() == 0) {
             return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
         }
 
         return PARAMETER_NAMES_FOUND;
-    }
-
-    private String join(String[] parts, String separator, boolean trailingSeparator){
-        StringBuffer sb = new StringBuffer();
-        for ( int i = 0; i < parts.length; i++ ){
-            sb.append(parts[i]);
-            if ( i < parts.length - 1 || trailingSeparator ){
-                sb.append(separator);
-            }
-        }
-        return sb.toString();
     }
 
     private String parameterNamesCSV(Class[] parameterTypes) {
@@ -125,7 +108,7 @@ public class DefaultParanamer implements Paranamer {
         return sb.toString();
     }
 
-    private String getParameterListResource(Class declaringClass, ClassLoader classLoader) {
+    private String getParameterListResource(Class declaringClass) {
         try {
             Field field = declaringClass.getDeclaredField("__PARANAMER_DATA");
             // TODO create acc test which finds field?
