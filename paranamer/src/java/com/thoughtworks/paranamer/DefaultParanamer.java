@@ -131,38 +131,17 @@ public class DefaultParanamer implements Paranamer {
         if (data == null) {
             return "";
         }
-        StringReader sr = new StringReader(data);
-
-        try {
-            LineNumberReader lineReader = new LineNumberReader(sr);
-            String line = readLine(lineReader);
-
-            while (line != null) {
-                if (line.startsWith(prefix)) {
-                    return line.trim();
-                }
-                line = readLine(lineReader);
-            }
-            return "";
-        } finally {
-            if (sr != null) {
-                sr.close();
+        int ix = data.indexOf(prefix);
+        if (ix > 0) {
+            int iy = data.indexOf("\n", ix);
+            if(iy >0) {
+                return data.substring(ix,iy);
             }
         }
-    }
-
-    private String readLine(LineNumberReader lineReader) {
-        try {
-            return lineReader.readLine();
-        } catch (IOException e) {
-            return null; 
-        }
+        return "";
     }
 
     public String toString() {
-        return new StringBuffer()
-        .append("[DefaultParanamer paranamerResource=")
-        .append("]").toString();
+        return super.toString(); 
     }
-
 }

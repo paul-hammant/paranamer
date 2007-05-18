@@ -6,4 +6,10 @@ public class DefaultParanamerTestCase extends AbstractParanamerTestCase {
         paranamer = new DefaultParanamer();
     }
 
+
+//    public void testLookupParameterNamesForConstructorWithStringArg() throws Exception {
+//        for (int i = 0; i < 1000000; i++) {
+//            super.testLookupParameterNamesForConstructorWithStringArg();    //To change body of overridden methods use File | Settings | File Templates.
+//        }
+//    }
 }
