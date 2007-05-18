@@ -2,6 +2,7 @@ package com.thoughtworks.paranamer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.AccessibleObject;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
@@ -13,13 +14,9 @@ public class CachingParanamerTestCase extends TestCase {
     protected void setUp() throws Exception {
         paranamer = new Paranamer() {
 
-            public String[] lookupParameterNames(Method method) {
+            public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
                 count++;
                 return new String[]{"foo","bar"};
-            }
-
-            public String[] lookupParameterNames(Constructor constructor) {
-                return new String[0];
             }
 
             public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String ctorOrMethodName) {

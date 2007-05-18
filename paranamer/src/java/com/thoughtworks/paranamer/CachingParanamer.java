@@ -2,6 +2,7 @@ package com.thoughtworks.paranamer;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.AccessibleObject;
 import java.util.WeakHashMap;
 
 /**
@@ -30,24 +31,13 @@ public class CachingParanamer implements Paranamer {
         this.delegate = delegate;
     }
 
-    public String[] lookupParameterNames(Method method) {
-        if(methodCache.containsKey(method)) {
-            return (String[]) methodCache.get(method);
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
+        if(methodCache.containsKey(methodOrCtor)) {
+            return (String[]) methodCache.get(methodOrCtor);
         }
 
-        String[] names = delegate.lookupParameterNames(method);
-        methodCache.put(method, names);
-
-        return names;
-    }
-
-    public String[] lookupParameterNames(Constructor constructor) {
-        if(methodCache.containsKey(constructor)) {
-            return (String[]) methodCache.get(constructor);
-        }
-
-        String[] names = delegate.lookupParameterNames(constructor);
-        methodCache.put(constructor, names);
+        String[] names = delegate.lookupParameterNames(methodOrCtor);
+        methodCache.put(methodOrCtor, names);
 
         return names;
     }

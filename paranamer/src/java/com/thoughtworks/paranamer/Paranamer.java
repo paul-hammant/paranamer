@@ -2,6 +2,7 @@ package com.thoughtworks.paranamer;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.AccessibleObject;
 
 /**
  * Paranamer allows lookups of methods and constructors by parameter names.
@@ -31,18 +32,10 @@ public interface Paranamer {
     /**
      * Lookup the parameter names of a given method
      *
-     * @param method the Method for which the parameter names are looked up
+     * @param methodOrConstructor the Method or Ctor for which the parameter names are looked up
      * @return A list of the parameter names
      */
-    public String[] lookupParameterNames(Method method);
-
-    /**
-     * Lookup the parameter names of a given constructor
-     *
-     * @param constructor the Constructor for which the parameter names are looked up
-     * @return A list of the parameter names
-     */
-    public String[] lookupParameterNames(Constructor constructor);
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor);
 
 
     /**

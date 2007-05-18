@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.AccessibleObject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,44 +20,32 @@ import com.thoughtworks.paranamer.Paranamer;
  */
 public class AsmParanamer implements Paranamer {
 
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
 
-    public String[] lookupParameterNames(Method method) {
-        InputStream content = getClassAsStream(method.getDeclaringClass());
-		try {
-			ClassReader reader = new ClassReader(content);
-			TypeCollector visitor = new TypeCollector(method.getName(), method
-					.getParameterTypes());
-			reader.accept(visitor, 0);
-			return visitor.getParameterNamesForMethod();
-		} catch (IOException e) {
-			return null;
-		}
-	}
-
-    public String[] lookupParameterNames(Constructor constructor) {
-        InputStream content = getClassAsStream(constructor.getDeclaringClass());
-		try {
-			ClassReader reader = new ClassReader(content);
-			TypeCollector visitor = new TypeCollector("<init>", constructor
-					.getParameterTypes());
-			reader.accept(visitor, 0);
-			return visitor.getParameterNamesForMethod();
-		} catch (IOException e) {
-			return null;
-		}
-    }
-
-    public String[] lookupParameterNamesForConstructor(Constructor ctor) {
-        InputStream content = getClassAsStream(ctor.getDeclaringClass());
-        try {
-            ClassReader reader = new ClassReader(content);
-            TypeCollector visitor = new TypeCollector(ctor.getName(), ctor
-                    .getParameterTypes());
-            reader.accept(visitor, 0);
-            return visitor.getParameterNamesForMethod();
-        } catch (IOException e) {
-            return null;
+        Class[] types = null;
+        Class declaringClass = null;
+        String name = null;
+        if (methodOrCtor instanceof Method) {
+            Method method = (Method) methodOrCtor;
+            types = method.getParameterTypes();
+            name = method.getName();
+            declaringClass = method.getDeclaringClass();
+        } else {
+            Constructor constructor = (Constructor) methodOrCtor;
+            types = constructor.getParameterTypes();
+            declaringClass = constructor.getDeclaringClass();
+            name = "<init>";
         }
+
+        InputStream content = getClassAsStream(declaringClass);
+		try {
+			ClassReader reader = new ClassReader(content);
+			TypeCollector visitor = new TypeCollector(name, types);
+			reader.accept(visitor, 0);
+			return visitor.getParameterNamesForMethod();
+		} catch (IOException e) {
+			return null;
+		}
     }
 
     public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String constructorOrMethodName) {
