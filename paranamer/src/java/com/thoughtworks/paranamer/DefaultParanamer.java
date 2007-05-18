@@ -113,8 +113,7 @@ public class DefaultParanamer implements Paranamer {
             if(!Modifier.isStatic(field.getModifiers()) || !field.getType().equals(String.class)) {
                 return null;
             }
-            String s = (String) field.get(null);
-            return s;
+            return (String) field.get(null);
         } catch (NoSuchFieldException e) {
             return null;
         } catch (IllegalAccessException e) {
