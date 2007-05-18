@@ -79,6 +79,9 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     private String format(JavaMethod method, JavaParameter[] parameters, DocletTag[] alsoKnownAs) {
         StringBuffer sb = new StringBuffer();
         String methodName = method.getName();
+        if (method.isConstructor()) {
+            methodName = "<init>";
+        }
         String parameterTypes = getParameterTypes(parameters);
         sb.append(formatLine(methodName, parameterTypes, getParameterNames(parameters)));
         for (int i = 0; i < alsoKnownAs.length; i++) {

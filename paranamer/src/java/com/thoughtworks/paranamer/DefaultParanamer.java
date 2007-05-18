@@ -21,11 +21,9 @@ public class DefaultParanamer implements Paranamer {
     private static final String SPACE = " ";
 
     private static final String __PARANAMER_DATA = "v1.0 \n"
-        + "DefaultParanamer \n"
-        + "DefaultParanamer java.lang.String paranamerResource \n"
+        + "<init> \n"
         + "toString \n"
-        + "lookupParameterNames java.lang.Constructor constructor \n"
-        + "lookupParameterNames java.lang.Method method \n";
+        + "lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
 
     public DefaultParanamer() {
     }
@@ -44,8 +42,7 @@ public class DefaultParanamer implements Paranamer {
             Constructor constructor = (Constructor) methodOrCtor;
             types = constructor.getParameterTypes();
             declaringClass = constructor.getDeclaringClass();
-            name = constructor.getName();
-            name = name.substring(name.lastIndexOf(DOT)+1);
+            name = "<init>";
         }
 
         if (types.length == 0) {

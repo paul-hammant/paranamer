@@ -9,7 +9,7 @@ package com.thoughtworks.paranamer;
 public class ParameterNamesNotFoundException extends RuntimeException {
 
     static final String __PARANAMER_DATA = "v1.0 \n"
-      + "ParameterNamesNotFoundException java.lang.String message \n";
+      + "<init> java.lang.String message \n";
 
     public ParameterNamesNotFoundException(String message) {
         super(message);
