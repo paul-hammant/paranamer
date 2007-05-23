@@ -48,12 +48,12 @@ public class AsmParanamer implements Paranamer {
 		}
     }
 
-    public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String constructorOrMethodName) {
-        InputStream content = getClassAsStream(classLoader, clazz.getName());
+    public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName) {
+        InputStream content = getClassAsStream(clazz.getClassLoader(), clazz.getName());
         try {
             ClassReader reader = new ClassReader(content);
             //TODO - also for constructors
-            List methods = getMatchingMethods(classLoader, clazz.getName(), constructorOrMethodName);
+            List methods = getMatchingMethods(clazz.getClassLoader(), clazz.getName(), constructorOrMethodName);
             if (methods.size() == 0) {
                 return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
             }

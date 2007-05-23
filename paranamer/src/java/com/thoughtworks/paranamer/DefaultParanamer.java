@@ -17,7 +17,6 @@ public class DefaultParanamer implements Paranamer {
     
     private static final String[] EMPTY_NAMES = new String[]{};
     private static final String COMMA = ",";
-    private static final String DOT = ".";
     private static final String SPACE = " ";
 
     private static final String __PARANAMER_DATA = "v1.0 \n"
@@ -70,7 +69,7 @@ public class DefaultParanamer implements Paranamer {
         return null;
     }
 
-    public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String constructorOrMethodName) {
+    public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName) {
         String data = getParameterListResource(clazz);
         
         if (data == null) {

@@ -8,8 +8,8 @@ public class DefaultParanamerTestCase extends AbstractParanamerTestCase {
 
 
     public void testLookupParameterNamesForConstructorWithStringArg() throws Exception {
-        for (int i = 0; i < 1000000; i++) {
+        //for (int i = 0; i < 1000000; i++) {
             super.testLookupParameterNamesForConstructorWithStringArg();
-        }
+        //}
     }
 }

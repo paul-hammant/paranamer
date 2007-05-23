@@ -1,7 +1,6 @@
 package com.thoughtworks.paranamer;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 
@@ -19,14 +18,14 @@ public abstract class AbstractParanamerTestCase extends TestCase {
 
     public void testLookupParanamerCanIndicateAbleToGetParameterNames()
             throws IOException {
-        int x = paranamer.areParameterNamesAvailable(DefaultParanamer.class.getClassLoader(),
+        int x = paranamer.areParameterNamesAvailable(
                 DefaultParanamer.class, "lookupParameterNames");
         assertEquals(Paranamer.PARAMETER_NAMES_FOUND, x);
     }
 
     public void testLookupParanamerCanIndicateThatUnableToGetParameterNamesForRealClassButBogusMethod()
             throws IOException {
-        int x = paranamer.areParameterNamesAvailable(DefaultParanamer.class.getClassLoader(),
+        int x = paranamer.areParameterNamesAvailable(
                 DefaultParanamer.class, "fooo");
         assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER, x);
     }

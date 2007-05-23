@@ -1,6 +1,5 @@
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.AccessibleObject;
 import java.util.Arrays;
@@ -19,7 +18,7 @@ public class CachingParanamerTestCase extends TestCase {
                 return new String[]{"foo","bar"};
             }
 
-            public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String ctorOrMethodName) {
+            public int areParameterNamesAvailable(Class clazz, String ctorOrMethodName) {
                 return -1;  
             }
         };

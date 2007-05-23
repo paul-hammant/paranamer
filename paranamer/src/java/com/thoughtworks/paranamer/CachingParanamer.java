@@ -1,7 +1,7 @@
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
+import com.thoughtworks.paranamer.asm.AsmParanamer;
+
 import java.lang.reflect.AccessibleObject;
 import java.util.WeakHashMap;
 
@@ -17,10 +17,9 @@ public class CachingParanamer implements Paranamer {
         + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer \n"
         + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer delegate \n"
         + "com.thoughtworks.paranamer.CachingParanamer toString \n"
-        + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.Constructor constructor \n"
-        + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.Method method \n";
+        + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
 
-    private final Paranamer delegate;
+    private Paranamer delegate;
     private final WeakHashMap methodCache = new WeakHashMap();
 
     public CachingParanamer() {
@@ -29,6 +28,10 @@ public class CachingParanamer implements Paranamer {
 
     public CachingParanamer(Paranamer delegate) {
         this.delegate = delegate;
+    }
+
+    public void switchtoAsm() {
+        delegate = new AsmParanamer();
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
@@ -42,8 +45,8 @@ public class CachingParanamer implements Paranamer {
         return names;
     }
 
-    public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String ctorOrMethodName) {
-        return delegate.areParameterNamesAvailable(classLoader, clazz, ctorOrMethodName);
+    public int areParameterNamesAvailable(Class clazz, String ctorOrMethodName) {
+        return delegate.areParameterNamesAvailable(clazz, ctorOrMethodName);
     }
 
     public String toString() {

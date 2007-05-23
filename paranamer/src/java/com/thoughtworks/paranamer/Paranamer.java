@@ -41,11 +41,10 @@ public interface Paranamer {
     /**
      * Determine if the parameter names are available
      *
-     * @param classLoader the ClassLoader used for the lookup
      * @param clazz the name of the class to which the method or constructor belongs
      * @param constructorOrMethodName the name of the method or constructor
-     * @return An int encoding the parameter names availability 
+     * @return An int encoding the parameter names availability
      */
-    public int areParameterNamesAvailable(ClassLoader classLoader, Class clazz, String constructorOrMethodName);
+    public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName);
 
 }

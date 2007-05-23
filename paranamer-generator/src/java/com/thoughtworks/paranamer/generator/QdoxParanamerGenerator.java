@@ -47,7 +47,7 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     private void processClasses(JavaClass[] classes, String outputPath) throws IOException {
         for (int i = 0; i < classes.length; i++) {
             JavaClass javaClass = classes[i];
-            if (!javaClass.isInterface()) {
+            if (!javaClass.isInterface() && javaClass.getFieldByName("__PARANAMER_DATA") != null) {
                 String content = addMethods(javaClass.getMethods());
                 Enhancer enhancer = new Enhancer();
                 // TODO problem with inner classes
