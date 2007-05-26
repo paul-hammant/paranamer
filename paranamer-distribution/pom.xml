@@ -8,7 +8,7 @@
   </parent>
   <artifactId>paranamer-distribution</artifactId>
   <packaging>pom</packaging>
-  <name>Paranamer Distribution</name>
+  <name>ParaNamer Distribution</name>
 
   <dependencies>
     <dependency>

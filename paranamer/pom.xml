@@ -7,7 +7,7 @@
     </parent> 
     <artifactId>paranamer</artifactId>
   <version> 1.0-RC-3-SNAPSHOT</version>   
-    <name>ParaNamer</name>
+    <name>ParaNamer Core</name>
     <dependencies>
         <dependency>
             <groupId>asm</groupId>
