@@ -72,11 +72,10 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
 
     private String addPublicMethod(JavaMethod method) {
         JavaParameter[] parameters = method.getParameters();
-        DocletTag[] alsoKnownAs = method.getTagsByName("previousParamNames");
-        return format(method, parameters, alsoKnownAs);
+        return format(method, parameters);
     }
 
-    private String format(JavaMethod method, JavaParameter[] parameters, DocletTag[] alsoKnownAs) {
+    private String format(JavaMethod method, JavaParameter[] parameters) {
         StringBuffer sb = new StringBuffer();
         String methodName = method.getName();
         if (method.isConstructor()) {
@@ -84,9 +83,6 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         }
         String parameterTypes = getParameterTypes(parameters);
         sb.append(formatLine(methodName, parameterTypes, getParameterNames(parameters)));
-        for (int i = 0; i < alsoKnownAs.length; i++) {
-            sb.append(formatLine(methodName, parameterTypes, alsoKnownAs[i].getValue()));
-        }
         return sb.toString();
     }
     
