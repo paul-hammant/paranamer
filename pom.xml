@@ -3,7 +3,7 @@
   <groupId>com.thoughtworks.paranamer</groupId>
   <artifactId>paranamer-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.0</version>
   <name>ParaNamer Parent</name>
   <url>http://paranamer.codehaus.org</url>
 
@@ -194,9 +194,9 @@
     </plugins>
   </reporting>
   <scm>
-    <connection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</connection>
-    <developerConnection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</developerConnection>
-    <url>http://svn.paranamer.codehaus.org/trunk</url>
+    <connection>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-1.0</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-1.0</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-1.0</url>
   </scm>
 
   <licenses>
