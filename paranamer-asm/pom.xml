@@ -3,10 +3,10 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>1.0-RC-3-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
   <artifactId>paranamer-asm</artifactId>
-  <version> 1.0-RC-3-SNAPSHOT</version>
+  <version>1.0</version>
   <name>ParaNamer ASM</name>
   <description>ParaNamer bundled with ASM dependency</description>
   <dependencies>
