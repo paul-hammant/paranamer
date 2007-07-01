@@ -113,8 +113,8 @@
         <groupId>org.codehaus.xsite</groupId>
         <artifactId>xsite-maven-plugin</artifactId>
         <configuration>
-          <siteMapPath>${basedir}/src/content/website.xml</siteMapPath>
-          <skinPath>${basedir}/src/templates/skin.html</skinPath>
+          <siteMapPath>${basedir}/src/site/content/website.xml</siteMapPath>
+          <skinPath>${basedir}/src/site/templates/skin.html</skinPath>
           <outputDirectoryPath>${project.build.directory}/xsite</outputDirectoryPath>
         </configuration>
         <executions>
