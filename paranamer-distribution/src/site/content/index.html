@@ -1,150 +1,170 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
-        <title>Introduction</title></head>
-    <body>
-    
-<div class="section_1">
+<html>
+<head>
+<title>Introduction</title>
+</head>
+<body>
+
 <h1>What is it?</h1>
 <p>It is a mechamism for accessing the parameter names of methods of
 Java classes compiled into jars. Normally the javac compiler drops
-parameter names
-making a method like '<span style="font-family: monospace;">doSometing(mypkg.Person
-toMe)</span>' look like '<span style="font-family: monospace;">doSomething(mypkg.Person
-arg0)</span>' to people using Java's reflection to inspect
-methods.&nbsp; To date this has not been very useful to Java
-application developers, but
+parameter names making a method like '<span
+  style="font-family: monospace;">doSometing(mypkg.Person toMe)</span>'
+look like '<span style="font-family: monospace;">doSomething(mypkg.Person
+arg0)</span>' to people using Java's reflection to inspect methods.&nbsp; To
+date this has not been very useful to Java application developers, but
 with the advent of advanced scripting languages and web action
 frameworks for the JVM it is of increasing importance to be able to
-leverage a method's parameter names. Scripting languages like <a href="http://groovy.codehaus.org/">Groovy</a> &amp; <a href="http://jruby.codehaus.org/">JRuby</a>,  web action frameworks
-like <a href="http://waffle.sourceforge.net/">Waffle</a> and <a href="#" title="http://www.vraptor.org/">VRaptor</a> (that verge
-on the tranparent) and the compelling <a href="http://grails.codehaus.org/">Grails</a>. 
+leverage a method's parameter names. Scripting languages like <a
+  href="http://groovy.codehaus.org/">Groovy</a> &amp; <a
+  href="http://jruby.codehaus.org/">JRuby</a>, web action frameworks
+like <a href="http://waffle.codehaus.org">Waffle</a> and <a href="#"
+  title="http://www.vraptor.org/">VRaptor</a> (that verge on the
+tranparent) and the compelling <a href="http://grails.codehaus.org/">Grails</a>.
 </p>
 <p>ParaNamer allows you to generate and use parameter name info for
-versions of Java prior to Java 7.0 (when Java <span style="font-style: italic;">may</span> get parameter name
-access).
+versions of Java prior to Java 7.0 (when Java <span
+  style="font-style: italic;">may</span> get parameter name access).
 Generation and use are two quite separate things.<br>
 </p>
 <h1>Quick Start</h1>
-<div class="section_2">
-<h2>Generating Parameter
-Name
-Meta-data with Ant<br>
+<h2>Generating Parameter Name Meta-data with Ant<br>
 </h2>
-<p>You need to download: </p><ul>
-	<li><a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/">latest paranamer jar</a></li>
-	<li><a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer-generator/">latest paranamer-generator jar</a></li>
-	<li><a href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer-ant/">latest paranamer-ant jar</a></li>
-	<li><a href="http://repo1.maven.org/maven2/qdox/qdox/">latest qdox jar</a>  (1.6 or above)</li>
-</ul> 
-and declare in your Ant script the following after &lt;javac/&gt; (remember to add to the taskdef classpath all the above jars):<br>
+<p>You need to download:</p>
+<ul>
+  <li><a
+    href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer/">latest
+  paranamer jar</a></li>
+  <li><a
+    href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer-generator/">latest
+  paranamer-generator jar</a></li>
+  <li><a
+    href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer-ant/">latest
+  paranamer-ant jar</a></li>
+  <li><a href="http://repo1.maven.org/maven2/qdox/qdox/">latest
+  qdox jar</a> (1.6 or above)</li>
+</ul>
+and declare in your Ant script the following after &lt;javac/&gt;
+(remember to add to the taskdef classpath all the above jars):
+<br>
 <div class="code">
-<div class="codeContent">
-<pre class="code-java">&lt;taskdef name="paranamer" <br>       classname="com.thoughtworks.paranamer.ant.ParanamerGeneratorTask"/&gt;<br>&lt;paranamer sourceDirectory="src/java" outputDirectory="target/classes"/&gt;<br></pre>
+<div class="codeContent"><pre class="code-java">&lt;taskdef name="paranamer" <br>       classname="com.thoughtworks.paranamer.ant.ParanamerGeneratorTask"/&gt;<br>&lt;paranamer sourceDirectory="src/java" outputDirectory="target/classes"/&gt;<br></pre>
 </div>
 </div>
 <p>Then, when you're making your jar, ensure that
 META-INF/ParameterNames.txt does not get omitted<br>
 </p>
-<h2>Generating Parameter
-Name
-Meta-data with Maven 2<br>
+<h2>Generating Parameter Name Meta-data with Maven 2<br>
 </h2>
 For Maven, it is simpler. Just add this to the
-&lt;build&gt;&lt;plugins&gt; section of your pom.xml:<br>
+&lt;build&gt;&lt;plugins&gt; section of your pom.xml:
+<br>
 <br>
 <div class="code">
-<div class="codeContent">
-<pre style="margin-left: 40px;">&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;<span style="font-weight: bold;">${basedir}/src/java</span>&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${basedir}/target/classes&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;run&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;<br>&lt;/plugin&gt;</pre>
+<div class="codeContent"><pre style="margin-left: 40px;">&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;<span
+  style="font-weight: bold;">${basedir}/src/java</span>&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${basedir}/target/classes&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;run&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;<br>&lt;/plugin&gt;</pre>
 </div>
 </div>
 <br>
-The jar file will automatically be made with parameter name meta-data.<br>
+The jar file will automatically be made with parameter name meta-data.
 <br>
-</div>
-<div class="section_2">
-<h2>Using
-Paranamer<br>
+<br>
+<h2>Using Paranamer<br>
 </h2>
-<p>If you are leverging the paranamer Jar at runtime, there is a method
-called 'lookup' that does the business:</p>
+<p>If you are leverging the paranamer Jar at runtime, there is a
+method called 'lookup' that does the business:</p>
 <div class="code">
 <div class="codeHeader"><b>MySomethingOrOther.java</b></div>
-<div class="codeContent">
-<pre class="code-java"><span class="code-object">
+<div class="codeContent"><pre class="code-java"><span
+  class="code-object">
  Method method = Foo.class.getMethod(...);<br>
  Paranamer paranamer = new DefaultParanamer();<br> <br> String[] parameterNames = paranamer.lookupParameterNames(method)<br> </span><br></pre>
 </div>
 </div>
-<p>It throws a ParameterNamesNotFoundException if no parameter names are found. <br>
+<p>It throws a ParameterNamesNotFoundException if no parameter names
+are found. <br>
 </p>
 <p>The unit tests for ParaNamer illustrate some of the ways of using
-it: <a href="http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java">http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java</a><br>
+it: <a
+  href="http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java">http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java</a><br>
 </p>
-<p>ParaNamer does not have any runtime jar dependecies while looking up
-parameter info previously generated that's been zipped into a jar.<br>
+<p>ParaNamer does not have any runtime jar dependecies while looking
+up parameter info previously generated that's been zipped into a jar.<br>
 </p>
-</div>
-<div class="section_2">
-<h2>Using Paranamer without
-using Paranamer's jar</h2>
+<h2>Using Paranamer without using Paranamer's jar</h2>
 <p>There are already too many jar's for day to day Java development
 right?&nbsp; Simply copy the <span style="font-style: italic;">lookupMethod</span>
-method to your codebase. All the
-code is public domain. People are free to do what they like to it, copy
-portions into your GPL or Commercial or Apache licensed project and
-retain GPL, Commercial and Apache licenses (or whatever). <br>
+method to your codebase. All the code is public domain. People are free
+to do what they like to it, copy portions into your GPL or Commercial or
+Apache licensed project and retain GPL, Commercial and Apache licenses
+(or whatever). <br>
 </p>
-<p>A link to the source to copy is here - 
-<a href="http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/DefaultParanamer.java">http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/DefaultParanamer.java</a>
+<p>A link to the source to copy is here - <a
+  href="http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/DefaultParanamer.java">http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/DefaultParanamer.java</a>
 </p>
-<p>You may also want some of the functionalty from the Caching variant - 
-<a href="http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/CachingParanamer.java">http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/CachingParanamer.java</a>
+<p>You may also want some of the functionalty from the Caching
+variant - <a
+  href="http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/CachingParanamer.java">http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/CachingParanamer.java</a>
 </p>
-</div>
 <h2>Using Paranamer with ASM</h2>
-<p>If generating meta information on parameter names at compile time is
-not for you, try Paranamer with ASM as a runtime only solution. ASM
+<p>If generating meta information on parameter names at compile time
+is not for you, try Paranamer with ASM as a runtime only solution. ASM
 allows java code to parse class files, and is useful for Paranamer if
 debug data is still compiled into the classes. &nbsp; There is a class
 AsmParanamer, that is identical in functionalality to DefaultParanamer,
-but requires ASM 3.0 or later to be in the classpath at runtime.</p>Its
-also interesting to note that CachingParanamer (same API) tries to use
-the DefaultParanamer then AsmParamaner in the former cannot find
-parameter name data.</div>
+but requires ASM 3.0 or later to be in the classpath at runtime.</p>
+Its also interesting to note that CachingParanamer (same API) tries to
+use the DefaultParanamer then AsmParamaner in the former cannot find
+parameter name data.
 
-<div class="section_2">
 <h1>How Paranamer works</h1>
-<p>It modifies each class file to have an extra static field:
-
-<br></p>
-<div class="code"><div class="codeContent"><pre class="code-java">    private static final String __PARANAMER_DATA = "v1.0 \n"<br>        + "&lt;init&gt; \n"<br>        + "&lt;init&gt; com.foo.Bar bar \n"<br>        + "toString \n"<br>        + "setName java.lang.String,java.lang.String givenName,familyName \n";<br>        + "setDateOfBirth int,int,int day,month,year \n";<br></pre></div></div></div>
+<p>It modifies each class file to have an extra static field: <br>
+</p>
+<div class="code">
+<div class="codeContent"><pre class="code-java">    private static final String __PARANAMER_DATA = "v1.0 \n"<br>        + "&lt;init&gt; \n"<br>        + "&lt;init&gt; com.foo.Bar bar \n"<br>        + "toString \n"<br>        + "setName java.lang.String,java.lang.String givenName,familyName \n";<br>        + "setDateOfBirth int,int,int day,month,year \n";<br></pre></div>
+</div>
+</div>
 <p>Clearly the method's source is analysed and lines are added per
-method to the __PARANAMER_DATA field.&nbsp;&nbsp;</p><h2>What if a parameter
-names changes?</h2>In
-a later version we'll store previous parameter names too. It won't be
+method to the __PARANAMER_DATA field.&nbsp;&nbsp;</p>
+<h2>What if a parameter names changes?</h2>
+In a later version we'll store previous parameter names too. It won't be
 be magic, you'll have to code the previous parameter names in your
-source with a doclet tag. The lookup mechanism will change too.<br><h1>ParaNamer's Future</h1><p>ParaNamer will go away in the future when Java gets Reflection
+source with a doclet tag. The lookup mechanism will change too.
+<br>
+<h1>ParaNamer's Future</h1>
+<p>ParaNamer will go away in the future when Java gets Reflection
 access to Method parameter names. That is likely to look in the worst
 case like:<br>
 </p>
 <div class="code">
-<div class="codeContent">
-<pre style="margin-left: 40px;" class="code-java">Method method = Foo.class.getMethod(....)<br>String[] parameterNames = method.getParameterNames();<br></pre><p>But for now, we are thinking of the following directions :-</p><ol><li>Plugins for Intellij IDEA, Eclipse, NetBeans to make parameter name data as part of their compilation processes </li><li>Storage and retireval of previous parameter names</li></ol></div>
+<div class="codeContent"><pre style="margin-left: 40px;"
+  class="code-java">Method method = Foo.class.getMethod(....)<br>String[] parameterNames = method.getParameterNames();<br></pre>
+<p>But for now, we are thinking of the following directions :-</p>
+<ol>
+  <li>Plugins for Intellij IDEA, Eclipse, NetBeans to make
+  parameter name data as part of their compilation processes</li>
+  <li>Storage and retireval of previous parameter names</li>
+</ol>
+</div>
 </div>
 
 <h1>Projects using it</h1>
-<a href="http://oval.sourceforge.net/">Oval - Object Validation Framework</a>,<br><a href="http://vraptor.org/">VRaptor - Web Framework</a>, <br><a href="http://waffle.sourceforge.net/">Waffle - Web Framework</a><br>
-<h1>Project INFO<br>
-</h1>
-<p>Developers, Maven 2 repository, lists, sites ... all detailed here:<br>
-&nbsp;&nbsp;&nbsp;<a href="http://xircles.codehaus.org/projects/paranamer">http://xircles.codehaus.org/projects/paranamer</a><br>
-Maven generated info and reports here:<br>
-&nbsp;&nbsp;&nbsp;<a href="http://paranamer.codehaus.org/info/project-info.html">http://paranamer.codehaus.org/info/project-info.html</a><br>
+<a href="http://oval.sourceforge.net/">Oval - Object Validation Framework</a>,<br>
+<a href="http://vraptor.org/">VRaptor - Web Framework</a>,<br>
+<a href="http://waffle.codehaus.org/">Waffle - Web Framework</a><br>
+<h1>Project INFO</h1>
+<p>Developers, Maven 2 repository, lists, sites ... all detailed
+here:<br>
+&nbsp;&nbsp;&nbsp;<a
+  href="http://xircles.codehaus.org/projects/paranamer">http://xircles.codehaus.org/projects/paranamer</a><br>
 Released Jar files here: <br>
-&nbsp;&nbsp;&nbsp;<a href="http://repository.codehaus.org/com/thoughtworks/paranamer/">http://repository.codehaus.org/com/thoughtworks/paranamer/</a> <br>
+&nbsp;&nbsp;&nbsp;<a
+  href="http://repository.codehaus.org/com/thoughtworks/paranamer/">http://repository.codehaus.org/com/thoughtworks/paranamer/</a>
+<br>
 Snapshot Jar files here: <br>
-&nbsp;&nbsp;&nbsp;<a href="http://snapshots.repository.codehaus.org/com/thoughtworks/paranamer/">http://snapshots.repository.codehaus.org/com/thoughtworks/paranamer/</a>
+&nbsp;&nbsp;&nbsp;<a
+  href="http://snapshots.repository.codehaus.org/com/thoughtworks/paranamer/">http://snapshots.repository.codehaus.org/com/thoughtworks/paranamer/</a>
 </p>
 
-
-</body></html>
+</body>
+</html>

@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>1.0-RC-3-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
   </parent>
   <artifactId>paranamer-distribution</artifactId>
   <packaging>pom</packaging>
@@ -13,7 +13,7 @@
   <dependencies>
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>paranamer</artifactId>
+      <artifactId>paranamer-asm</artifactId>
       <version>${pom.version}</version>
     </dependency>
     <dependency>
@@ -24,11 +24,6 @@
     <dependency>
       <groupId>${pom.groupId}</groupId>
       <artifactId>paranamer-ant</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${pom.groupId}</groupId>
-      <artifactId>paranamer-asm</artifactId>
       <version>${pom.version}</version>
     </dependency>
     <dependency>
@@ -61,61 +56,51 @@
                   <version>${pom.version}</version>
                   <classifier>javadoc</classifier>
                 </artifactItem>
-                <artifactItem>
-                  <groupId>${pom.groupId}</groupId>
-                  <artifactId>paranamer-generator</artifactId>
-                  <version>${pom.version}</version>
-                  <classifier>javadoc</classifier>
-                </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
         </executions>
       </plugin>
-      <!-- FIXME:  does not seem to find the assembly descriptor 
-        <plugin>
+      <!-- FIXME:  does not seem to find the assembly descriptor  -->
+      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.1</version>
         <executions>
-        <execution>
-        <id>bin</id>
-        <phase>install</phase>
-        <goals>
-        <goal>single</goal>
-        </goals>
-        <configuration>
-        <descriptors>
-        <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
-        </descriptors>
-        <finalName>paranamer-${pom.version}</finalName>
-        <workDirectory>${project.build.directory}/assembly/bin</workDirectory>
-        </configuration>
-        </execution>
-        <execution>
-        <id>src</id>
-        <phase>install</phase>
-        <goals>
-        <goal>single</goal>
-        </goals>
-        <configuration>
-        <descriptors>
-        <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
-        </descriptors>
-        <finalName>paranamer-${pom.version}</finalName>
-        <workDirectory>${project.build.directory}/assembly/src</workDirectory>
-        </configuration>
-        </execution>
+          <execution>
+            <id>bin</id>
+            <phase>install</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
+              <finalName>paranamer-${pom.version}</finalName>
+              <workDirectory>${project.build.directory}/assembly/bin</workDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>src</id>
+            <phase>install</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
+              <finalName>paranamer-${pom.version}</finalName>
+              <workDirectory>${project.build.directory}/assembly/src</workDirectory>
+            </configuration>
+          </execution>
         </executions>
-        </plugin>
-      -->
+      </plugin>
       <plugin>
         <groupId>org.codehaus.xsite</groupId>
         <artifactId>xsite-maven-plugin</artifactId>
-        <version>1.0-beta-7</version>
+        <version>1.0-beta-8</version>
         <configuration>
-          <siteMapPath>${basedir}/src/site/content/website.xml</siteMapPath>
-          <skinPath>${basedir}/src/site/templates/skin.html</skinPath>
-          <resourcePaths>${basedir}/src/site/resources</resourcePaths>
+          <sourceDirectoryPath>${basedir}/src/site</sourceDirectoryPath>
+          <sitemapPath>content/sitemap.xml</sitemapPath>
+          <skinPath>templates/skin.html</skinPath>
+          <resourcePaths>resources</resourcePaths>
           <outputDirectoryPath>${project.build.directory}/xsite</outputDirectoryPath>
         </configuration>
         <executions>

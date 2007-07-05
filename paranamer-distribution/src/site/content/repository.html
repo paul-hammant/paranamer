@@ -1,71 +1,70 @@
 <html>
-  <head>
-    <title>Source Repository</title>
-  </head>
-  <body>
+<head>
+<title>Source Repository</title>
+</head>
+<body>
 
-	<h2>Modules</h2>
+<h2>Modules</h2>
 
-	ParaNamer project consists of several modules:
-	<ol>
-		<li>paranamer - the core module</li>
-		<li>paranamer-generator - the generator module</li>
-		<li>paranamer-distribution - the module contains the documentation and assembles the src and bin distributions</li>
-	</ol>
-	When you checkout the trunk you'll get all the modules, but you can just add the module you are interested in to the URL, eg
-		<div class="Source"><pre>svn co http://svn.codehaus.org/paranamer/trunk/[module]</pre></div>
-	to checkout out the single module separately.
+ParaNamer project consists of several modules:
+<ol>
+  <li>paranamer - the core module</li>
+  <li>paranamer-asm - the core module with transitive ASM
+  dependency</li>
+  <li>paranamer-generator - the generator module</li>
+  <li>paranamer-ant - the Ant tasks</li>
+  <li>paranamer-maven-plugin - the Maven plugin</li>
+  <li>paranamer-distribution - the module contains the
+  documentation and assembles the src and bin distributions</li>
+</ol>
 
-    <h2>Subversion</h2>
+<h2>Subversion</h2>
 
-    ParaNamer uses Subversion as the SCM.  See <a href="http://subversion.tigris.org">Subversion website</a> for details and documentation on IDE integration.
+ParaNamer uses Subversion as the SCM. See
+<a href="http://subversion.tigris.org">Subversion website</a>
+for details and documentation on IDE integration.
 
-	<h2>Svnserve Access</h2>
+<h3>Anonymous Access</h3>
 
-	Svnserve access is via a specific port (Codehaus uses the default 3690).  This is often not allowed by corporate firewalls.
-  
-	<h3>Anonymous Access</h3>
+<div class="Source"><pre>svn co svn://svn.paranamer.codehaus.org/paranamer/trunk</pre></div>
 
-		<div class="Source"><pre>svn co svn://svn.paranamer.codehaus.org/paranamer/trunk</pre></div>
+<h2>WebDav Access</h2>
 
-	<h2>WebDav Access</h2>
+WebDav is an alternative access protocol supported by SVN and being
+http-based is often allowed by corporate firewalls.
 
-	WebDav is an alternative access protocol supported by SVN and being http-based is often allowed by corporate firewalls.
+<h3>Anonymous Access</h3>
 
-	<h3>Anonymous Access</h3>
+<div class="Source"><pre>svn co http://svn.codehaus.org/paranamer/trunk</pre></div>
 
-		<div class="Source"><pre>svn co http://svn.codehaus.org/paranamer/trunk</pre></div>
-		
-		<p>
-		You might also use this URL to <a href="http://svn.codehaus.org/paranamer/trunk">browse the repository</a> in a simple manner.
-		</p>
+<p>You might also use this URL to <a
+  href="http://svn.codehaus.org/paranamer/trunk">browse the
+repository</a> in a simple manner.</p>
 
-	<h3>Committer Access</h3>
+<h3>Committer Access</h3>
 
-		<div class="Source"><pre>svn co https://svn.codehaus.org/paranamer/trunk</pre></div>
+<div class="Source"><pre>svn co https://svn.codehaus.org/paranamer/trunk</pre></div>
 
-		<p>
-		This access protocol is available to all, but only developers can commit changes.
-		</p>
-		<p>
-		Developers require a LDAP password for Codehaus username (contact Bob at the Haus to get assigned a password if you don't have one).
-		</p>
-		<p>
-		To test https commit access, one may eg:</p>
-		<div class="Source"><pre>
+<p>This access protocol is available to all, but only developers can
+commit changes.</p>
+<p>Developers require a LDAP password for Codehaus username (contact
+Bob at the Haus to get assigned a password if you don't have one).</p>
+<p>To test https commit access, one may eg:</p>
+<div class="Source"><pre>
 svn co https://svn.codehaus.org/paranamer/trunk paranamer
 cd paranamer
 echo "test" &gt; TEST
 svn add TEST
 svn commit --username username --password your-password --message "Testing https"
 		</pre></div>
-		<p>
-		<b>Note</b>: you only need to specify username and password once per client.
-		</p>
+<p><b>Note</b>: you only need to specify username and password once
+per client.</p>
 
-	<h2>Browser</h2>
+<h2>Browser</h2>
 
-	You can use the browser to navigate within the sources <a href="http://svn.paranamer.codehaus.org/browse/paranamer/trunk/">online</a> with the help of the FishEye installation on Codehaus.
+You can use the browser to navigate within the sources
+<a href="http://svn.paranamer.codehaus.org/browse/paranamer/trunk/">online</a>
+with the help of the FishEye installation on Codehaus.
 
-  </body>
+</body>
 </html>
