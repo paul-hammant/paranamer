@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>1.0.1</version>
+    <version>1.1-SNAPSHOT</version>
   </parent>
   <artifactId>paranamer-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
