@@ -152,7 +152,6 @@
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <updateDependencies>false</updateDependencies>
-          <tag>paranamer-${pom.version}</tag>
           <tagBase>https://svn.codehaus.org/paranamer/tags</tagBase>
         </configuration>
       </plugin>
