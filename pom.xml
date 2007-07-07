@@ -149,8 +149,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.0-beta-5</version>
         <configuration>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <updateDependencies>false</updateDependencies>
+          <tag>paranamer-${pom.version}</tag>
           <tagBase>https://svn.codehaus.org/paranamer/tags</tagBase>
         </configuration>
       </plugin>
