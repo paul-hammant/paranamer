@@ -12,11 +12,6 @@
   <dependencies>
     <dependency>
       <groupId>${pom.groupId}</groupId>
-      <artifactId>paranamer-asm</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>${pom.groupId}</groupId>
       <artifactId>paranamer-generator</artifactId>
       <version>${pom.version}</version>
     </dependency>
@@ -25,13 +20,6 @@
       <artifactId>paranamer-ant</artifactId>
       <version>${pom.version}</version>
     </dependency>
-    <!-- FIXME:  not found in release phase
-    <dependency>
-      <groupId>${pom.groupId}</groupId>
-      <artifactId>paranamer-maven-plugin</artifactId>
-      <version>${pom.version}</version>
-    </dependency>
-    -->
   </dependencies>
   <build>
     <plugins>
