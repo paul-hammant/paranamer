@@ -35,10 +35,10 @@ import java.lang.reflect.Constructor;
 
 
 /**
- * 
+ *
  * @author Guilherme Silveira
  */
-public class FoAsmParanamerTestCase extends AbstractParanamerTestCase {
+public class BytecodeReadingAsmParanamerTestCase extends AbstractParanamerTestCase {
 
     protected void setUp() throws Exception {
         paranamer = new BytecodeReadingAsmParanamer();

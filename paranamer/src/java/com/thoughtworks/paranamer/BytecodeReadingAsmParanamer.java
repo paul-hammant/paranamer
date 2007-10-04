@@ -29,13 +29,6 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- *
- * Portions of this source file are a fork of ASM.
- *
- */
-
-
 package com.thoughtworks.paranamer;
 
 import java.io.IOException;
@@ -52,11 +45,12 @@ import java.util.List;
  * An ASM-based implementation of Paranamer. It relies on debug information compiled
  * with the "-g" javac option to retrieve parameter names.
  *
+ * Portions of this source file are a fork of ASM.
  *
  * @author Guilherme Silveira
  * @author Paul Hammant
  */
-public class FoAsmParanamer implements Paranamer {
+public class BytecodeReadingAsmParanamer implements Paranamer {
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
 
@@ -125,7 +119,7 @@ public class FoAsmParanamer implements Paranamer {
         // multiple times
         InputStream asStream = classLoader.getResourceAsStream(name);
         if (asStream == null) {
-            asStream = FoAsmParanamer.class.getResourceAsStream(name);
+            asStream = BytecodeReadingAsmParanamer.class.getResourceAsStream(name);
         }
         return asStream;
     }

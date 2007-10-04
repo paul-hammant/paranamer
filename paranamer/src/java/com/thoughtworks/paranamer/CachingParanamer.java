@@ -30,7 +30,7 @@
 
 package com.thoughtworks.paranamer;
 
-import com.thoughtworks.paranamer.FoAsmParanamer;
+import com.thoughtworks.paranamer.BytecodeReadingAsmParanamer;
 
 import java.lang.reflect.AccessibleObject;
 import java.util.WeakHashMap;
@@ -61,7 +61,7 @@ public class CachingParanamer implements Paranamer {
     }
 
     public void switchtoAsm() {
-        delegate = new FoAsmParanamer();
+        delegate = new BytecodeReadingAsmParanamer();
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
