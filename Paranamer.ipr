@@ -18,6 +18,13 @@
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
     <option name="DEPLOY_AFTER_MAKE" value="0" />
+    <excludeFromCompile>
+      <file url="file://$PROJECT_DIR$/paranamer-generator/src/java/com/thoughtworks/paranamer/generator/Enhancer.java" />
+      <file url="file://$PROJECT_DIR$/paranamer-generator/src/java/com/thoughtworks/paranamer/generator/QdoxParanamerGenerator.java" />
+      <file url="file://$PROJECT_DIR$/paranamer-maven-plugin/src/java/com/thoughtworks/paranamer/mojo/ParanamerGeneratorMojo.java" />
+      <file url="file://$PROJECT_DIR$/paranamer-ant/src/java/com/thoughtworks/paranamer/ant/ParanamerGeneratorTask.java" />
+      <file url="file://$PROJECT_DIR$/paranamer-generator/src/test/com/thoughtworks/paranamer/generator/QDoxParanamerTestCase.java" />
+    </excludeFromCompile>
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -286,7 +293,7 @@
       <module fileurl="file://$PROJECT_DIR$/Paranamer.iml" filepath="$PROJECT_DIR$/Paranamer.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="false" project-jdk-name="1.5" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" assert-keyword="true" jdk-15="true" project-jdk-name="1.5" project-jdk-type="JavaSDK" />
   <component name="ProjectRunConfigurationManager" />
   <component name="ResourceManagerContainer">
     <option name="myResourceBundles">
@@ -314,6 +321,11 @@
         <list size="0" />
       </value>
     </option>
+  </component>
+  <component name="copyright">
+    <Base>
+      <setting name="state" value="2" />
+    </Base>
   </component>
   <component name="libraryTable" />
   <component name="uidesigner-configuration" />

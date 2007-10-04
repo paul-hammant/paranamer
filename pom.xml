@@ -10,7 +10,6 @@
   <modules>
     <module>paranamer</module>
     <module>paranamer-generator</module>
-    <module>paranamer-asm</module>
     <module>paranamer-ant</module>
     <module>paranamer-maven-plugin</module>
     <module>paranamer-distribution</module>
@@ -18,14 +17,6 @@
 
   <dependencyManagement>
     <dependencies>
-      <!-- Optional dependencies -->
-      <dependency>
-        <groupId>asm</groupId>
-        <artifactId>asm</artifactId>
-        <version>3.0</version>
-        <scope>provided</scope>
-      </dependency>
-
       <!-- Test dependencies -->
       <dependency>
         <groupId>junit</groupId>

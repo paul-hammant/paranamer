@@ -7,10 +7,4 @@
   </parent>
   <artifactId>paranamer</artifactId>
   <name>ParaNamer Core</name>
-  <dependencies>
-    <dependency>
-      <groupId>asm</groupId>
-      <artifactId>asm</artifactId>
-    </dependency>
-  </dependencies>
 </project>

@@ -27,41 +27,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.thoughtworks.paranamer.ant;
 
-import org.apache.tools.ant.Task;
-import org.apache.tools.ant.BuildException;
+package com.thoughtworks.paranamer;
 
-import com.thoughtworks.paranamer.generator.ParanamerGenerator;
-import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
-
-import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.lang.annotation.ElementType;
 
 /**
-* Ant Task to processSourcePath parameter names via ParanamerGenerator
-* 
-* @author Paul Hammant
-* @author Mauro Talevi
-*/
-public class ParanamerGeneratorTask extends Task {
-    private final ParanamerGenerator generator = new QdoxParanamerGenerator();
-    private String sourceDirectory;
-    private String outputDirectory;
+ * @author Paul Hammant
+ */
 
-    public void execute() throws BuildException {
-        try {
-            generator.processSourcePath(sourceDirectory, outputDirectory);
-            System.out.println("Generated Parameter Name Data for '"+sourceDirectory+"' in '" + outputDirectory + "'");
-        } catch (IOException e) {
-            throw new BuildException("Paranamer encountered an IOException", e);
-        }
-    }
+//@Retention(RetentionPolicy.RUNTIME)
+//@Target(value={ElementType.METHOD, ElementType.FIELD, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
+//public @interface GratuitousAnnotation {
+//}
 
-    public void setSourceDirectory(String sourceDirectory) {
-        this.sourceDirectory = sourceDirectory;
-    }
-
-    public void setOutputDirectory(String outputDirectory) {
-        this.outputDirectory = outputDirectory;
-    }
-}
+public interface GratuitousAnnotation {}

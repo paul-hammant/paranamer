@@ -20,5 +20,11 @@
       <version>1.6.3</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>3.0</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 </project>
