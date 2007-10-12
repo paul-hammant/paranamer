@@ -23,9 +23,10 @@ like <a href="http://waffle.codehaus.org">Waffle</a> and <a href="#"
 tranparent) and the compelling <a href="http://grails.codehaus.org/">Grails</a>.
 </p>
 <p>ParaNamer allows you to generate and use parameter name info for
-versions of Java prior to Java 7.0 (when Java <span
+versions of Java prior to JDK 7.0 (when Java <span
   style="font-style: italic;">may</span> get parameter name access).
-Generation and use are two quite separate things.<br>
+Parameter name access was scheduled for JDK 6.0, bit slipped as the development team ran out of time to implement it. Generation and use are two quite separate things.</p>
+<p>Paranamer is Open source, and licensed as BSD. It is compatible with commercial/proprieatry, GPL, Apache use.<br>
 </p>
 <h1>Quick Start</h1>
 <h2>Generating Parameter Name Meta-data with Ant<br>
@@ -51,8 +52,7 @@ and declare in your Ant script the following after &lt;javac/&gt;
 <div class="codeContent"><pre class="code-java">&lt;taskdef name="paranamer" <br>       classname="com.thoughtworks.paranamer.ant.ParanamerGeneratorTask"/&gt;<br>&lt;paranamer sourceDirectory="src/java" outputDirectory="target/classes"/&gt;<br></pre>
 </div>
 </div>
-<p>Then, when you're making your jar, ensure that
-META-INF/ParameterNames.txt does not get omitted<br>
+<p>Classes are changed to have an extra static String member variable that contains the member functions and their parameter names. Be sure to zip them up in to you final jar.<br>
 </p>
 <h2>Generating Parameter Name Meta-data with Maven 2<br>
 </h2>
@@ -91,32 +91,25 @@ it: <a
 <p>ParaNamer does not have any runtime jar dependecies while looking
 up parameter info previously generated that's been zipped into a jar.<br>
 </p>
-<h2>Using Paranamer without using Paranamer's jar</h2>
+<h2>Using Paranamer in your application without depending on Paranamer's jar</h2>
 <p>There are already too many jar's for day to day Java development
-right?&nbsp; Simply copy the <span style="font-style: italic;">lookupMethod</span>
-method to your codebase. All the code is public domain. People are free
-to do what they like to it, copy portions into your GPL or Commercial or
-Apache licensed project and retain GPL, Commercial and Apache licenses
-(or whatever). <br>
+right?&nbsp; Simply consume the paranamer jar into your project's jar using the Maven2 'shade' plugin.<br>
 </p>
-<p>A link to the source to copy is here - <a
-  href="http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/DefaultParanamer.java">http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/DefaultParanamer.java</a>
-</p>
-<p>You may also want some of the functionalty from the Caching
-variant - <a
-  href="http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/CachingParanamer.java">http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/CachingParanamer.java</a>
-</p>
-<h2>Using Paranamer with ASM</h2>
-<p>If generating meta information on parameter names at compile time
-is not for you, try Paranamer with ASM as a runtime only solution. ASM
-allows java code to parse class files, and is useful for Paranamer if
-debug data is still compiled into the classes. &nbsp; There is a class
-AsmParanamer, that is identical in functionalality to DefaultParanamer,
-but requires ASM 3.0 or later to be in the classpath at runtime.</p>
-Its also interesting to note that CachingParanamer (same API) tries to
-use the DefaultParanamer then AsmParamaner in the former cannot find
-parameter name data.
+<div class="code">
+<div class="codeHeader"><b>Put in your POM.xml file</b></div>
+<div class="codeContent"><pre class="code-java"><span
+  class="code-object"> &lt;build&gt;<br>    &lt;plugins&gt;<br>      &lt;plugin&gt;<br>        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;<br>        &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;<br>        &lt;version&gt;1.0-alpha-13-SNAPSHOT&lt;/version&gt;<br>        &lt;executions&gt;<br>          &lt;execution&gt;<br>            &lt;phase&gt;package&lt;/phase&gt;<br>            &lt;goals&gt;<br>              &lt;goal&gt;shade&lt;/goal&gt;<br>            &lt;/goals&gt;<br>            &lt;configuration&gt;<br>              &lt;shadedArtifactId&gt;picocontainer-shaded&lt;/shadedArtifactId&gt;<br>              &lt;artifactSet&gt;&lt;/artifactSet&gt;<br>              &lt;relocations&gt;<br>                &lt;relocation&gt;<br>                  &lt;pattern&gt;com.thoughtworks.paranamer&lt;/pattern&gt;<br>                  &lt;shadedPattern&gt;com.yourcompany.yourapp.paranamer&lt;/shadedPattern&gt;<br>                &lt;/relocation&gt;<br>              &lt;/relocations&gt;<br>            &lt;/configuration&gt;<br>          &lt;/execution&gt;<br>        &lt;/executions&gt;<br>      &lt;/plugin&gt;<br>    &lt;/plugins&gt;<br>  &lt;/build&gt;<br> </span><br></pre>
+</div>
+</div>
 
+<h2> Paranamer leveraging a the debug information for a class</h2>
+<p>If generating meta information for parameter names at compile time
+is not for you, try class BytecodeReadingParanamer as a runtime only solution. This uses a cut down forked version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for DefaultParanamer and CachingParanamer, for when there is not pre-built meta information.</p>
+<h2> Caching Paranamer</h2>
+<p>CachingParanamer  (same API) stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.</p>
+<p>Its also interesting to note that CachingParanamertries to
+use the DefaultParanamer then BytecodeReadingParanamer in the former cannot find
+parameter name data.</p>
 <h1>How Paranamer works</h1>
 <p>It modifies each class file to have an extra static field: <br>
 </p>
@@ -133,8 +126,7 @@ source with a doclet tag. The lookup mechanism will change too.
 <br>
 <h1>ParaNamer's Future</h1>
 <p>ParaNamer will go away in the future when Java gets Reflection
-access to Method parameter names. That is likely to look in the worst
-case like:<br>
+access to Method parameter names. That should look like:<br>
 </p>
 <div class="code">
 <div class="codeContent"><pre style="margin-left: 40px;"

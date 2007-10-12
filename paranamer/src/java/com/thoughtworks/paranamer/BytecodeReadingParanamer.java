@@ -50,7 +50,7 @@ import java.util.List;
  * @author Guilherme Silveira
  * @author Paul Hammant
  */
-public class BytecodeReadingAsmParanamer implements Paranamer {
+public class BytecodeReadingParanamer implements Paranamer {
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
 
@@ -119,7 +119,7 @@ public class BytecodeReadingAsmParanamer implements Paranamer {
         // multiple times
         InputStream asStream = classLoader.getResourceAsStream(name);
         if (asStream == null) {
-            asStream = BytecodeReadingAsmParanamer.class.getResourceAsStream(name);
+            asStream = BytecodeReadingParanamer.class.getResourceAsStream(name);
         }
         return asStream;
     }
