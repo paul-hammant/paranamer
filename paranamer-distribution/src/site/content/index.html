@@ -107,7 +107,7 @@ right?&nbsp; Simply consume the runtime paranamer jar into your project's jar us
 <div class="code">
 <div class="codeHeader"><b>Put in your POM.xml file</b></div>
 <div class="codeContent"><pre class="code-java"><span
-  class="code-object"> &lt;build&gt;<br>    &lt;plugins&gt;<br>      &lt;plugin&gt;<br>        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;<br>        &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;<br>        &lt;version&gt;1.0-alpha-13-SNAPSHOT&lt;/version&gt;<br>        &lt;executions&gt;<br>          &lt;execution&gt;<br>            &lt;phase&gt;package&lt;/phase&gt;<br>            &lt;goals&gt;<br>              &lt;goal&gt;shade&lt;/goal&gt;<br>            &lt;/goals&gt;<br>            &lt;configuration&gt;<br>              &lt;shadedArtifactId&gt;picocontainer-shaded&lt;/shadedArtifactId&gt;<br>              &lt;artifactSet&gt;&lt;/artifactSet&gt;<br>              &lt;relocations&gt;<br>                &lt;relocation&gt;<br>                  &lt;pattern&gt;com.thoughtworks.paranamer&lt;/pattern&gt;<br>                  &lt;shadedPattern&gt;com.yourcompany.yourapp.paranamer&lt;/shadedPattern&gt;<br>                &lt;/relocation&gt;<br>              &lt;/relocations&gt;<br>            &lt;/configuration&gt;<br>          &lt;/execution&gt;<br>        &lt;/executions&gt;<br>      &lt;/plugin&gt;<br>    &lt;/plugins&gt;<br>  &lt;/build&gt;<br> </span><br></pre>
+  class="code-object"> &lt;build&gt;<br>    &lt;plugins&gt;<br>      &lt;plugin&gt;<br>        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;<br>        &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;<br>        &lt;executions&gt;<br>          &lt;execution&gt;<br>            &lt;phase&gt;package&lt;/phase&gt;<br>            &lt;goals&gt;<br>              &lt;goal&gt;shade&lt;/goal&gt;<br>            &lt;/goals&gt;<br>            &lt;configuration&gt;<br>              &lt;shadedArtifactId&gt;artifact-shaded&lt;/shadedArtifactId&gt;<br>              &lt;relocations&gt;<br>                &lt;relocation&gt;<br>                  &lt;pattern&gt;com.thoughtworks.paranamer&lt;/pattern&gt;<br>                  &lt;shadedPattern&gt;com.yourcompany.yourapp.paranamer&lt;/shadedPattern&gt;<br>                &lt;/relocation&gt;<br>              &lt;/relocations&gt;<br>            &lt;/configuration&gt;<br>          &lt;/execution&gt;<br>        &lt;/executions&gt;<br>      &lt;/plugin&gt;<br>    &lt;/plugins&gt;<br>  &lt;/build&gt;<br> </span><br></pre>
 </div>
 </div>
 
@@ -127,13 +127,13 @@ access to Method parameter names. That should look like:<br>
 <div class="code">
 <div class="codeContent"><pre style="margin-left: 40px;"
   class="code-java">Method method = Foo.class.getMethod(....)<br>String[] parameterNames = method.getParameterNames();<br></pre>
+</div>
 <p>But for now, we are thinking of the following directions :-</p>
 <ol>
   <li>Plugins for Intellij IDEA, Eclipse, NetBeans to make
   parameter name data as part of their compilation processes</li>
   <li>Storage and retireval of previous parameter names</li>
 </ol>
-</div>
 </div>
 
 <h1>Projects using it</h1>
