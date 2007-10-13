@@ -29,15 +29,22 @@
  */
 package com.thoughtworks.paranamer.generator;
 
-import org.objectweb.asm.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-import java.io.*;
+import org.objectweb.asm.ClassAdapter;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.Opcodes;
 
 /**
  * A bytecode enhancer which adds a new static variable to some specific class.
  *
  * @author Guilherme Silveira
- * @since upcoming
  */
 public class Enhancer implements Opcodes {
 
@@ -56,7 +63,7 @@ public class Enhancer implements Opcodes {
 
         ClassWriter writer = new ClassWriter(reader, 0);
         // TODO fix problem with inner classes, two classes in one classFile and so on...
-        // TODO doc typo on page 21: recommanded
+        // TODO doc typo on page 21: recommended
         ClassAdapter adapter = new ClassAdapter(writer) {
 
             public void visit(int version, int access, String name, String s1, String s2, String[] strings) {
