@@ -648,7 +648,11 @@ public class BytecodeReadingParanamer implements Paranamer {
                     if (varTypeTable != 0) {
                         k = readUnsignedShort(varTypeTable) * 3;
                         w = varTypeTable + 2;
+                        int[] typeTable = new int[k];                        
                         while (k > 0) {
+                            typeTable[--k] = w + 6; // signature
+                            typeTable[--k] = readUnsignedShort(w + 8); // index
+                            typeTable[--k] = readUnsignedShort(w); // start
                             w += 10;
                         }
                     }
