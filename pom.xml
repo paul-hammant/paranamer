@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.thoughtworks.paranamer</groupId>
   <artifactId>paranamer-parent</artifactId>
@@ -64,13 +66,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.0.2</version>
         <configuration>
           <source>1.4</source>
           <target>1.4</target>
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.1</version>
         <configuration>
           <descriptor>src/main/assembly/dep.xml</descriptor>
         </configuration>
@@ -79,6 +84,7 @@
         <inherited>true</inherited>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.2</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -131,6 +137,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.2</version>
         <configuration>
           <sourceEncoding>utf-8</sourceEncoding>
           <minimumTokens>100</minimumTokens>
@@ -140,8 +147,10 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
+        <version>2.0-beta-5</version>
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
+          <preparationGoals>clean install</preparationGoals>
           <updateDependencies>false</updateDependencies>
           <tagBase>https://svn.codehaus.org/paranamer/tags</tagBase>
         </configuration>
@@ -187,8 +196,12 @@
     </plugins>
   </reporting>
   <scm>
-    <connection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</connection>
-    <developerConnection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</developerConnection>
+    <connection>
+      scm:svn:svn://svn.codehaus.org/paranamer/trunk
+    </connection>
+    <developerConnection>
+      scm:svn:svn://svn.codehaus.org/paranamer/trunk
+    </developerConnection>
     <url>http://svn.paranamer.codehaus.org/trunk</url>
   </scm>
 
@@ -202,17 +215,19 @@
   <distributionManagement>
     <repository>
       <id>codehaus.org</id>
-      <name>ParaNamer Central Repository</name>
+      <name>ParaNamer Repository</name>
       <url>dav:https://dav.codehaus.org/repository/paranamer/</url>
     </repository>
     <snapshotRepository>
       <id>codehaus.org</id>
-      <name>ParaNamer Central Development Repository</name>
-      <url>dav:https://dav.codehaus.org/snapshots.repository/paranamer/</url>
+      <name>ParaNamer Snapshots Repository</name>
+      <url>
+        dav:https://dav.codehaus.org/snapshots.repository/paranamer/
+      </url>
     </snapshotRepository>
     <site>
       <id>codehaus.org</id>
-      <name>ParaNamer Maven site</name>
+      <name>ParaNamer site</name>
       <url>dav:https://dav.codehaus.org/paranamer/info/</url>
     </site>
   </distributionManagement>
