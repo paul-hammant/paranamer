@@ -93,7 +93,12 @@ public class JavadocParanamerTest extends TestCase {
 
     public File getQDoxJavaDocFile() {
         String path = new File(".").getAbsolutePath();
-        File file = new File(path.substring(0,path.lastIndexOf("/paranamer/")));
+        if (path.endsWith("trunk/.")) {
+            path = path.substring(0, path.length()-1);
+        } else {
+            path = path.substring(0,path.lastIndexOf("/paranamer/"));
+        }
+        File file = new File(path);
         if (!file.exists()) {
             throw new RuntimeException("weird path " + file.getAbsolutePath());
         }
