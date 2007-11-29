@@ -1,5 +1,6 @@
 /*
  * Copyright 2007 Paul Hammant
+ * Copyright 2007 ThinkTank Mathematics Limited
  * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -25,13 +26,6 @@
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ---
- *
- * Original Source donated to Paranamer project by Sam Halliday, ThinkTank Mathematics Limited
- * A grant of copyright to this source was given to Paul Hammant by Sam, November 2007, who
- * also retains a right to his original version.
- *
  */
 package com.thoughtworks.paranamer;
 
@@ -85,6 +79,16 @@ import java.util.zip.ZipFile;
  * exceptions and simply return NO_PARAMETER_NAMES_LIST.
  * <p>
  * TODO: example use code
+ * <p>
+ * Known issues:-
+ * <ul>
+ * <li>Only tested with Javadoc 1.6 output</li>
+ * <li>Some "erased" generic methods fail, e.g. File.compareTo(File), which is erased to
+ * File.compareTo(Object). (Note, this may just be because the Java 6 javadocs were used
+ * in tests, but the Java 5 runtime)</li>
+ * <li>URL implementation is really slow</li>
+ * <li>Doesn't support nested classes (due to limitations in the Java 1.4 reflection API)</li>
+ * </ul>
  * 
  * @author Samuel Halliday, ThinkTank Mathematics Limited
  */
@@ -92,12 +96,6 @@ public class JavadocParanamer implements Paranamer {
 
 	private static final String IE =
 			"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)";
-
-	/**
-	 * Timeout in milliseconds for the URL implementation. Not that Java ever pays any
-	 * attention to this value.
-	 */
-	private static final int TIMEOUT = 5000;
 
 	/** In the case of an archive, this stores the path up to the base of the Javadocs */
 	private String base = null;
@@ -112,7 +110,7 @@ public class JavadocParanamer implements Paranamer {
 	 */
 	private final URI location;
 
-	/** The packages which are supported by this instance. */
+	/** The packages which are supported by this instance. Contains Strings */
 	private final Set packages = new HashSet();
 
 	/**
@@ -168,7 +166,7 @@ public class JavadocParanamer implements Paranamer {
 			isArchive = true;
 			isDirectory = false;
 			File archive = archiveOrDirectory;
-			if (!archive.getAbsolutePath().toLowerCase().endsWith(".jar"))
+			if (!archive.getAbsolutePath().toLowerCase().endsWith(".zip"))
 				throw new IllegalArgumentException(archive.getAbsolutePath()
 						+ " is not a zip file.");
 			// check that a "package-list" exists somewhere in the archive
@@ -225,7 +223,7 @@ public class JavadocParanamer implements Paranamer {
 		isDirectory = false;
 		isURI = true;
 		try {
-			location = url.toURI();
+			location = new URI(url.toString());
 		} catch (URISyntaxException e) {
 			throw new IOException(e.getMessage());
 		}
@@ -241,7 +239,8 @@ public class JavadocParanamer implements Paranamer {
 		}
 	}
 
-	public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName) {
+	public int areParameterNamesAvailable(Class clazz,
+			String constructorOrMethodName) {
 		if ((clazz == null) || (constructorOrMethodName == null))
 			throw new NullPointerException();
 
@@ -314,13 +313,13 @@ public class JavadocParanamer implements Paranamer {
 		}
 	}
 
-	private String[] getParameterNames(Class klass, String constructorOrMethodName, Class[] types)
-			throws IOException {
+	private String[] getParameterNames(Class klass,
+			String constructorOrMethodName, Class[] types) throws IOException {
 		// silly request for names of a parameterless method/constructor!
 		if ((types != null) && (types.length == 0))
 			return new String[0];
 
-		String path = klass.getCanonicalName().replace(".", "/");
+		String path = getSimpleName(klass).replace('.', '/');
 		if (isArchive) {
 			ZipFile archive = new ZipFile(new File(location));
 			ZipEntry entry = archive.getEntry(base + path + ".html");
@@ -350,8 +349,7 @@ public class JavadocParanamer implements Paranamer {
 	 * chain. Don't forget to close the input!
 	 */
 	private String[] getParameterNames2(InputStream input,
-			String constructorOrMethodName, Class[] types)
-			throws IOException {
+			String constructorOrMethodName, Class[] types) throws IOException {
 		String javadoc = streamToString(input);
 		input.close();
 
@@ -368,7 +366,9 @@ public class JavadocParanamer implements Paranamer {
 		// and should be checked for aggressively.
 		// 
 		// Also note that Javadoc parameter names may differ from the names in the source.
-		StringBuilder regex = new StringBuilder();
+
+		// we don't have Pattern/Matcher :-(
+		StringBuffer regex = new StringBuffer();
 		regex.append("NAME=\"");
 		regex.append(constructorOrMethodName);
 		// quotes needed to escape array brackets
@@ -377,9 +377,11 @@ public class JavadocParanamer implements Paranamer {
 			if (i != 0)
 				regex.append(", ");
 			// canonical name deals with arrays
-			regex.append(types[i].getCanonicalName());
+			regex.append(getSimpleName(types[i]));
 		}
 		regex.append("\\E\\)\"");
+
+		// FIXME: handle Javadoc 1.3, 1.4 and 1.5 as well (this is 1.6) 
 
 		Pattern pattern = Pattern.compile(regex.toString());
 		Matcher matcher = pattern.matcher(javadoc);
@@ -394,13 +396,23 @@ public class JavadocParanamer implements Paranamer {
 		Pattern patternParams = Pattern.compile(regexParams);
 		int start = matcher.end();
 		Matcher matcherParams = patternParams.matcher(javadoc);
-		matcherParams.region(start, javadoc.length());
 		for (int i = 0; i < types.length; i++) {
-			boolean find = matcherParams.find();
-			assert find;
+			boolean find = matcherParams.find(start);
+			if (!find)
+				return null;
+			start = matcherParams.end();
 			names[i] = matcherParams.group(1);
 		}
 		return names;
+	}
+
+	// doesn't support names of nested classes
+	private String getSimpleName(Class klass) {
+		if (klass.isArray())
+			return getSimpleName(klass.getComponentType()) + "[]";
+
+		String simpleName = klass.getName();
+		return simpleName.substring(simpleName.lastIndexOf(".") + 1);
 	}
 
 	// storing the list of packages that we support is very lightweight
@@ -424,7 +436,7 @@ public class JavadocParanamer implements Paranamer {
 		}
 		BufferedReader breader = new BufferedReader(reader);
 		String line;
-		StringBuilder builder = new StringBuilder();
+		StringBuffer builder = new StringBuffer();
 		while ((line = breader.readLine()) != null) {
 			builder.append(line);
 			builder.append("\n");
@@ -436,7 +448,6 @@ public class JavadocParanamer implements Paranamer {
 		URLConnection conn = url.openConnection();
 		// pretend to be IE6
 		conn.setRequestProperty("User-Agent", IE);
-		conn.setReadTimeout(TIMEOUT);
 		// allow both GZip and Deflate (ZLib) encodings
 		conn.setRequestProperty("Accept-Encoding", "gzip, deflate");
 		conn.connect();
