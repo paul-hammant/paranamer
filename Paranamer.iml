@@ -23,15 +23,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$M2_REPOSITORY$/qdox/qdox/1.5/qdox-1.5.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$M2_REPOSITORY$/junit/junit/3.8.1/junit-3.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -69,6 +60,15 @@
       <library>
         <CLASSES>
           <root url="jar://$M2_REPOSITORY$/asm/asm/3.0/asm-3.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$M2_REPOSITORY$/com/thoughtworks/qdox/qdox/1.6.3/qdox-1.6.3.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
