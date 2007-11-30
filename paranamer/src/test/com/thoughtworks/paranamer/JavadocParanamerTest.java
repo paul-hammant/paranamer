@@ -95,9 +95,9 @@ public class JavadocParanamerTest extends TestCase {
 		testCanFindForAppropriateMethod(getArchiveParanamerSun());
 	}
 
-//	public void testCanFindForAppropriateMethodURL() throws IOException {
-//		testCanFindForAppropriateMethod(getURLParanamerSun());
-//	}
+	public void testCanFindForAppropriateMethodURL() throws IOException {
+		testCanFindForAppropriateMethod(getURLParanamerSun());
+	}
 
 //	public void testCannotFindForInappropriateMethodsEtcDir()
 //			throws IOException {
@@ -109,10 +109,10 @@ public class JavadocParanamerTest extends TestCase {
 		testCannotFindForInappropriateMethodsEtc(getArchiveParanamerSun());
 	}
 
-//	public void testCannotFindForInappropriateMethodsEtcURL()
-//			throws IOException {
-//		testCannotFindForInappropriateMethodsEtc(getURLParanamerSun());
-//	}
+	public void testCannotFindForInappropriateMethodsEtcURL()
+			throws IOException {
+		testCannotFindForInappropriateMethodsEtc(getURLParanamerSun());
+	}
 
 	public void testFailsIfABadUrl() throws MalformedURLException, IOException {
 		try {
@@ -152,9 +152,9 @@ public class JavadocParanamerTest extends TestCase {
 		testGenericsDontInterfereWithExtraction(getArchiveParanamerSun());
 	}
 
-//	public void testGenericsDontInterfereWithExtractionURL() throws IOException {
-//		testGenericsDontInterfereWithExtraction(getURLParanamerSun());
-//	}
+	public void testGenericsDontInterfereWithExtractionURL() throws IOException {
+		testGenericsDontInterfereWithExtraction(getURLParanamerSun());
+	}
 
 //	public void testNamesInIterativeMannerDir() throws IOException {
 //		testNamesInIterativeManner(getDirectoryParanamerSun());
@@ -164,9 +164,9 @@ public class JavadocParanamerTest extends TestCase {
 		testNamesInIterativeManner(getArchiveParanamerSun());
 	}
 
-//	public void testNamesInIterativeMannerURL() throws IOException {
-//		testNamesInIterativeManner(getURLParanamerSun());
-//	}
+	public void testNamesInIterativeMannerURL() throws IOException {
+		testNamesInIterativeManner(getURLParanamerSun());
+	}
 
 	private JavadocParanamer getArchiveParanamerSun() throws IOException {
 		File archive = new File(SUN_DIRECTORY_BASE + SUN_ARCHIVE_FILENAME);
@@ -219,7 +219,7 @@ public class JavadocParanamerTest extends TestCase {
 			try {
 				paranamer.lookupParameterNames(method);
 			} catch (ParameterNamesNotFoundException e) {
-				System.out.println("Unable to find names for " + e.getMessage());
+				fail("Unable to find names for " + e.getMessage());
 			}
 		}
 	}
@@ -231,7 +231,7 @@ public class JavadocParanamerTest extends TestCase {
 			try {
 				paranamer.lookupParameterNames(method);
 			} catch (ParameterNamesNotFoundException e) {
-				System.out.println("Unable to find names for " + e.getMessage());
+				fail("Unable to find names for " + e.getMessage());
 			}
 		}
 	}
