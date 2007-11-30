@@ -2,6 +2,11 @@
  * Copyright 2007 Paul Hammant
  * Copyright 2007 ThinkTank Mathematics Limited
  * 
+ * ThinkTank Mathematics Limited grants a non-revocable, perpetual licence
+ * to Paul Hammant for unlimited use, relicensing and redistribution. No
+ * explicit permission is required from ThinkTank Mathematics Limited for
+ * any future decisions made with regard to this file.
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
