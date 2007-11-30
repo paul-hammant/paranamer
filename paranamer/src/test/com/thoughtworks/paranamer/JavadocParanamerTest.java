@@ -194,12 +194,15 @@ public class JavadocParanamerTest extends TestCase {
 
 	private void testCanFindForAppropriateMethod(Paranamer paranamer) {
 		assertEquals(Paranamer.PARAMETER_NAMES_FOUND,
-			paranamer.areParameterNamesAvailable(File.class, "canRead"));
+			paranamer.areParameterNamesAvailable(File.class, "createTempFile"));
 	}
 
 	private void testCannotFindForInappropriateMethodsEtc(Paranamer paranamer) {
-		assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS,
+		// this empty string should never return true
+		assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER,
 			paranamer.areParameterNamesAvailable(getClass(), ""));
+		assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS,
+			paranamer.areParameterNamesAvailable(getClass(), "<init>"));
 		assertEquals(Paranamer.PARAMETER_NAMES_FOUND,
 			paranamer.areParameterNamesAvailable(Random.class, "<init>"));
 		// make sure we're not just grepping on the javadocs

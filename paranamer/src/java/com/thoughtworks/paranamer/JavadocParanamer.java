@@ -53,12 +53,15 @@ import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 /**
@@ -101,6 +104,9 @@ public class JavadocParanamer implements Paranamer {
 
 	private static final String IE =
 			"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)";
+
+	private static final ParameterNamesNotFoundException CLASS_NOT_SUPPORTED =
+			new ParameterNamesNotFoundException("class not supported");
 
 	/** In the case of an archive, this stores the path up to the base of the Javadocs */
 	private String base = null;
@@ -182,29 +188,37 @@ public class JavadocParanamer implements Paranamer {
 				// There may be multiple files in the archive
 				// but we cannot use ZipFile.getEntry for suffix names
 				// so we have to look through all the entries.
+				// We then pick the largest file.
 				Enumeration entries = zip.entries();
 				// grr... http://javablog.co.uk/2007/11/25/enumeration-and-iterable
+				// Set<ZipEntry>
+				SortedMap packageLists = new TreeMap();
 				while (entries.hasMoreElements()) {
 					ZipEntry entry = (ZipEntry) entries.nextElement();
 					String name = entry.getName();
 					if (name.endsWith("package-list")) {
-						base =
-								name.substring(0, name.length()
-										- "package-list".length());
-						InputStream input = zip.getInputStream(entry);
-						try {
-							String packageListString = streamToString(input);
-							parsePackageList(packageListString);
-						} finally {
-							input.close();
-						}
-						// TODO: handle multiple package lists
-						return;
+						Long size = new Long(entry.getSize());
+						packageLists.put(size, entry);
 					}
 				}
-				throw new FileNotFoundException("No package-list found in "
-						+ archive.getAbsolutePath()
-						+ ". Not a valid Javadoc archive.");
+				if (packageLists.size() == 0)
+					throw new FileNotFoundException(
+						"no package-list found in archive");
+
+				// pick the largest package-list file, it's most likely the one we want
+				ZipEntry entry =
+						(ZipEntry) packageLists.get(packageLists.lastKey());
+				String name = entry.getName();
+				base =
+						name.substring(0, name.length()
+								- "package-list".length());
+				InputStream input = zip.getInputStream(entry);
+				try {
+					String packageListString = streamToString(input);
+					parsePackageList(packageListString);
+				} finally {
+					input.close();
+				}
 			} finally {
 				zip.close();
 			}
@@ -252,10 +266,6 @@ public class JavadocParanamer implements Paranamer {
 		if ((clazz == null) || (constructorOrMethodName == null))
 			throw new NullPointerException();
 
-		// quick check to see if we support the package
-		if (!packages.contains(clazz.getPackage().getName()))
-			return NO_PARAMETER_NAMES_FOR_CLASS;
-
 		// due to general problems with this method, we just delegate
 		// the first match we find to lookupParameterNames
 		AccessibleObject accessible = null;
@@ -264,7 +274,7 @@ public class JavadocParanamer implements Paranamer {
 		else {
 			Method[] methods = clazz.getMethods();
 			if (methods == null)
-				// actually, this method doesn't exist
+				// this method doesn't exist
 				return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
 			for (int i = 0; i < methods.length; i++) {
 				if (methods[i].getName().equals(constructorOrMethodName)) {
@@ -274,13 +284,15 @@ public class JavadocParanamer implements Paranamer {
 			}
 		}
 		if (accessible == null)
-			// actually, this method doesn't exist
+			// this method doesn't exist
 			return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
 
 		try {
 			lookupParameterNames(accessible);
 			return PARAMETER_NAMES_FOUND;
 		} catch (ParameterNamesNotFoundException e) {
+			if (e == CLASS_NOT_SUPPORTED)
+				return NO_PARAMETER_NAMES_FOR_CLASS;
 			return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
 		}
 	}
@@ -306,13 +318,15 @@ public class JavadocParanamer implements Paranamer {
 		} else
 			throw new IllegalArgumentException();
 
-		String[] names;
+		// quick check to see if we support the package
+		if (!packages.contains(klass.getPackage().getName()))
+			throw CLASS_NOT_SUPPORTED;
+
 		try {
-			names = getParameterNames(klass, name, types);
+			String[] names = getParameterNames(klass, name, types);
 			if (names == null)
 				throw new ParameterNamesNotFoundException(
-					methodOrConstructor.toString()
-							+ " parameter names not found in the Javadocs.");
+					methodOrConstructor.toString());
 			return names;
 		} catch (IOException e) {
 			throw new ParameterNamesNotFoundException(
@@ -321,30 +335,36 @@ public class JavadocParanamer implements Paranamer {
 		}
 	}
 
+	// throws CLASS_NOT_SUPPORTED if the class file is not found in the javadocs
+	// return null if the parameter names were not found
 	private String[] getParameterNames(Class klass,
 			String constructorOrMethodName, Class[] types) throws IOException {
 		// silly request for names of a parameterless method/constructor!
 		if ((types != null) && (types.length == 0))
 			return new String[0];
 
-		String path = getSimpleName(klass).replace('.', '/');
+		String path = getCanonicalName(klass).replace('.', '/');
 		if (isArchive) {
 			ZipFile archive = new ZipFile(new File(location));
 			ZipEntry entry = archive.getEntry(base + path + ".html");
 			if (entry == null)
-				return null;
+				throw CLASS_NOT_SUPPORTED;
 			InputStream input = archive.getInputStream(entry);
 			return getParameterNames2(input, constructorOrMethodName, types);
 		} else if (isDirectory) {
 			File file = new File(location.getPath() + "/" + path + ".html");
 			if (!file.isFile())
-				return null;
+				throw CLASS_NOT_SUPPORTED;
 			FileInputStream input = new FileInputStream(file);
 			return getParameterNames2(input, constructorOrMethodName, types);
 		} else if (isURI) {
-			URL url = new URL(location.toString() + "/" + path + ".html");
-			InputStream input = urlToInputStream(url);
-			return getParameterNames2(input, constructorOrMethodName, types);
+			try {
+				URL url = new URL(location.toString() + "/" + path + ".html");
+				InputStream input = urlToInputStream(url);
+				return getParameterNames2(input, constructorOrMethodName, types);
+			} catch (FileNotFoundException e) {
+				throw CLASS_NOT_SUPPORTED;
+			}
 		}
 		throw new RuntimeException(
 			"bug in JavadocParanamer. Should not reach here.");
@@ -385,7 +405,7 @@ public class JavadocParanamer implements Paranamer {
 			if (i != 0)
 				regex.append(", ");
 			// canonical name deals with arrays
-			regex.append(getSimpleName(types[i]));
+			regex.append(getCanonicalName(types[i]));
 		}
 		regex.append("\\E\\)\"");
 
@@ -415,12 +435,11 @@ public class JavadocParanamer implements Paranamer {
 	}
 
 	// doesn't support names of nested classes
-	private String getSimpleName(Class klass) {
+	private String getCanonicalName(Class klass) {
 		if (klass.isArray())
-			return getSimpleName(klass.getComponentType()) + "[]";
+			return getCanonicalName(klass.getComponentType()) + "[]";
 
-		String simpleName = klass.getName();
-		return simpleName.substring(simpleName.lastIndexOf(".") + 1);
+		return klass.getName();
 	}
 
 	// storing the list of packages that we support is very lightweight
