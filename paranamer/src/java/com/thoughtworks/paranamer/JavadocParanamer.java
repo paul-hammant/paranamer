@@ -127,13 +127,14 @@ public class JavadocParanamer implements Paranamer {
 	 * @throws IOException
 	 *             if there was an error when reading from either the archive or the
 	 *             package-list file.
+	 * @throws FileNotFoundException
+	 *             if the archive, directory or <code>package-list</code> file does not
+	 *             exist.
 	 * @throws NullPointerException
 	 *             if any parameter is null
 	 * @throws IllegalArgumentException
-	 *             if the given parameter is neither a directory nor a file. Or if it is a
-	 *             file but not a zip archive of Javadocs. Or if it is a directory but not
-	 *             the base of a Javadoc directory (must contain a file named
-	 *             "package-list").
+	 *             If the given parameter is not a file or directory or if it is a file
+	 *             but not a javadoc zip archive.
 	 */
 	public JavadocParanamer(File archiveOrDirectory) throws IOException {
 		if (archiveOrDirectory == null)
@@ -155,7 +156,7 @@ public class JavadocParanamer implements Paranamer {
 			File packageList =
 					new File(dir.getAbsolutePath() + "/package-list");
 			if (!packageList.isFile())
-				throw new IllegalArgumentException("No package-list found at "
+				throw new FileNotFoundException("No package-list found at "
 						+ dir.getAbsolutePath()
 						+ ". Not a valid Javadoc directory.");
 			// it appear to be a valid Javadoc directory
@@ -201,7 +202,7 @@ public class JavadocParanamer implements Paranamer {
 						return;
 					}
 				}
-				throw new IllegalArgumentException("No package-list found in "
+				throw new FileNotFoundException("No package-list found in "
 						+ archive.getAbsolutePath()
 						+ ". Not a valid Javadoc archive.");
 			} finally {
@@ -217,6 +218,8 @@ public class JavadocParanamer implements Paranamer {
 	 * @param url
 	 * @throws IOException
 	 *             if there was a problem connecting to the remote Javadocs
+	 * @throws FileNotFoundException
+	 *             if the url does not have a <code>/package-list</code>
 	 * @throws NullPointerException
 	 *             if any parameter is null
 	 */
@@ -386,7 +389,7 @@ public class JavadocParanamer implements Paranamer {
 		}
 		regex.append("\\E\\)\"");
 
-		// FIXME: handle Javadoc 1.3, 1.4 and 1.5 as well (this is 1.6) 
+		// FIXME: handle Javadoc 1.3, 1.4 and 1.5 as well (this is 1.6)
 
 		Pattern pattern = Pattern.compile(regex.toString());
 		Matcher matcher = pattern.matcher(javadoc);
