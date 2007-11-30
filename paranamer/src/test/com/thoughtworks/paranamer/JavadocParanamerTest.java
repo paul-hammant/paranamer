@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Random;
 
 import junit.framework.TestCase;
 
@@ -80,54 +81,85 @@ public class JavadocParanamerTest extends TestCase {
 		}
 	}
 
-	public void testArchive() throws IOException {
-		JavadocParanamer paranamer = getArchiveParanamerSun();
-		availabilityTest(paranamer);
-		namesTest(paranamer);
+	public void testCanFindForAppropriateMethodDir() throws IOException {
+		testCanFindForAppropriateMethod(getDirectoryParanamerSun());
 	}
 
-	public void testConstructor() throws IOException {
-		boolean caught = false;
+	public void testCanFindForAppropriateMethodFile() throws IOException {
+		testCanFindForAppropriateMethod(getArchiveParanamerSun());
+	}
+
+	public void testCanFindForAppropriateMethodURL() throws IOException {
+		testCanFindForAppropriateMethod(getURLParanamerSun());
+	}
+
+	public void testCannotFindForInappropriateMethodsEtcDir()
+			throws IOException {
+		testCannotFindForInappropriateMethodsEtc(getDirectoryParanamerSun());
+	}
+
+	public void testCannotFindForInappropriateMethodsEtcFile()
+			throws IOException {
+		testCannotFindForInappropriateMethodsEtc(getArchiveParanamerSun());
+	}
+
+	public void testCannotFindForInappropriateMethodsEtcURL()
+			throws IOException {
+		testCannotFindForInappropriateMethodsEtc(getURLParanamerSun());
+	}
+
+	public void testFailsIfABadUrl() {
+		try {
+			new JavadocParanamer(
+				new URL(
+					"http://codehaus.org/justForTestIngSorryIfThisMessesUpTheLogsBobSeeParanamerSource.zip"));
+			fail("should have barfed");
+		} catch (Exception e) { // TODO - which exception?
+			// expected
+		}
+	}
+
+	public void testFailsIfNotAFile() throws IOException {
 		try {
 			new JavadocParanamer(new File("non-existant-file"));
+			fail("should have barfed");
 		} catch (FileNotFoundException e) {
-			caught = true;
+			// expected
 		}
-		assertTrue(caught);
-		caught = false;
-		try {
-			new JavadocParanamer(new File("./"));
-		} catch (IllegalArgumentException e) {
-			caught = true;
-			// should have failed due to no package-list found
-			assertTrue(e.getMessage().indexOf("package-list") >= 0);
-		}
-		assertTrue(caught);
-		getArchiveParanamerSun();
-		getDirectoryParanamerSun();
-		getURLParanamerSun();
 	}
 
-// public void testDirectory() throws IOException {
-// JavadocParanamer paranamer = getDirectoryParanamerSun();
-// availabilityTest(paranamer);
-// namesTest(paranamer);
-// }
+	public void testFailsIfNotAJavadocDirectory() throws IOException {
+		try {
+			new JavadocParanamer(new File("./"));
+			fail("should have barfed");
+		} catch (IllegalArgumentException e) {
+			assertTrue(e.getMessage().contains("package-list"));
+		}
+	}
 
-// public void testURL() throws IOException {
-// JavadocParanamer paranamer = getURLParanamerSun();
-// availabilityTest(paranamer);
-// namesTest(paranamer);
-// }
+	public void testGenericsDontInterfereWithExtractionDir() throws IOException {
+		testGenericsDontInterfereWithExtraction(getDirectoryParanamerSun());
+	}
 
-	private void availabilityTest(JavadocParanamer paranamer) {
-		assertTrue(paranamer.areParameterNamesAvailable(getClass(), "") == Paranamer.NO_PARAMETER_NAMES_FOR_CLASS);
-		assertTrue(paranamer.areParameterNamesAvailable(RuntimeException.class,
-			"<init>") == Paranamer.PARAMETER_NAMES_FOUND);
-		// make sure we're not just grepping on the javadocs
-		assertTrue(paranamer.areParameterNamesAvailable(File.class,
-			"operating systems") == Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER);
-		assertTrue(paranamer.areParameterNamesAvailable(File.class, "toURL") == Paranamer.PARAMETER_NAMES_FOUND);
+	public void testGenericsDontInterfereWithExtractionFile()
+			throws IOException {
+		testGenericsDontInterfereWithExtraction(getArchiveParanamerSun());
+	}
+
+	public void testGenericsDontInterfereWithExtractionURL() throws IOException {
+		testGenericsDontInterfereWithExtraction(getURLParanamerSun());
+	}
+
+	public void testNamesInIterativeMannerDir() throws IOException {
+		testNamesInIterativeManner(getDirectoryParanamerSun());
+	}
+
+	public void testNamesInIterativeMannerFile() throws IOException {
+		testNamesInIterativeManner(getArchiveParanamerSun());
+	}
+
+	public void testNamesInIterativeMannerURL() throws IOException {
+		testNamesInIterativeManner(getURLParanamerSun());
 	}
 
 	private JavadocParanamer getArchiveParanamerSun() throws IOException {
@@ -154,37 +186,43 @@ public class JavadocParanamerTest extends TestCase {
 		return new JavadocParanamer(new URL(SUN_JAVADOC_URL));
 	}
 
-	private void namesTest(JavadocParanamer paranamer) {
-		{
-			Method[] methods = File.class.getMethods();
+	private void testCanFindForAppropriateMethod(Paranamer paranamer) {
+		assertEquals(Paranamer.PARAMETER_NAMES_FOUND,
+			paranamer.areParameterNamesAvailable(File.class, "canRead"));
+	}
 
-			for (int i = 0; i < methods.length; i++) {
-				Method method = methods[i];
-				try {
-					paranamer.lookupParameterNames(method);
-				} catch (ParameterNamesNotFoundException e) {
-					// lots of errors probably as the Javadocs are for
-					// Java 6 and we're probably running Java 1.2
-					System.out.println("Unable to find names for "
-							+ e.getMessage());
-				}
+	private void testCannotFindForInappropriateMethodsEtc(Paranamer paranamer) {
+		assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS,
+			paranamer.areParameterNamesAvailable(getClass(), ""));
+		assertEquals(Paranamer.PARAMETER_NAMES_FOUND,
+			paranamer.areParameterNamesAvailable(Random.class, "<init>"));
+		// make sure we're not just grepping on the javadocs
+		assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER,
+			paranamer.areParameterNamesAvailable(File.class,
+				"resulting object model navigated"));
+	}
+
+	private void testGenericsDontInterfereWithExtraction(Paranamer paranamer) {
+		// this test of HashSet demonstrates that generics do not interfere
+		// and that methods defined in super classes also work
+		for (int i = 0; i < HashSet.class.getMethods().length; i++) {
+			Method method = HashSet.class.getMethods()[i];
+			try {
+				paranamer.lookupParameterNames(method);
+			} catch (ParameterNamesNotFoundException e) {
+				System.out.println("Unable to find names for " + e.getMessage());
 			}
 		}
-		{
-			// this test of HashSet demonstrates that generics do not always interfere
-			// and that methods defined in superclasses also work
-			Method[] methods = HashSet.class.getMethods();
+	}
 
-			for (int i = 0; i < methods.length; i++) {
-				Method method = methods[i];
-				try {
-					paranamer.lookupParameterNames(method);
-				} catch (ParameterNamesNotFoundException e) {
-					// lots of errors probably as the Javadocs are for
-					// Java 6 and we're probably running Java 1.2
-					System.out.println("Unable to find names for "
-							+ e.getMessage());
-				}
+	private void testNamesInIterativeManner(Paranamer paranamer) {
+		Method[] methods = HashSet.class.getMethods();
+		for (int i = 0; i < methods.length; i++) {
+			Method method = methods[i];
+			try {
+				paranamer.lookupParameterNames(method);
+			} catch (ParameterNamesNotFoundException e) {
+				System.out.println("Unable to find names for " + e.getMessage());
 			}
 		}
 	}
