@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.Random;
 
 import junit.framework.TestCase;
@@ -85,34 +85,35 @@ public class JavadocParanamerTest extends TestCase {
 			SUN_DOWNLOAD_URL = "http://java.sun.com/javase/downloads/";
 			SUN_JAVADOC_URL = "http://java.sun.com/javase/6/docs/api/";
 		}
+		System.out.println("Java version " + version);
 	}
 
-//	public void testCanFindForAppropriateMethodDir() throws IOException {
-//		testCanFindForAppropriateMethod(getDirectoryParanamerSun());
-//	}
+// public void testCanFindForAppropriateMethodDir() throws IOException {
+// testCanFindForAppropriateMethod(getDirectoryParanamerSun());
+// }
 
 	public void testCanFindForAppropriateMethodFile() throws IOException {
 		testCanFindForAppropriateMethod(getArchiveParanamerSun());
 	}
 
-	public void testCanFindForAppropriateMethodURL() throws IOException {
-		testCanFindForAppropriateMethod(getURLParanamerSun());
-	}
-
-//	public void testCannotFindForInappropriateMethodsEtcDir()
-//			throws IOException {
-//		testCannotFindForInappropriateMethodsEtc(getDirectoryParanamerSun());
+//	public void testCanFindForAppropriateMethodURL() throws IOException {
+//		testCanFindForAppropriateMethod(getURLParanamerSun());
 //	}
+
+// public void testCannotFindForInappropriateMethodsEtcDir()
+// throws IOException {
+// testCannotFindForInappropriateMethodsEtc(getDirectoryParanamerSun());
+// }
 
 	public void testCannotFindForInappropriateMethodsEtcFile()
 			throws IOException {
 		testCannotFindForInappropriateMethodsEtc(getArchiveParanamerSun());
 	}
 
-	public void testCannotFindForInappropriateMethodsEtcURL()
-			throws IOException {
-		testCannotFindForInappropriateMethodsEtc(getURLParanamerSun());
-	}
+//	public void testCannotFindForInappropriateMethodsEtcURL()
+//			throws IOException {
+//		testCannotFindForInappropriateMethodsEtc(getURLParanamerSun());
+//	}
 
 	public void testFailsIfABadUrl() throws MalformedURLException, IOException {
 		try {
@@ -143,30 +144,30 @@ public class JavadocParanamerTest extends TestCase {
 		}
 	}
 
-//	public void testGenericsDontInterfereWithExtractionDir() throws IOException {
-//		testGenericsDontInterfereWithExtraction(getDirectoryParanamerSun());
-//	}
+// public void testGenericsDontInterfereWithExtractionDir() throws IOException {
+// testGenericsDontInterfereWithExtraction(getDirectoryParanamerSun());
+// }
 
 	public void testGenericsDontInterfereWithExtractionFile()
 			throws IOException {
 		testGenericsDontInterfereWithExtraction(getArchiveParanamerSun());
 	}
 
-	public void testGenericsDontInterfereWithExtractionURL() throws IOException {
-		testGenericsDontInterfereWithExtraction(getURLParanamerSun());
-	}
+// public void testGenericsDontInterfereWithExtractionURL() throws IOException {
+// testGenericsDontInterfereWithExtraction(getURLParanamerSun());
+// }
 
-//	public void testNamesInIterativeMannerDir() throws IOException {
-//		testNamesInIterativeManner(getDirectoryParanamerSun());
-//	}
+// public void testNamesInIterativeMannerDir() throws IOException {
+// testNamesInIterativeManner(getDirectoryParanamerSun());
+// }
 
 	public void testNamesInIterativeMannerFile() throws IOException {
 		testNamesInIterativeManner(getArchiveParanamerSun());
 	}
 
-	public void testNamesInIterativeMannerURL() throws IOException {
-		testNamesInIterativeManner(getURLParanamerSun());
-	}
+// public void testNamesInIterativeMannerURL() throws IOException {
+// testNamesInIterativeManner(getURLParanamerSun());
+// }
 
 	private JavadocParanamer getArchiveParanamerSun() throws IOException {
 		File archive = new File(SUN_DIRECTORY_BASE + SUN_ARCHIVE_FILENAME);
@@ -206,26 +207,53 @@ public class JavadocParanamerTest extends TestCase {
 		assertEquals(Paranamer.PARAMETER_NAMES_FOUND,
 			paranamer.areParameterNamesAvailable(Random.class, "<init>"));
 		// make sure we're not just grepping on the javadocs
-		assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER,
-			paranamer.areParameterNamesAvailable(File.class,
-				"operating system"));
+		assertEquals(
+			Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER,
+			paranamer.areParameterNamesAvailable(File.class, "operating system"));
 	}
 
 	private void testGenericsDontInterfereWithExtraction(Paranamer paranamer) {
-		// this test of HashSet demonstrates that generics do not interfere
-		// and that methods defined in super classes also work
-		for (int i = 0; i < HashSet.class.getMethods().length; i++) {
-			Method method = HashSet.class.getMethods()[i];
-			try {
-				paranamer.lookupParameterNames(method);
-			} catch (ParameterNamesNotFoundException e) {
-				fail("Unable to find names for " + e.getMessage());
+		try {
+			// several kinds of generic information can break the JavadocParanamer
+
+			// TODO: test static methods that declare generic types as parameters.
+			// This has been possible since Java 5, but none of the SUN classes
+			// actually do it for static methods (just for class javadocs).
+			// to test this, we need an appropriate method.
+//			{
+//				// javadocs consider the generic type declaration of a static method
+//				// to be a "parameter", which is a bit weird. We need to handle this.
+//				try {
+//					Class[] params = new Class[] { Object.class };
+//					Method method =
+//							??.class.getMethod("??", params);
+//					String[] names = paranamer.lookupParameterNames(method);
+//					assertEquals(names[?], ??);
+//				} catch (ParameterNamesNotFoundException e) {
+//					fail("??() " + e.getMessage());
+//				}
+//			}
+
+			{
+				// parameters with generic type are erased to Object using reflection
+				try {
+					Class[] params = new Class[] { Object[].class };
+					Method method =
+							Collection.class.getMethod("toArray", params);
+					paranamer.lookupParameterNames(method);
+				} catch (ParameterNamesNotFoundException e) {
+					fail("toArray(Object[]) " + e.getMessage());
+				}
 			}
+		} catch (SecurityException e) {
+			fail("SecurityException " + e.getMessage());
+		} catch (NoSuchMethodException e) {
+			fail("NoSuchMethodException " + e.getMessage());
 		}
 	}
 
 	private void testNamesInIterativeManner(Paranamer paranamer) {
-		Method[] methods = HashSet.class.getMethods();
+		Method[] methods = Random.class.getMethods();
 		for (int i = 0; i < methods.length; i++) {
 			Method method = methods[i];
 			try {

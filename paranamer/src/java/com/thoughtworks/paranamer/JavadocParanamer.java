@@ -90,10 +90,10 @@ import java.util.zip.ZipFile;
  * <p>
  * Known issues:-
  * <ul>
- * <li>Only tested with Javadoc 1.6 output</li>
+ * <li>Only tested with Javadoc 1.3 - 1.6</li>
+ * <li>Doesn't handle methods that declare the generic type as a parameter (rare use case)</li>
  * <li>Some "erased" generic methods fail, e.g. File.compareTo(File), which is erased to
- * File.compareTo(Object). (Note, this may just be because the Java 6 javadocs were used
- * in tests, but the Java 5 runtime)</li>
+ * File.compareTo(Object).</li>
  * <li>URL implementation is really slow</li>
  * <li>Doesn't support nested classes (due to limitations in the Java 1.4 reflection API)</li>
  * </ul>
