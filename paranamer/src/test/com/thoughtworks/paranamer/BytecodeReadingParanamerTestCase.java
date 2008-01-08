@@ -99,9 +99,13 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
 
     public void testDoesNotRetrieveParameterNamedArg0() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
-        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
+        try {
+        	asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
                 "unsupportedParameterNames", new Class[] { String.class }));
-        assertNull(names);
+        	fail("Should find (arg0) and think this is a debug-free compiled class.");
+        } catch(ParameterNamesNotFoundException ex) {
+        	// ok
+        }
     }
 
     public static class SpecificMethodSearchable {

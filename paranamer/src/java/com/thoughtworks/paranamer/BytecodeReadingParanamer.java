@@ -201,7 +201,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                 return null;
             }
             if (!collector.isDebugInfoPresent()) {
-                return null;
+            	throw new ParameterNamesNotFoundException("Parameter names not found for " + methodName);
             }
             return collector.getResult().split(COMMA);
         }
