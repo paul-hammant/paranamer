@@ -113,6 +113,9 @@
               <value>${basedir}/src/test</value>
             </property>
           </systemProperties>
+          <excludes>
+            <exclude>**/JavadocParanamerTest.java</exclude>
+          </excludes>
         </configuration>
       </plugin>
       <plugin>
