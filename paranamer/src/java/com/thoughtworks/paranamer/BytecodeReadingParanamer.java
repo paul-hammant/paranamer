@@ -186,7 +186,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                 return null;
             }
             for (int i = 0; i < argumentTypes.length; i++) {
-                if (!argumentTypes[i].getClassName().equals(
+                if (!correctTypeName(argumentTypes, i).equals(
                         this.parameterTypes[i].getName())) {
                     return null;
                 }
@@ -196,12 +196,21 @@ public class BytecodeReadingParanamer implements Paranamer {
             return collector;
         }
 
+        private String correctTypeName(Type[] argumentTypes, int i) {
+            String s = argumentTypes[i].getClassName();
+            // array notation needs cleanup.
+            if (s.endsWith("[]")) {
+                s = "[L" + s.substring(0, s.length() - 2) + ";";
+            }
+            return s;
+        }
+
         private String[] getParameterNamesForMethod() {
             if (collector == null) {
                 return null;
             }
             if (!collector.isDebugInfoPresent()) {
-            	throw new ParameterNamesNotFoundException("Parameter names not found for " + methodName);
+                throw new ParameterNamesNotFoundException("Parameter names not found for " + methodName);
             }
             return collector.getResult().split(COMMA);
         }
@@ -648,7 +657,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                     if (varTypeTable != 0) {
                         k = readUnsignedShort(varTypeTable) * 3;
                         w = varTypeTable + 2;
-                        int[] typeTable = new int[k];                        
+                        int[] typeTable = new int[k];
                         while (k > 0) {
                             typeTable[--k] = w + 6; // signature
                             typeTable[--k] = readUnsignedShort(w + 8); // index
@@ -984,6 +993,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                     ++size;
                 }
             }
+
             Type[] args = new Type[size];
             off = 1;
             size = 0;
