@@ -77,6 +77,7 @@ public abstract class AbstractParanamerTestCase extends TestCase {
     }
 
     private String toCSV(String[] names) {
+        assertNotNull(names);
         StringBuffer sb = new StringBuffer();
         for ( int i = 0; i < names.length; i++ ){
             sb.append(names[i]);

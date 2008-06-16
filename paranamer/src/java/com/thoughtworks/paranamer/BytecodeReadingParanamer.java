@@ -33,6 +33,7 @@ package com.thoughtworks.paranamer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.AccessibleObject;
@@ -114,7 +115,7 @@ public class BytecodeReadingParanamer implements Paranamer {
     }
 
     private InputStream getClassAsStream(ClassLoader classLoader, String className) {
-        String name = '/' + className.replace('.', '/') + ".class";
+        String name = className.replace('.', '/') + ".class";  
         // better pre-cache all methods otherwise this content will be loaded
         // multiple times
         InputStream asStream = classLoader.getResourceAsStream(name);

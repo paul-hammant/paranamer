@@ -32,6 +32,8 @@ package com.thoughtworks.paranamer;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 
 /**
@@ -97,7 +99,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("d,s", names);
     }
 
-    public void testDoesNotRetrieveParameterNamedArg0() throws SecurityException, NoSuchMethodException {
+    public void testDoesNotRetrieveParagmeterNamedArg0() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         try {
         	asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
@@ -115,6 +117,16 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("a", names);
     }
 
+    public void testRetrievesParameterNamesFromAConstructorInJar() 
+            throws ClassNotFoundException, NoSuchMethodException {
+        URL url = getClass().getResource("/test.jar");
+        URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
+        Class clazz = Class.forName("com.thoughtworks.paranamer.SpecificMethodSearchable", true, classLoader);
+
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        String[] names = asm.lookupParameterNames(clazz.getConstructor(new Class[]{String.class}));
+        assertThatParameterNamesMatch("foo", names);
+    }
 
     public static class SpecificMethodSearchable {
 
