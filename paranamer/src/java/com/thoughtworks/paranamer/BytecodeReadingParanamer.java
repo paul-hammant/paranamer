@@ -53,6 +53,8 @@ import java.util.List;
  */
 public class BytecodeReadingParanamer implements Paranamer {
 
+    private static final String[] EMPTY_NAMES = new String[]{};
+
     public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
 
         Class[] types = null;
@@ -71,13 +73,16 @@ public class BytecodeReadingParanamer implements Paranamer {
         }
 
         InputStream content = getClassAsStream(declaringClass);
+        if (content == null) {
+            return EMPTY_NAMES;
+        }
         try {
             ClassReader reader = new ClassReader(content);
             TypeCollector visitor = new TypeCollector(name, types);
             reader.accept(visitor);
             return visitor.getParameterNamesForMethod();
         } catch (IOException e) {
-            return null;
+            throw new ParameterNamesNotFoundException("IoException while reading class bytes", e);
         }
     }
 
