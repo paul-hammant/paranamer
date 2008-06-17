@@ -83,6 +83,9 @@ public class BytecodeReadingParanamer implements Paranamer {
 
     public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName) {
         InputStream content = getClassAsStream(clazz.getClassLoader(), clazz.getName());
+        if (content == null) {
+            return NO_PARAMETER_NAMES_FOR_CLASS;
+        }
         try {
             ClassReader reader = new ClassReader(content);
             //TODO - also for constructors
@@ -101,12 +104,10 @@ public class BytecodeReadingParanamer implements Paranamer {
             }
             return Paranamer.PARAMETER_NAMES_FOUND;
         } catch (IOException e) {
-            return Paranamer.NO_PARAMETER_NAMES_LIST;
+            throw new ParameterNamesNotFoundException("IoException while reading class bytes", e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new ParameterNamesNotFoundException("ClassNotFoundException while reading class bytes", e);
         }
-
-        return 0;
     }
 
     private InputStream getClassAsStream(Class clazz) {

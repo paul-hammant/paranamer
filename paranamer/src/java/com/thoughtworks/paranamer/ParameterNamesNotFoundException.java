@@ -40,8 +40,18 @@ public class ParameterNamesNotFoundException extends RuntimeException {
 
     static final String __PARANAMER_DATA = "v1.0 \n"
       + "<init> java.lang.String message \n";
+    private Exception cause;
 
     public ParameterNamesNotFoundException(String message) {
         super(message);
+    }
+
+    public ParameterNamesNotFoundException(String message, Exception cause) {
+        super(message);
+        this.cause = cause;
+    }
+
+    public Throwable getCause() {
+        return cause;
     }
 }
