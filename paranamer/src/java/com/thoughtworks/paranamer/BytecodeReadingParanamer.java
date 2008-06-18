@@ -74,7 +74,7 @@ public class BytecodeReadingParanamer implements Paranamer {
 
         InputStream content = getClassAsStream(declaringClass);
         if (content == null) {
-            return EMPTY_NAMES;
+            throw new ParameterNamesNotFoundException("Unable to get class bytes");
         }
         try {
             ClassReader reader = new ClassReader(content);
@@ -109,9 +109,9 @@ public class BytecodeReadingParanamer implements Paranamer {
             }
             return Paranamer.PARAMETER_NAMES_FOUND;
         } catch (IOException e) {
-            throw new ParameterNamesNotFoundException("IoException while reading class bytes", e);
+            return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS;
         } catch (ClassNotFoundException e) {
-            throw new ParameterNamesNotFoundException("ClassNotFoundException while reading class bytes", e);
+            return NO_PARAMETER_NAMES_FOR_CLASS;
         }
     }
 
