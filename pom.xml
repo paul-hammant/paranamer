@@ -229,41 +229,6 @@
     </site>
   </distributionManagement>
 
-  <repositories>
-    <repository>
-      <id>codehaus-repository</id>
-      <name>Codehaus Repository</name>
-      <url>http://repository.codehaus.org</url>
-    </repository>
-    <repository>
-      <id>codehaus-snapshot-repository</id>
-      <name>Codehaus Snapshot Repository</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-    </repository>
-    <repository>
-      <id>codehaus-legacy-repository</id>
-      <name>Codehaus Legacy Repository</name>
-      <url>http://dist.codehaus.org</url>
-      <layout>legacy</layout>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>codehaus-plugin-repository</id>
-      <name>Codehaus Plugin Repository</name>
-      <url>http://repository.codehaus.org</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>codehaus-plugin-snapshot-repository</id>
-      <name>Codehaus Plugin Snapshot Repository</name>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
-
   <developers>
     <developer>
       <id>paul</id>
