@@ -133,19 +133,14 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         String foo;
         int bar = 11;
 
- //       @GratuitousAnnotation
         public SpecificMethodSearchable(String foo) {
             System.out.println("");
 
         }
-   //     @GratuitousAnnotation
-
         public SpecificMethodSearchable() {
             System.out.println("");
         }
-     //   @GratuitousAnnotation
 
-    //    public void singleString(@GratuitousAnnotation String s) {
         public void singleString(String s) {
             bar = 22;
         }
