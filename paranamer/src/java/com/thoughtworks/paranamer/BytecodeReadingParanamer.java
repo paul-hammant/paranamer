@@ -117,6 +117,9 @@ public class BytecodeReadingParanamer implements Paranamer {
 
     private InputStream getClassAsStream(Class clazz) {
         ClassLoader classLoader = clazz.getClassLoader();
+        if (classLoader == null) {
+            classLoader = ClassLoader.getSystemClassLoader();
+        }
         return getClassAsStream(classLoader, clazz.getName());
     }
 

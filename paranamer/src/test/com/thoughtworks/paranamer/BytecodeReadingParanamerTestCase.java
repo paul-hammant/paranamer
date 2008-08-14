@@ -128,6 +128,17 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("foo", names);
     }
 
+    public void testRetrievesParameterNamesFromBootstrapClassLoader() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Constructor ctor = Integer.class.getConstructor(new Class[] { int.class });
+        try {
+            asm.lookupParameterNames(ctor);
+            fail("Should not find names for classes loaded by the bootstrap class loader.");
+        } catch(ParameterNamesNotFoundException ex) {
+            // ok
+        }
+    }
+
     public static class SpecificMethodSearchable {
 
         String foo;
