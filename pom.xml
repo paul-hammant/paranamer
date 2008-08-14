@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.thoughtworks.paranamer</groupId>
   <artifactId>paranamer-parent</artifactId>
@@ -6,7 +7,6 @@
   <version>1.1.6-SNAPSHOT</version>
   <name>ParaNamer Parent</name>
   <url>http://paranamer.codehaus.org</url>
-
   <modules>
     <module>paranamer</module>
     <module>paranamer-generator</module>
@@ -14,7 +14,6 @@
     <module>paranamer-maven-plugin</module>
     <module>paranamer-distribution</module>
   </modules>
-
   <dependencyManagement>
     <dependencies>
       <!-- Test dependencies -->
@@ -26,7 +25,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <!-- Test dependencies -->
     <dependency>
@@ -148,11 +146,11 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.0-beta-5</version>
+        <version>2.0-beta-7</version>
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <preparationGoals>clean install</preparationGoals>
-          <updateDependencies>false</updateDependencies>
+          <goals>deploy</goals>
           <tagBase>https://svn.codehaus.org/paranamer/tags</tagBase>
         </configuration>
       </plugin>
@@ -201,14 +199,12 @@
     <developerConnection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</developerConnection>
     <url>http://svn.paranamer.codehaus.org/trunk</url>
   </scm>
-
   <licenses>
     <license>
       <name>Public Domain</name>
       <url>LICENSE.txt</url>
     </license>
   </licenses>
-
   <distributionManagement>
     <repository>
       <id>codehaus.org</id>
@@ -218,9 +214,7 @@
     <snapshotRepository>
       <id>codehaus.org</id>
       <name>ParaNamer Snapshots Repository</name>
-      <url>
-        dav:https://dav.codehaus.org/snapshots.repository/paranamer/
-      </url>
+      <url> dav:https://dav.codehaus.org/snapshots.repository/paranamer/ </url>
     </snapshotRepository>
     <site>
       <id>codehaus.org</id>
@@ -228,7 +222,6 @@
       <url>dav:https://dav.codehaus.org/paranamer/info/</url>
     </site>
   </distributionManagement>
-
   <developers>
     <developer>
       <id>paul</id>
@@ -257,5 +250,4 @@
       <timezone>-3</timezone>
     </developer>
   </developers>
-
 </project>
