@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>1.1.5</version>
+    <version>1.1.6-SNAPSHOT</version>
   </parent>
   <artifactId>paranamer-ant</artifactId>
   <name>ParaNamer Ant</name>
