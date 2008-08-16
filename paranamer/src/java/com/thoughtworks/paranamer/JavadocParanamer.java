@@ -1,10 +1,10 @@
 /*
  * Copyright 2007 Paul Hammant
- * Copyright 2007 ThinkTank Mathematics Limited
+ * Copyright 2007 ThinkTank Maths Limited
  * 
- * ThinkTank Mathematics Limited grants a non-revocable, perpetual licence
+ * ThinkTank Maths Limited grants a non-revocable, perpetual licence
  * to Paul Hammant for unlimited use, relicensing and redistribution. No
- * explicit permission is required from ThinkTank Mathematics Limited for
+ * explicit permission is required from ThinkTank Maths Limited for
  * any future decisions made with regard to this file.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -98,7 +98,7 @@ import java.util.zip.ZipFile;
  * <li>Doesn't support nested classes (due to limitations in the Java 1.4 reflection API)</li>
  * </ul>
  * 
- * @author Samuel Halliday, ThinkTank Mathematics Limited
+ * @author Samuel Halliday, ThinkTank Maths Limited
  */
 public class JavadocParanamer implements Paranamer {
 
