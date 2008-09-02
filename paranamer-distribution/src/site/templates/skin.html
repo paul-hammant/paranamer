@@ -45,11 +45,11 @@
                 <div class="MenuGroup">
                     <h1>${section.name}</h1>
                     <ul>
-                        <#list section.pages as otherPage>
-                            <#if otherPage = page>
-                                <li class="currentLink">${otherPage.title}</li>
+                        <#list section.entries as entry>
+                            <#if entry = page>
+                                <li class="currentLink">${entry.title}</li>
                             <#else>
-                                <li><a href="${otherPage.href}">${otherPage.title}</a></li>
+                                <li><a href="${entry.href}">${entry.title}</a></li>
                             </#if>
                         </#list>
                     </ul>
