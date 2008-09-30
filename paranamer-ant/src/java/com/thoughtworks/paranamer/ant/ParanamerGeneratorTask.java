@@ -29,13 +29,11 @@
  */
 package com.thoughtworks.paranamer.ant;
 
-import org.apache.tools.ant.Task;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
 
 import com.thoughtworks.paranamer.generator.ParanamerGenerator;
 import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
-
-import java.io.IOException;
 
 /**
 * Ant Task to processSourcePath parameter names via ParanamerGenerator
@@ -51,9 +49,9 @@ public class ParanamerGeneratorTask extends Task {
     public void execute() throws BuildException {
         try {
             generator.processSourcePath(sourceDirectory, outputDirectory);
-            System.out.println("Generated Parameter Name Data for '"+sourceDirectory+"' in '" + outputDirectory + "'");
-        } catch (IOException e) {
-            throw new BuildException("Paranamer encountered an IOException", e);
+            log("Generated parameter names for '"+sourceDirectory+"' in '" + outputDirectory + "'");
+        } catch (Exception e) {
+            throw new BuildException("Failed to generate parameter names for '"+sourceDirectory+"'", e);
         }
     }
 
