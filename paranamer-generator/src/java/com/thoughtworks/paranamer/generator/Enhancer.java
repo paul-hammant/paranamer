@@ -35,49 +35,45 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.Opcodes;
 
 /**
  * A bytecode enhancer which adds a new static variable to some specific class.
- *
+ * 
  * @author Guilherme Silveira
  */
 public class Enhancer implements Opcodes {
 
-    public void enhance(File classFile, String parameterNameData) throws IOException {
+	public void enhance(File classFile, String parameterNameData)
+			throws IOException {
 
-        byte[] classBytecode = addExtraStaticField(classFile, parameterNameData);
-        FileOutputStream os = new FileOutputStream(classFile);
-        os.write(classBytecode);
-        os.close();
-    }
+		byte[] classBytecode = addExtraStaticField(classFile, parameterNameData);
+		FileOutputStream os = new FileOutputStream(classFile);
+		os.write(classBytecode);
+		os.close();
+	}
 
-    private byte[] addExtraStaticField(File classFile, final String parameterNameData) throws IOException {
+	private byte[] addExtraStaticField(File classFile,
+			final String parameterNameData) throws IOException {
 
-        InputStream inputStream = new FileInputStream(classFile);
-        ClassReader reader = new ClassReader(inputStream);
+		InputStream inputStream = new FileInputStream(classFile);
+		ClassReader reader = new ClassReader(inputStream);
 
-        ClassWriter writer = new ClassWriter(reader, 0);
-        // TODO fix problem with inner classes, two classes in one classFile and so on...
-        // TODO doc typo on page 21: recommended
-        ClassAdapter adapter = new ClassAdapter(writer) {
+		ClassWriter writer = new ClassWriter(reader, 0);
+		// TODO fix problem with inner classes, two classes in one classFile and
+		// so on...
+		// TODO doc typo on page 21: recommended
 
-            public void visit(int version, int access, String name, String s1, String s2, String[] strings) {
-                super.visit(version, access, name, s1, s2, strings);
-                FieldVisitor fv = visitField(ACC_PUBLIC + ACC_FINAL + ACC_STATIC, "__PARANAMER_DATA", "Ljava/lang/String;", null, parameterNameData);
-                fv.visitEnd();
-            }
-            
-        };
+		AddFieldAdapter adapter = new AddFieldAdapter(writer, ACC_PUBLIC
+				+ ACC_FINAL + ACC_STATIC, "__PARANAMER_DATA",
+				"Ljava/lang/String;", parameterNameData);
 
-        reader.accept(adapter, 0);
-        
-        inputStream.close();
-        return writer.toByteArray();
-    }
+		reader.accept(adapter, 0);
+
+		inputStream.close();
+		return writer.toByteArray();
+	}
 
 }

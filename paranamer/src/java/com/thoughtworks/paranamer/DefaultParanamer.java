@@ -38,13 +38,13 @@ import java.lang.reflect.AccessibleObject;
 
 /**
  * Default implementation of Paranamer
- * 
+ *
  * @author Paul Hammant
  * @author Mauro Talevi
  * @author Guilherme Silveira
  */
 public class DefaultParanamer implements Paranamer {
-    
+
     private static final String[] EMPTY_NAMES = new String[]{};
     private static final String COMMA = ",";
     private static final String SPACE = " ";
@@ -101,7 +101,7 @@ public class DefaultParanamer implements Paranamer {
 
     public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName) {
         String data = getParameterListResource(clazz);
-        
+
         if (data == null) {
             return NO_PARAMETER_NAMES_LIST;
         }
@@ -117,7 +117,7 @@ public class DefaultParanamer implements Paranamer {
     private static String getParameterTypeNamesCSV(Class[] parameterTypes) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < parameterTypes.length; i++) {
-            sb.append(parameterTypes[i].getName());
+            sb.append(getParameterTypeName(parameterTypes[i]));
             if (i < parameterTypes.length - 1) {
                 sb.append(COMMA);
             }
@@ -164,7 +164,30 @@ public class DefaultParanamer implements Paranamer {
         return "";
     }
 
+
+
+    /**
+     * @param cls
+     * @return
+     */
+    private static String getParameterTypeName(Class cls){ 
+        String parameterTypeNameName = cls.getName();
+        int arrayNestingDepth = 0;
+        int ix = parameterTypeNameName.indexOf("[");
+        while (ix>-1){
+            arrayNestingDepth++;
+            parameterTypeNameName=parameterTypeNameName.replaceFirst("(\\[\\w)|(\\[)","");
+            ix = parameterTypeNameName.indexOf("[");
+        }
+        parameterTypeNameName =parameterTypeNameName.replaceFirst(";","");
+        for (int k=0;k<arrayNestingDepth;k++){
+            parameterTypeNameName = parameterTypeNameName+"[]";
+        }
+        return    parameterTypeNameName;
+
+    }
+
     public String toString() {
-        return super.toString(); 
+        return super.toString();
     }
 }

@@ -47,7 +47,7 @@ import java.util.*;
  * @author Guilherme Silveira
  */
 public class QdoxParanamerGenerator implements ParanamerGenerator {
-    
+
     private static final String SPACE  = " ";
     private static final String NEWLINE = "\n";
     private static final String COMMA = ",";
@@ -72,14 +72,11 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     private void processClasses(JavaClass[] classes, String outputPath) throws IOException {
         for (int i = 0; i < classes.length; i++) {
             JavaClass javaClass = classes[i];
-            if (!javaClass.isInterface() && javaClass.getFieldByName("__PARANAMER_DATA") != null) {
-                String content = addMethods(javaClass.getMethods());
-                Enhancer enhancer = new Enhancer();
-                // TODO problem with inner classes
-                File classFile = new File(outputPath, javaClass.getFullyQualifiedName().replace('.',File.separatorChar) + ".class");
-                enhancer.enhance(classFile, content);
-
-            }
+            String content = addMethods(javaClass.getMethods());
+            Enhancer enhancer = new Enhancer();
+            // TODO problem with inner classes
+            File classFile = new File(outputPath, javaClass.getFullyQualifiedName().replace('.',File.separatorChar) + ".class");
+            enhancer.enhance(classFile, content);
         }
     }
 
@@ -110,7 +107,7 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         sb.append(formatLine(methodName, parameterTypes, getParameterNames(parameters)));
         return sb.toString();
     }
-    
+
     private String formatLine(String methodName, String paramTypes, String paramNames){
         StringBuffer sb = new StringBuffer();
         // processClasses line structure:  methodName paramTypes paramNames
