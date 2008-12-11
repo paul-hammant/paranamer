@@ -155,7 +155,7 @@ public class DefaultParanamer implements Paranamer {
             return "";
         }
         int ix = data.indexOf(prefix);
-        if (ix > 0) {
+        if (ix >= 0) {
             int iy = data.indexOf("\n", ix);
             if(iy >0) {
                 return data.substring(ix,iy);
@@ -165,11 +165,6 @@ public class DefaultParanamer implements Paranamer {
     }
 
 
-
-    /**
-     * @param cls
-     * @return
-     */
     private static String getParameterTypeName(Class cls){ 
         String parameterTypeNameName = cls.getName();
         int arrayNestingDepth = 0;
