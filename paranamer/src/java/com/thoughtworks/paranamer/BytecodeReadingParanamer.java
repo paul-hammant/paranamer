@@ -40,6 +40,8 @@ import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 
 /**
@@ -54,6 +56,17 @@ import java.util.List;
 public class BytecodeReadingParanamer implements Paranamer {
 
     private static final String[] EMPTY_NAMES = new String[]{};
+    private static final Map primitives = new HashMap() {
+        {
+            put("int","I");
+            put("boolean","Z");
+            put("char","C");
+            put("short","B");
+            put("float","F");
+            put("long","J");
+            put("double","D");
+        }
+    };
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
 
@@ -211,8 +224,8 @@ public class BytecodeReadingParanamer implements Paranamer {
             // array notation needs cleanup.
             if (s.endsWith("[]")) {
                 String prefix = s.substring(0, s.length() - 2);
-                if ("int".equals(prefix)) {
-                    s = "[I";
+                if (primitives.containsKey(prefix)) {
+                    s = "[" + primitives.get(prefix);
                 } else {
                 s = "[L" + prefix + ";";
                 }
