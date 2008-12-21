@@ -45,7 +45,7 @@ import java.util.List;
 /**
  * An ASM-based implementation of Paranamer. It relies on debug information compiled
  * with the "-g" javac option to retrieve parameter names.
- *
+ * <p/>
  * Portions of this source file are a fork of ASM.
  *
  * @author Guilherme Silveira
@@ -124,7 +124,7 @@ public class BytecodeReadingParanamer implements Paranamer {
     }
 
     private InputStream getClassAsStream(ClassLoader classLoader, String className) {
-        String name = className.replace('.', '/') + ".class";  
+        String name = className.replace('.', '/') + ".class";
         // better pre-cache all methods otherwise this content will be loaded
         // multiple times
         InputStream asStream = classLoader.getResourceAsStream(name);
@@ -210,7 +210,12 @@ public class BytecodeReadingParanamer implements Paranamer {
             String s = argumentTypes[i].getClassName();
             // array notation needs cleanup.
             if (s.endsWith("[]")) {
-                s = "[L" + s.substring(0, s.length() - 2) + ";";
+                String prefix = s.substring(0, s.length() - 2);
+                if ("int".equals(prefix)) {
+                    s = "[I";
+                } else {
+                s = "[L" + prefix + ";";
+                }
             }
             return s;
         }

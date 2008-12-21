@@ -114,10 +114,25 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
                 "stringArray", new Class[]{String[].class}));
-        assertThatParameterNamesMatch("a", names);
+        assertThatParameterNamesMatch("strings", names);
     }
 
-    public void testRetrievesParameterNamesFromAConstructorInJar() 
+    public void testRetrievesParameterNamesFromIntArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("intArray", new Class[] { int[].class });
+        String[] names = asm.lookupParameterNames(method);
+        assertThatParameterNamesMatch("ints", names);
+    }
+
+    public void testRetrievesParameterNamesFromOtherArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("otherArray", new Class[] { Other[].class });
+        String[] names = asm.lookupParameterNames(method);
+        assertThatParameterNamesMatch("others", names);
+    }
+
+
+    public void testRetrievesParameterNamesFromAConstructorInJar()
             throws ClassNotFoundException, NoSuchMethodException {
         URL url = getClass().getResource("/test.jar");
         URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
@@ -178,9 +193,18 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         public void unsupportedParameterNames(String arg0) {
         }
 
-        public void stringArray(String[] a) {
+        public void stringArray(String[] strings) {
+        }
+
+        public void intArray(int[] ints) {
+
+        }
+
+        public void otherArray(Other[] others) {
+
         }
     }
+    public static class Other{}
 
 
     public static class SearchableTypeByMethodName {
