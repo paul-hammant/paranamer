@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.thoughtworks.paranamer</groupId>
   <artifactId>paranamer-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.6-SNAPSHOT</version>
+  <version>1.1.6</version>
   <name>ParaNamer Parent</name>
   <url>http://paranamer.codehaus.org</url>
   <modules>
@@ -195,9 +194,9 @@
     </plugins>
   </reporting>
   <scm>
-    <connection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</connection>
-    <developerConnection>scm:svn:svn://svn.codehaus.org/paranamer/trunk</developerConnection>
-    <url>http://svn.paranamer.codehaus.org/trunk</url>
+    <connection>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-1.1.6</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-1.1.6</developerConnection>
+    <url>scm:svn:https://svn.codehaus.org/paranamer/tags/paranamer-1.1.6</url>
   </scm>
   <licenses>
     <license>
