@@ -42,14 +42,15 @@ public class ParameterNamesNotFoundException extends RuntimeException {
       + "<init> java.lang.String message \n";
     private Exception cause;
 
-    public ParameterNamesNotFoundException(String message) {
-        super(message);
-    }
-
     public ParameterNamesNotFoundException(String message, Exception cause) {
         super(message);
         this.cause = cause;
     }
+
+    public ParameterNamesNotFoundException(String message) {
+        super(message);
+    }
+
 
     public Throwable getCause() {
         return cause;

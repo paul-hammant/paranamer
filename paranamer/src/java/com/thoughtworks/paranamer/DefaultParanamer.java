@@ -89,7 +89,7 @@ public class DefaultParanamer implements Paranamer {
 
     private static String[] getParameterNames(Class declaringClass, String parameterTypes, String prefix) {
         String data = getParameterListResource(declaringClass);
-        String line = findFirstMatchingLine(data, prefix + parameterTypes);
+        String line = findFirstMatchingLine(data, prefix + parameterTypes + SPACE);
         String[] parts = line.split(SPACE);
         // assumes line structure: constructorName parameterTypes parameterNames
         if (parts.length == 3 && parts[1].equals(parameterTypes)) {
