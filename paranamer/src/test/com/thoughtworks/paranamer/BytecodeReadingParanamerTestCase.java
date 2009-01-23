@@ -156,6 +156,15 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
     }
 
+    public void testLookupParameterNamesForInterfaceMethod() {
+        try {
+            super.testLookupParameterNamesForInterfaceMethod();
+            fail("should have barfed");
+        } catch (Exception e) {
+            assertTrue(e instanceof ParameterNamesNotFoundException);
+        }
+    }
+
     public static class SpecificMethodSearchable {
 
         String foo;

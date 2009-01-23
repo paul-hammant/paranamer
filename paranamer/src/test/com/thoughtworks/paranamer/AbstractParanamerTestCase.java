@@ -79,6 +79,12 @@ public abstract class AbstractParanamerTestCase extends TestCase {
         assertThatParameterNamesMatch("cls", names);
     }
 
+    public void testLookupParameterNamesForInterfaceMethod() throws Exception {
+        Method m = Paranamer.class.getDeclaredMethod("areParameterNamesAvailable", new Class[] {Class.class, String.class});
+        String[] names = paranamer.lookupParameterNames(m);
+        assertThatParameterNamesMatch("clazz,constructorOrMethodName", names);
+    }
+
     protected void assertThatParameterNamesMatch(String csv, String[] names) {
         assertEquals(csv, toCSV(names));
     }
