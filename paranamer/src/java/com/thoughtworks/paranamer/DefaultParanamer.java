@@ -49,10 +49,11 @@ public class DefaultParanamer implements Paranamer {
     private static final String COMMA = ",";
     private static final String SPACE = " ";
 
-    private static final String __PARANAMER_DATA = "v1.0 \n"
+    public static final String __PARANAMER_DATA = "v1.0 \n"
         + "<init> \n"
         + "toString \n"
-        + "lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
+        + "lookupParameterNames java.lang.AccessibleObject methodOrCtor \n"
+        + "getParameterTypeName java.lang.Class cls\n";
 
     public DefaultParanamer() {
     }

@@ -42,4 +42,5 @@ public class DefaultParanamerTestCase extends AbstractParanamerTestCase {
             super.testLookupParameterNamesForConstructorWithStringArg();
         //}
     }
+
 }

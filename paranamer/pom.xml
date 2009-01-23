@@ -15,5 +15,25 @@
         <scope>test</scope>
       </dependency>
     </dependencies>
-
+	<build>
+	  <plugins>
+	  <plugin>
+	         <groupId>com.thoughtworks.paranamer</groupId>
+	         <artifactId>paranamer-maven-plugin</artifactId>
+	         <version>${pom.version}</version>
+	         <executions>
+	           <execution>
+	             <phase>compile</phase>
+	             <goals>
+	               <goal>generate</goal>
+	             </goals>
+	           </execution>
+	         </executions>
+	         <configuration>
+	              <sourceDirectory>${pom.build.sourceDirectory}</sourceDirectory>
+	              <outputDirectory>${pom.build.outputDirectory}</outputDirectory>
+	          </configuration>
+	       </plugin>
+	  </plugins>
+	  </build>
 </project>

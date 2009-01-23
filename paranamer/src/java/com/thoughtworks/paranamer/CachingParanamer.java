@@ -43,7 +43,7 @@ import java.util.WeakHashMap;
  */
 public class CachingParanamer implements Paranamer {
 
-    private static final String __PARANAMER_DATA = "v1.0 \n"
+    public static final String __PARANAMER_DATA = "v1.0 \n"
         + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer \n"
         + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer delegate \n"
         + "com.thoughtworks.paranamer.CachingParanamer toString \n"

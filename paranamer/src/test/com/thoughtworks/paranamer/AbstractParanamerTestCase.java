@@ -33,6 +33,7 @@ package com.thoughtworks.paranamer;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 
 import junit.framework.TestCase;
 
@@ -70,6 +71,12 @@ public abstract class AbstractParanamerTestCase extends TestCase {
         Constructor ctor = ParameterNamesNotFoundException.class.getConstructor(new Class[] {String.class});
         String[] names = paranamer.lookupParameterNames(ctor);
         assertThatParameterNamesMatch("message", names);
+    }
+
+    public void testLookupParameterNamesForPrivateMethod() throws Exception {
+        Method m = DefaultParanamer.class.getDeclaredMethod("getParameterTypeName", new Class[] {Class.class});
+        String[] names = paranamer.lookupParameterNames(m);
+        assertThatParameterNamesMatch("cls", names);
     }
 
     protected void assertThatParameterNamesMatch(String csv, String[] names) {
