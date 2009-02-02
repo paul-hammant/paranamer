@@ -6,7 +6,7 @@
 <body>
 
 <h1>What is it?</h1>
-<p>It is a library that allows the parameter names of methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like '<span
+<p>It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like '<span
   style="font-family: monospace;">doSometing(mypkg.Person <strong>toMe</strong>)</span>'
 currently look like '<span style="font-family: monospace;">doSomething(mypkg.Person
 <strong>???</strong>)</span>' to people using Java's reflection to inspect methods.&nbsp; </p>
@@ -22,7 +22,7 @@ currently look like '<span style="font-family: monospace;">doSomething(mypkg.Per
   tranparent) and the compelling <a href="http://grails.codehaus.org/">Grails</a>. SOAP and REST designs could also benefit.</p>
 <p>ParaNamer allows you to generate and use parameter name info for
 versions of Java prior to JDK 7.0.
-Parameter name access was scheduled for JDK 6.0, bit slipped as the development team ran out of time to implement it. It is important to note that there is no guarantee that it will get into JDK 7.0 either, and that if it does it may bot be simple to use.</p>
+Parameter name access was scheduled for JDK 6.0, bit slipped as the development team ran out of time to implement it. It seems unlikely that it will ship with JDK 7.0 either.</p>
 <p>Paranamer is Open Source, and licensed as BSD. It is compatible with commercial/proprieatry, GPL, Apache use.<br>
 </p>
 <h1>Accessing Parameter Name data</h1>
@@ -41,7 +41,7 @@ method called <span class="code-object">'lookupParameterNames</span>' that retur
 are found. </p>
 <p>Instead of handling that exception, you could determine if parameter name data is available, but first calling areParameterNamesAvailable().<br>
 </p>
-<p>ParaNamer does not have any runtime jar dependecies while looking
+<p>ParaNamer does not have any runtime jar dependencies while looking
   up parameter info previously generated that's been zipped into a jar.</p>
 <h2>DefaultParanamer</h2>
 <p>DefaultParanamer tries to read parameter name data from an extra static field on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar.</p>
@@ -54,13 +54,13 @@ are found. </p>
 method to that __PARANAMER_DATA field.&nbsp;&nbsp; See below.</p>
 <h2>BytecodeReadingParanamer</h2>
 <p>If generating meta data for parameter names at compile time
-  is not for you, try class BytecodeReadingParanamer as a runtime only solution. This uses a cut down forked version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for  CachingParanamer when DefaultParanamer reports that there is no meta data for a class.</p>
+  is not for you, try class BytecodeReadingParanamer as a runtime only solution. This uses a cut down forked and cut-down version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for  CachingParanamer when DefaultParanamer reports that there is no meta data for a class.</p>
 <h2> CachingParanamer</h2>
 <p>CachingParanamer  stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.</p>
 <p>Its also interesting to note that CachingParanamertries tries to
   use DefaultParanamer and BytecodeReadingParanamer. The latter is a fallback strategy if the former cannot find
   parameter name data.</p>
-<h1>Creating Parameter Name data</h1>
+<h1>Creating Parameter Name data and adding it to .class files</h1>
 <h2>Optional Generation of Parameter Name data with Ant<br>
 </h2>
 <p>This for DefaultParanamer of course.</p>
@@ -115,7 +115,7 @@ right?&nbsp; Simply consume the runtime paranamer jar into your project's jar us
 
 <h2>What if a parameter names changes?</h2>
 <p>The general answer to this question is that you should not ship something to third parties where they are going to hard-core your parameter names into their application. For you own in-house stuff, accessing parameter names is harmless. You should be able to ripple though the source code of even large applications, and change say &quot;badSpeeldWord&quot; to &quot;badlySpelledWorld&quot; if you need to.</p>
-<p>In a later version we'll store previous parameter names too. It won't be
+<p>In a later version we may store previous parameter names too. It won't be
   be magic, you'll have to code the previous parameter names in your
   source with a doclet tag. The lookup mechanism will change too.
    It will likely leverage a doclet tag.<br>
@@ -132,7 +132,7 @@ access to Method parameter names. That should look like:<br>
 <ol>
   <li>Plugins for Intellij IDEA, Eclipse, NetBeans to make
   parameter name data as part of their compilation processes</li>
-  <li>Storage and retireval of previous parameter names</li>
+  <li>Storage and retrieval of previous parameter names</li>
 </ol>
 </div>
 
@@ -143,6 +143,7 @@ access to Method parameter names. That should look like:<br>
 <a href="http://mandragora.sourceforge.net">Mandragora</a><br>
 
 <h1>Releases</h1>
+<p>Release 1.2 - Feb 2 2009</p>
 <p>Release 1.1.7 - Jan 20 2009</p>
 <p>Release 1.1.6 - Dec 22 2008</p>
 <p>Release 1.1.5 - Aug 14 2008</p>
