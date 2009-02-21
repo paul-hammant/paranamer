@@ -80,7 +80,25 @@ public class AdaptiveCachingParanamerTestCase extends MockObjectTestCase {
         assertEquals(Arrays.asList(new String[]{"a", "b"}), Arrays.asList(paramNames));
 
         paramNames = cachingParanamer.lookupParameterNames(one);
+    }
 
+    public void testMissingAndWrongPermutationsAreThrown() {
+        try {
+            new AdaptiveCachingParanamer(null, new DefaultParanamer());
+        } catch (RuntimeException e) {
+            assertEquals("must supply delegate and fallback (which must be different)", e.getMessage());
+        }
+        try {
+            new AdaptiveCachingParanamer(new DefaultParanamer(), null);
+        } catch (RuntimeException e) {
+            assertEquals("must supply delegate and fallback (which must be different)", e.getMessage());
+        }
+        try {
+            DefaultParanamer pn = new DefaultParanamer();
+            new AdaptiveCachingParanamer(pn, pn);
+        } catch (RuntimeException e) {
+            assertEquals("must supply delegate and fallback (which must be different)", e.getMessage());
+        }
     }
 
 }
