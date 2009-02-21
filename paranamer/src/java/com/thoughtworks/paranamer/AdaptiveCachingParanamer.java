@@ -38,7 +38,7 @@ import java.lang.reflect.Constructor;
 import java.util.WeakHashMap;
 
 /**
- * Implementation of Paranamer which delegate to another Paranamer implementation, adding caching functionality.
+ * Implementation of Paranamer which automatically chooses between two Paranamer implementations depending on which can supply data
  *
  * @author Paul Hammant
  * @author Mauro Talevi
