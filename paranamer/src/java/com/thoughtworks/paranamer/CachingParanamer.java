@@ -46,37 +46,18 @@ public class CachingParanamer implements Paranamer {
     public static final String __PARANAMER_DATA = "v1.0 \n"
         + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer \n"
         + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer delegate \n"
-        + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer,com.thoughtworks.paranamer.Paranamer delegate,fallback\n"
         + "com.thoughtworks.paranamer.CachingParanamer toString \n"
         + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
 
     private Paranamer delegate;
-    private Paranamer fallback;
     private final WeakHashMap methodCache = new WeakHashMap();
 
-    /**
-     * Cache a DefaultParanamer's lookups.
-     */
     public CachingParanamer() {
         this(new DefaultParanamer());
     }
 
-    /**
-     * Cache another Paranamer's lookups
-     * @param delegate the delegate
-     */
     public CachingParanamer(Paranamer delegate) {
         this.delegate = delegate;
-    }
-
-    /**
-     * Cache a primary and secondary Paranamer instance (the second is a fallback to the first)
-     * @param delegate first
-     * @param fallback second
-     */
-    public CachingParanamer(Paranamer delegate, Paranamer fallback) {
-        this.delegate = delegate;
-        this.fallback = fallback;
     }
 
     public void switchtoAsm() {
@@ -88,32 +69,19 @@ public class CachingParanamer implements Paranamer {
             return (String[]) methodCache.get(methodOrCtor);
         }
 
-        String[] names = null;
-        try {
-            names = delegate.lookupParameterNames(methodOrCtor);
-        } catch (ParameterNamesNotFoundException e) {
-            if (fallback != null) {
-                names = fallback.lookupParameterNames(methodOrCtor);
-            } else {
-                throw e;
-            }
-        }
+        String[] names = delegate.lookupParameterNames(methodOrCtor);
         methodCache.put(methodOrCtor, names);
 
         return names;
     }
 
     public int areParameterNamesAvailable(Class clazz, String ctorOrMethodName) {
-        int i = delegate.areParameterNamesAvailable(clazz, ctorOrMethodName);
-        if (i != Paranamer.PARAMETER_NAMES_FOUND && fallback != null) {
-            i = fallback.areParameterNamesAvailable(clazz, ctorOrMethodName);
-        }
-        return i;
+        return delegate.areParameterNamesAvailable(clazz, ctorOrMethodName);
     }
 
     public String toString() {
          return new StringBuffer("[CachingParanamer delegate=")
-         .append(delegate).append(", fallback=").append(fallback).append("]").toString();
+         .append(delegate).append("]").toString();
      }
 
 }
