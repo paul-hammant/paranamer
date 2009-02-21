@@ -31,14 +31,12 @@
 package com.thoughtworks.paranamer;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.AccessibleObject;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
 import org.jmock.MockObjectTestCase;
 import org.jmock.Mock;
 
-public class AdaptiveCachingParanamerTestCase extends MockObjectTestCase {
+public class AdaptiveParanamerTestCase extends MockObjectTestCase {
 
     private int count = 0;
     Method one = One.class.getMethods()[0];
@@ -53,49 +51,46 @@ public class AdaptiveCachingParanamerTestCase extends MockObjectTestCase {
         void two();
     }
 
-    public void testCachedLookupOfParameterNamesWhenPrimaryDoesNotHaveItButSecondaryDoes() {
+    public void testLookupOfParameterNamesWhenPrimaryDoesNotHaveItButSecondaryDoes() {
 
         Mock primary = mock(Paranamer.class);
         Mock fallback = mock(Paranamer.class);
 
-        Paranamer cachingParanamer = new AdaptiveCachingParanamer((Paranamer) primary.proxy(), (Paranamer) fallback.proxy());
+        Paranamer paranamer = new AdaptiveParanamer((Paranamer) primary.proxy(), (Paranamer) fallback.proxy());
         primary.expects(once()).method("areParameterNamesAvailable").with(same(One.class),eq("one")).will(returnValue(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS));
         fallback.expects(once()).method("lookupParameterNames").with(same(one)).will(returnValue(new String[] {"a","b"}));
-        String[] paramNames = cachingParanamer.lookupParameterNames(one);
+        String[] paramNames = paranamer.lookupParameterNames(one);
         assertEquals(Arrays.asList(new String[]{"a", "b"}), Arrays.asList(paramNames));
-
-        paramNames = cachingParanamer.lookupParameterNames(one);
 
     }
 
-    public void testCachedLookupOfParameterNamesWhenPrimaryDoesHaveIt() {
+    public void testLookupOfParameterNamesWhenPrimaryDoesHaveIt() {
 
         Mock primary = mock(Paranamer.class);
         Mock fallback = mock(Paranamer.class);
 
-        Paranamer cachingParanamer = new AdaptiveCachingParanamer((Paranamer) primary.proxy(), (Paranamer) fallback.proxy());
+        Paranamer paranamer = new AdaptiveParanamer((Paranamer) primary.proxy(), (Paranamer) fallback.proxy());
         primary.expects(once()).method("areParameterNamesAvailable").with(same(One.class),eq("one")).will(returnValue(Paranamer.PARAMETER_NAMES_FOUND));
         primary.expects(once()).method("lookupParameterNames").with(same(one)).will(returnValue(new String[] {"a","b"}));
-        String[] paramNames = cachingParanamer.lookupParameterNames(one);
+        String[] paramNames = paranamer.lookupParameterNames(one);
         assertEquals(Arrays.asList(new String[]{"a", "b"}), Arrays.asList(paramNames));
 
-        paramNames = cachingParanamer.lookupParameterNames(one);
     }
 
     public void testMissingAndWrongPermutationsAreThrown() {
         try {
-            new AdaptiveCachingParanamer(null, new DefaultParanamer());
+            new AdaptiveParanamer(null, new DefaultParanamer());
         } catch (RuntimeException e) {
             assertEquals("must supply delegate and fallback (which must be different)", e.getMessage());
         }
         try {
-            new AdaptiveCachingParanamer(new DefaultParanamer(), null);
+            new AdaptiveParanamer(new DefaultParanamer(), null);
         } catch (RuntimeException e) {
             assertEquals("must supply delegate and fallback (which must be different)", e.getMessage());
         }
         try {
             DefaultParanamer pn = new DefaultParanamer();
-            new AdaptiveCachingParanamer(pn, pn);
+            new AdaptiveParanamer(pn, pn);
         } catch (RuntimeException e) {
             assertEquals("must supply delegate and fallback (which must be different)", e.getMessage());
         }

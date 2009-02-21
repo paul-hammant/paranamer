@@ -60,6 +60,9 @@ public class CachingParanamer implements Paranamer {
         this.delegate = delegate;
     }
 
+    /**
+     * @Deperecated Use 'new CachingParanamer(new AdaptiveParanamer())' instead.
+     */
     public void switchtoAsm() {
         delegate = new BytecodeReadingParanamer();
     }

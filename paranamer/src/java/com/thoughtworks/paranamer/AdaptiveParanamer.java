@@ -35,7 +35,6 @@ import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
-import java.util.WeakHashMap;
 
 /**
  * Implementation of Paranamer which automatically chooses between two Paranamer implementations depending on which can supply data
@@ -43,23 +42,21 @@ import java.util.WeakHashMap;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
-public class AdaptiveCachingParanamer implements Paranamer {
+public class AdaptiveParanamer implements Paranamer {
 
     public static final String __PARANAMER_DATA = "v1.0 \n"
-        + "com.thoughtworks.paranamer.AdaptiveCachingParanamer CachingParanamer \n"
-        + "com.thoughtworks.paranamer.AdaptiveCachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer delegate \n"
-        + "com.thoughtworks.paranamer.AdaptiveCachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer,com.thoughtworks.paranamer.Paranamer delegate,fallback\n"
-        + "com.thoughtworks.paranamer.AdaptiveCachingParanamer toString \n"
-        + "com.thoughtworks.paranamer.AdaptiveCachingParanamer lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
+        + "com.thoughtworks.paranamer.AdaptiveParanamer AdaptiveParanamer \n"
+        + "com.thoughtworks.paranamer.AdaptiveParanamer AdaptiveParanamer com.thoughtworks.paranamer.Paranamer,com.thoughtworks.paranamer.Paranamer delegate,fallback\n"
+        + "com.thoughtworks.paranamer.AdaptiveParanamer toString \n"
+        + "com.thoughtworks.paranamer.AdaptiveParanamer lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
 
     private Paranamer delegate;
     private Paranamer fallback;
-    private final WeakHashMap methodCache = new WeakHashMap();
 
     /**
      * Cache a DefaultParanamer's lookups.
      */
-    public AdaptiveCachingParanamer() {
+    public AdaptiveParanamer() {
         this(new DefaultParanamer(), new BytecodeReadingParanamer());
     }
 
@@ -69,7 +66,7 @@ public class AdaptiveCachingParanamer implements Paranamer {
      * @param delegate first
      * @param fallback second
      */
-    public AdaptiveCachingParanamer(Paranamer delegate, Paranamer fallback) {
+    public AdaptiveParanamer(Paranamer delegate, Paranamer fallback) {
         this.delegate = delegate;
         this.fallback = fallback;
         if (delegate == null || fallback == null || delegate == fallback) {
@@ -78,9 +75,6 @@ public class AdaptiveCachingParanamer implements Paranamer {
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
-        if(methodCache.containsKey(methodOrCtor)) {
-            return (String[]) methodCache.get(methodOrCtor);
-        }
 
         String[] names = null;
         Class declaringClass = null;
@@ -100,7 +94,6 @@ public class AdaptiveCachingParanamer implements Paranamer {
         } else {
             names = fallback.lookupParameterNames(methodOrCtor);
         }
-        methodCache.put(methodOrCtor, names);
 
         return names;
     }
@@ -114,7 +107,7 @@ public class AdaptiveCachingParanamer implements Paranamer {
     }
 
     public String toString() {
-         return new StringBuffer("[AdaptiveCachingParanamer delegate=")
+         return new StringBuffer("[AdaptiveParanamer delegate=")
          .append(delegate).append(", fallback=").append(fallback).append("]").toString();
      }
 
