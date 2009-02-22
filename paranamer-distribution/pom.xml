@@ -35,7 +35,7 @@
               <goal>unpack</goal>
             </goals>
             <configuration>
-              <outputDirectory>${project.build.directory}/xsite/javadoc</outputDirectory>
+              <outputDirectory>${project.build.directory}/site/javadoc</outputDirectory>
               <overWriteReleases>false</overWriteReleases>
               <overWriteSnapshots>true</overWriteSnapshots>
               <artifactItems>
@@ -89,7 +89,7 @@
           <sitemapPath>content/sitemap.xml</sitemapPath>
           <skinPath>templates/skin.html</skinPath>
           <resourcePaths>resources</resourcePaths>
-          <outputDirectoryPath>${project.build.directory}/xsite</outputDirectoryPath>
+          <outputDirectoryPath>${project.build.directory}/site</outputDirectoryPath>
         </configuration>
         <executions>
           <execution>
@@ -112,17 +112,17 @@
             <configuration>
               <tasks>
                 <delete includeEmptyDirs="true">
-                  <fileset dir="${project.build.directory}/xsite" includes="**/META-INF/*" />
-                  <fileset dir="${project.build.directory}/xsite" includes="**/META-INF" />
+                  <fileset dir="${project.build.directory}/site" includes="**/META-INF/*" />
+                  <fileset dir="${project.build.directory}/site" includes="**/META-INF" />
                 </delete>
                 <mkdir dir="${project.build.directory}/docs" />
                 <copy todir="${project.build.directory}/docs" overwrite="true" failonerror="false">
                   <fileset dir="${basedir}">
-                    <include name="target/xsite/**" />
-                    <exclude name="target/xsite" />
+                    <include name="target/site/**" />
+                    <exclude name="target/site" />
                   </fileset>
                   <filtermapper>
-                    <replacestring from="target${file.separator}xsite${file.separator}" to="${file.separator}" />
+                    <replacestring from="target${file.separator}site${file.separator}" to="${file.separator}" />
                   </filtermapper>
                 </copy>
               </tasks>
