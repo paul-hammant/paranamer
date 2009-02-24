@@ -45,7 +45,6 @@ import java.lang.reflect.AccessibleObject;
  */
 public class DefaultParanamer implements Paranamer {
 
-    private static final String[] EMPTY_NAMES = new String[]{};
     private static final String COMMA = ",";
     private static final String SPACE = " ";
 
@@ -76,7 +75,6 @@ public class DefaultParanamer implements Paranamer {
         }
 
         if (types.length == 0) {
-            // faster ?
             return EMPTY_NAMES;
         }
         final String parameterTypeNames = getParameterTypeNamesCSV(types);

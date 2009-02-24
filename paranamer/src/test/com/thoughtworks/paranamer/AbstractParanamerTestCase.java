@@ -64,7 +64,7 @@ public abstract class AbstractParanamerTestCase extends TestCase {
     public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
         Method method = DefaultParanamer.class.getMethod("toString", new Class[0]);
         String[] names = paranamer.lookupParameterNames(method);
-        assertThatParameterNamesMatch("", names);
+        assertEquals(0, names.length);
     }
 
     public void testLookupParameterNamesForConstructorWithStringArg() throws Exception {

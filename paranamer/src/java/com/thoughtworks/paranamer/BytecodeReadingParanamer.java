@@ -55,7 +55,6 @@ import java.util.HashMap;
  */
 public class BytecodeReadingParanamer implements Paranamer {
 
-    private static final String[] EMPTY_NAMES = new String[]{};
     private static final Map primitives = new HashMap() {
         {
             put("int","I");
@@ -85,6 +84,9 @@ public class BytecodeReadingParanamer implements Paranamer {
             name = "<init>";
         }
 
+        if (types.length == 0) {
+            return EMPTY_NAMES;
+        }
         InputStream content = getClassAsStream(declaringClass);
         if (content == null) {
             throw new ParameterNamesNotFoundException("Unable to get class bytes");

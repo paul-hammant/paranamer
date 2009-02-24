@@ -42,7 +42,9 @@ import java.lang.reflect.Method;
  */
 public interface Paranamer {
 
-	/**
+    static final String[] EMPTY_NAMES = new String[]{};
+
+    /**
 	 * Parameter names are available, but not for that class.
 	 */
 	int NO_PARAMETER_NAMES_FOR_CLASS = 2;
