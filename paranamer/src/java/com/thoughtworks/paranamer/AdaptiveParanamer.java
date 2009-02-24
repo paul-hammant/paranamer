@@ -76,7 +76,6 @@ public class AdaptiveParanamer implements Paranamer {
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
 
-        String[] names = null;
         Class declaringClass = null;
         String name = null;
         if (methodOrCtor instanceof Method) {
@@ -90,12 +89,11 @@ public class AdaptiveParanamer implements Paranamer {
         }
 
         if (delegate.areParameterNamesAvailable(declaringClass, name) == Paranamer.PARAMETER_NAMES_FOUND) {
-            names = delegate.lookupParameterNames(methodOrCtor);
+            return delegate.lookupParameterNames(methodOrCtor);
         } else {
-            names = fallback.lookupParameterNames(methodOrCtor);
+            return fallback.lookupParameterNames(methodOrCtor);
         }
 
-        return names;
     }
 
     public int areParameterNamesAvailable(Class clazz, String ctorOrMethodName) {
