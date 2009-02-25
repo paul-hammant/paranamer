@@ -60,7 +60,7 @@ method to that __PARANAMER_DATA field.&nbsp;&nbsp; See below.</p>
 <p>Its also interesting to note that CachingParanamertries tries to
   use DefaultParanamer and BytecodeReadingParanamer. The latter is a fallback strategy if the former cannot find
   parameter name data.</p>
-<h1>Creating Parameter Name data and adding it to .class files</h1>
+<h1>Creating Parameter Name data and Adding it to .class files</h1>
 <h2>Optional Generation of Parameter Name data with Ant<br>
 </h2>
 <p>This for DefaultParanamer of course.</p>
@@ -76,7 +76,7 @@ method to that __PARANAMER_DATA field.&nbsp;&nbsp; See below.</p>
     href="http://repository.codehaus.org/com/thoughtworks/paranamer/paranamer-ant/">latest
   paranamer-ant jar</a></li>
   <li><a href="http://repo1.maven.org/maven2/qdox/qdox/">latest
-  qdox jar</a> (1.6 or above)</li>
+  qdox jar</a> (1.8 or above)</li>
 </ul>
 and declare in your Ant script the following after &lt;javac/&gt;
 (remember to add to the taskdef classpath all the above jars):
@@ -94,12 +94,13 @@ For Maven, it is simpler. Just add this to the
 <br>
 <br>
 <div class="code">
-<div class="codeContent"><pre style="margin-left: 40px;">&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;<span
-  style="font-weight: bold;">${basedir}/src/java</span>&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${basedir}/target/classes&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;run&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;<br>&lt;/plugin&gt;</pre>
+<div class="codeContent"><pre style="margin-left: 40px;">&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;${project.build.sourceDirectory}&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${project.build.outputDirectory}&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;run&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;
+&nbsp;&nbsp;&nbsp; &lt;dependencies&gt;
+        &lt;!-- if some of parameter names you need to retain are held in pre-existing jars, they need to be added to the classpath --&gt;<br>        &lt;dependency&gt;<br>            &lt;groupId&gt;some-artifact-group&lt;/groupId&gt;<br>            &lt;artifactId&gt;some-artifact&lt;/artifactId&gt;<br>            &lt;version&gt;1.0&lt;/version&gt;<br>        &lt;/dependency&gt;<br>    &lt;/dependencies&gt;<br>&lt;/plugin&gt;</pre>
 </div>
 </div>
 <br>
-The jar file will automatically be made with parameter name data.<br>
+The classes in the ultimate jar file will automatically be made with parameter name data.<br>
 <h2>Using Paranamer in your application without depending on Paranamer's jar</h2>
 <p>There are already too many jar's for day to day Java development
 right?&nbsp; Simply consume the runtime paranamer jar into your project's jar using the Maven2 'shade' plugin.<br>
@@ -120,7 +121,7 @@ right?&nbsp; Simply consume the runtime paranamer jar into your project's jar us
   source with a doclet tag. The lookup mechanism will change too.
    It will likely leverage a doclet tag.<br>
 </p>
-<h1>ParaNamer's Future</h1>
+<h1>Paranamer's Future</h1>
 <p>ParaNamer will go away in the future when Java gets Reflection
 access to Method parameter names. That should look like:<br>
 </p>
@@ -140,6 +141,7 @@ access to Method parameter names. That should look like:<br>
 <a href="http://mandragora.sourceforge.net">Mandragora</a><br>
 <a href="http://oval.sourceforge.net/">Oval - Object Validation Framework</a>,<br>
 <a href="http://picocontainer.org/">PicoContainer - Dependency Injection Framework</a>,<br>
+<a href="http://picocontainer.org/web/remoting">PicoContainer Web-Remoting</a>,<br>
 <a href="http://vraptor.org/">VRaptor - Web Framework</a>,<br>
 <a href="http://waffle.codehaus.org/">Waffle - Web Framework</a><br>
 
@@ -158,7 +160,7 @@ access to Method parameter names. That should look like:<br>
 <p>Release 1.0 - Jul 01 2007</p>
 
 <h1>Project Information</h1>
-<p>The unit tests for ParaNamer illustrate some more way to use
+<p>The unit tests for Paranamer illustrate some more way to use
 it: <a
   href="http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java">http://svn.paranamer.codehaus.org/paranamer/trunk/paranamer/src/test/com/thoughtworks/paranamer/ParanamerExampleTestCase.java</a></p>
 <p>Developers, Maven 2 repository, lists, sites are detailed 
