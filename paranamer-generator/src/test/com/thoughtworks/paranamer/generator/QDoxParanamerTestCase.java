@@ -46,23 +46,25 @@ public class QDoxParanamerTestCase extends TestCase {
         generator.processSourcePath(root + "/src/test", root + "/target/test-classes/");
     }
 
-    public void doNot_testFoo() throws IOException, NoSuchFieldException {
+    public void testFoo() throws IOException, NoSuchFieldException, IllegalAccessException {
 
         FileInputStream fis = new FileInputStream(root + "/target/test-classes/com/thoughtworks/paranamer/generator/Elephant.class");
         byte[] bytes = new byte[4000];
         int read = fis.read(bytes);
+        byte[] bytes2 = new byte[read];
+        System.arraycopy(bytes,0,bytes2,0,read);
 
         MyClassLoader cl = new MyClassLoader();
 
-        Class enhancedClazz = cl.defineEnhancerClass(bytes, read);
+        Class enhancedClazz = cl.defineEnhancerClass(bytes2, read);
         Field f = enhancedClazz.getField("__PARANAMER_DATA");
         assertNotNull(f);
+        String s1 = ((String) f.get(null));
+        String s2 = ("<init> java.util.Map map \n" +
+                        "setMap java.util.Map map \n");
+        assertEquals(s2, s1);
     }
 
-
-    public void testNothing() {
-        
-    }
 
     private static class MyClassLoader extends ClassLoader {
         public Class defineEnhancerClass(byte[] bytes, int length) {

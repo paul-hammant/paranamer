@@ -85,7 +85,8 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < methods.length; i++) {
             JavaMethod javaMethod = methods[i];
-            if (!Arrays.asList(javaMethod.getModifiers()).contains("private")) {
+            if (!Arrays.asList(javaMethod.getModifiers()).contains("private")
+                    && javaMethod.getParameters().length > 0) {
                 buffer.append(addMethod(javaMethod));
             }
         }
