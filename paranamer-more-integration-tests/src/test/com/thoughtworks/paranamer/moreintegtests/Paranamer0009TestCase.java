@@ -20,8 +20,17 @@ public class Paranamer0009TestCase extends TestCase {
 
 	// fails when compiled with {{-g:none}}, works with {{-g}}. Should skip the lookup with {{-g:none}}.
 	public void testParanamer() throws Exception {
-		//CachingParanamer paranamer = new CachingParanamer(new AdaptiveParanamer());
 		BytecodeReadingParanamer paranamer = new BytecodeReadingParanamer();
+
+		Method method = getClass().getMethod("methodToFind", new Class[] { String.class });
+
+        assertEquals (Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER, paranamer.areParameterNamesAvailable(
+				Paranamer0009TestCase.class, method.getName()));
+	}
+
+	// fails when compiled with {{-g:none}}, works with {{-g}}. Should skip the lookup with {{-g:none}}.
+	public void testParanamer2() throws Exception {
+		CachingParanamer paranamer = new CachingParanamer(new AdaptiveParanamer());
 
 		Method method = getClass().getMethod("methodToFind", new Class[] { String.class });
 
