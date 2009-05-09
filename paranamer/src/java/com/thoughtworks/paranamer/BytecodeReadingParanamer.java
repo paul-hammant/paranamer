@@ -116,7 +116,7 @@ public class BytecodeReadingParanamer implements Paranamer {
             TypeCollector visitor = new TypeCollector(constructorOrMethodName, ((Method) methods.get(0)).getParameterTypes());
             reader.accept(visitor);
             if (visitor.isClassFound()) {
-                if (!visitor.isMethodFound()) {
+                if (!visitor.isMethodFound() || !visitor.isDebugInfoPresent()) {
                     return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
                 }
             } else {
@@ -233,6 +233,10 @@ public class BytecodeReadingParanamer implements Paranamer {
                 }
             }
             return s;
+        }
+
+        private boolean isDebugInfoPresent() {
+            return collector.isDebugInfoPresent();
         }
 
         private String[] getParameterNamesForMethod() {
