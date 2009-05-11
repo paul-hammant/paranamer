@@ -53,6 +53,13 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("s", names);
     }
 
+    public void testAreParameterNamesAvailableWorks() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        int retval = asm.areParameterNamesAvailable(SpecificMethodSearchable.class, "<init>");
+        assertEquals(Paranamer.PARAMETER_NAMES_FOUND, retval);
+    }
+
+
     public void testRetrievesParameterNamesFromAConstructor() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Constructor ctor = SpecificMethodSearchable.class.getConstructor(new Class[] { String.class });

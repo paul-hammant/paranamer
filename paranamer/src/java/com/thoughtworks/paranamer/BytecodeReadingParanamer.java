@@ -108,12 +108,16 @@ public class BytecodeReadingParanamer implements Paranamer {
         }
         try {
             ClassReader reader = new ClassReader(content);
-            //TODO - also for constructors
-            List methods = getMatchingMethods(clazz.getClassLoader(), clazz.getName(), constructorOrMethodName);
-            if (methods.size() == 0) {
-                return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
+            TypeCollector visitor = null;
+            if (constructorOrMethodName.equals("<init>")) {
+                visitor = new TypeCollector(constructorOrMethodName, (clazz.getConstructors()[0]).getParameterTypes());
+            } else {
+                List methods = getMatchingMethods(clazz.getClassLoader(), clazz.getName(), constructorOrMethodName);
+                if (methods.size() == 0) {
+                    return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
+                }
+                visitor = new TypeCollector(constructorOrMethodName, ((Method) methods.get(0)).getParameterTypes());
             }
-            TypeCollector visitor = new TypeCollector(constructorOrMethodName, ((Method) methods.get(0)).getParameterTypes());
             reader.accept(visitor);
             if (visitor.isClassFound()) {
                 if (!visitor.isMethodFound() || !visitor.isDebugInfoPresent()) {
