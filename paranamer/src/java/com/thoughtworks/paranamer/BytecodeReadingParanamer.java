@@ -67,7 +67,11 @@ public class BytecodeReadingParanamer implements Paranamer {
         }
     };
 
-    public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+        return lookupParameterNames(methodOrConstructor, true);
+    }
+
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
 
         Class[] types = null;
         Class declaringClass = null;
@@ -89,15 +93,23 @@ public class BytecodeReadingParanamer implements Paranamer {
         }
         InputStream content = getClassAsStream(declaringClass);
         if (content == null) {
-            throw new ParameterNamesNotFoundException("Unable to get class bytes");
+            if (throwExceptionIfMissing) {
+                throw new ParameterNamesNotFoundException("Unable to get class bytes");
+            } else {
+                return null;
+            }
         }
         try {
             ClassReader reader = new ClassReader(content);
-            TypeCollector visitor = new TypeCollector(name, types);
+            TypeCollector visitor = new TypeCollector(name, types, throwExceptionIfMissing);
             reader.accept(visitor);
             return visitor.getParameterNamesForMethod();
         } catch (IOException e) {
-            throw new ParameterNamesNotFoundException("IoException while reading class bytes", e);
+            if (throwExceptionIfMissing) {
+                throw new ParameterNamesNotFoundException("IoException while reading class bytes", e);
+            } else {
+                return null;
+            }
         }
     }
 
@@ -110,13 +122,13 @@ public class BytecodeReadingParanamer implements Paranamer {
             ClassReader reader = new ClassReader(content);
             TypeCollector visitor = null;
             if (constructorOrMethodName.equals("<init>")) {
-                visitor = new TypeCollector(constructorOrMethodName, (clazz.getConstructors()[0]).getParameterTypes());
+                visitor = new TypeCollector(constructorOrMethodName, (clazz.getConstructors()[0]).getParameterTypes(), true);
             } else {
                 List methods = getMatchingMethods(clazz.getClassLoader(), clazz.getName(), constructorOrMethodName);
                 if (methods.size() == 0) {
                     return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
                 }
-                visitor = new TypeCollector(constructorOrMethodName, ((Method) methods.get(0)).getParameterTypes());
+                visitor = new TypeCollector(constructorOrMethodName, ((Method) methods.get(0)).getParameterTypes(), true);
             }
             reader.accept(visitor);
             if (visitor.isClassFound()) {
@@ -178,14 +190,16 @@ public class BytecodeReadingParanamer implements Paranamer {
         private final String methodName;
 
         private final Class[] parameterTypes;
+        private final boolean throwExceptionIfMissing;
 
         private MethodCollector collector;
         private boolean methodFound = false;
         private boolean classFound = false;
 
-        private TypeCollector(String methodName, Class[] parameterTypes) {
+        private TypeCollector(String methodName, Class[] parameterTypes, boolean throwExceptionIfMissing) {
             this.methodName = methodName;
             this.parameterTypes = parameterTypes;
+            this.throwExceptionIfMissing = throwExceptionIfMissing;
             this.collector = null;
         }
 
@@ -248,7 +262,11 @@ public class BytecodeReadingParanamer implements Paranamer {
                 return null;
             }
             if (!collector.isDebugInfoPresent()) {
-                throw new ParameterNamesNotFoundException("Parameter names not found for " + methodName);
+                if (throwExceptionIfMissing) {
+                    throw new ParameterNamesNotFoundException("Parameter names not found for " + methodName);
+                } else {
+                    return null;
+                }
             }
             return collector.getResult().split(COMMA);
         }

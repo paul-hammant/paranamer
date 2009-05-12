@@ -43,7 +43,11 @@ public class CachingParanamerTestCase extends TestCase {
     protected void setUp() throws Exception {
         paranamer = new Paranamer() {
 
-            public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
+            public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+                return lookupParameterNames(methodOrConstructor, true);
+            }
+
+            public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
                 count++;
                 return new String[]{"foo","bar"};
             }

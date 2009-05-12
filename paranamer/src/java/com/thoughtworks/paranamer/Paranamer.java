@@ -88,8 +88,9 @@ public interface Paranamer {
 	 *             if either parameter is null.
 	 * @throws SecurityException
 	 *             if reflection is not permitted on clazz
+     * @deprecated since 1.5, use the overloaded lookupParameterNames instead
 	 */
-	public int areParameterNamesAvailable(Class clazz,
+    public int areParameterNamesAvailable(Class clazz,
 			String constructorOrMethodName);
 
 	/**
@@ -108,5 +109,22 @@ public interface Paranamer {
 	 *             parameter
 	 */
 	public String[] lookupParameterNames(AccessibleObject methodOrConstructor);
+
+	/**
+	 * Lookup the parameter names of a given method.
+	 *
+	 * @param methodOrConstructor
+	 *            the {@link Method} or {@link Constructor} for which the parameter names
+	 *            are looked up.
+	 * @return A list of the parameter names.
+	 * @throws ParameterNamesNotFoundException
+	 *             if no parameter names were found.
+	 * @throws NullPointerException
+	 *             if the parameter is null.
+	 * @throws SecurityException
+	 *             if reflection is not permitted on the containing {@link Class} of the
+	 *             parameter
+	 */
+	public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing);
 
 }

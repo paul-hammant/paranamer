@@ -17,7 +17,7 @@ public class Paranamer0009TestCase extends TestCase {
     public void methodToFind(String name) {
 		assert name != null;
 	}
-
+                 
 	// fails when compiled with {{-g:none}}, works with {{-g}}. Should skip the lookup with {{-g:none}}.
 	public void testParanamer() throws Exception {
 		BytecodeReadingParanamer paranamer = new BytecodeReadingParanamer();

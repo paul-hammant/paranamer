@@ -57,7 +57,11 @@ public class DefaultParanamer implements Paranamer {
     public DefaultParanamer() {
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+        return lookupParameterNames(methodOrConstructor, true);
+    }
+
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
         // Oh for some commonality between Constructor and Method !!
         Class[] types = null;
         Class declaringClass = null;
@@ -80,8 +84,12 @@ public class DefaultParanamer implements Paranamer {
         final String parameterTypeNames = getParameterTypeNamesCSV(types);
         final String[] names = getParameterNames(declaringClass, parameterTypeNames, name + SPACE);
         if ( names == null ){
+            if (throwExceptionIfMissing) {
             throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', methodOrCtor " + name
                     +" and parameter types "+parameterTypeNames);
+            } else {
+                return null;
+            }
         }
         return names;
     }

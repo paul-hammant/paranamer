@@ -67,12 +67,16 @@ public class CachingParanamer implements Paranamer {
         delegate = new BytecodeReadingParanamer();
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrCtor) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+        return lookupParameterNames(methodOrConstructor, true);
+    }
+
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
         if(methodCache.containsKey(methodOrCtor)) {
             return (String[]) methodCache.get(methodOrCtor);
         }
 
-        String[] names = delegate.lookupParameterNames(methodOrCtor);
+        String[] names = delegate.lookupParameterNames(methodOrCtor, throwExceptionIfMissing);
         methodCache.put(methodOrCtor, names);
 
         return names;

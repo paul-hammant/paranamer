@@ -297,7 +297,11 @@ public class JavadocParanamer implements Paranamer {
 		}
 	}
 
-	public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+        return lookupParameterNames(methodOrConstructor, true);
+    }
+
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
 		if (methodOrConstructor == null)
 			throw new NullPointerException();
 
@@ -324,15 +328,24 @@ public class JavadocParanamer implements Paranamer {
 
 		try {
 			String[] names = getParameterNames(klass, name, types);
-			if (names == null)
-				throw new ParameterNamesNotFoundException(
-					methodOrConstructor.toString());
-			return names;
+			if (names == null) {
+                if (throwExceptionIfMissing) {
+                    throw new ParameterNamesNotFoundException(
+					    methodOrConstructor.toString());
+                } else {
+                    return null;
+                }
+            }
+            return names;
 		} catch (IOException e) {
-			throw new ParameterNamesNotFoundException(
-				methodOrConstructor.toString() + " due to an I/O error: "
-						+ e.getMessage());
-		}
+            if (throwExceptionIfMissing) {
+                throw new ParameterNamesNotFoundException(
+	    			methodOrConstructor.toString() + " due to an I/O error: "
+		    				+ e.getMessage());
+            } else {
+                return null;
+            }
+        }
 	}
 
 	// throws CLASS_NOT_SUPPORTED if the class file is not found in the javadocs
