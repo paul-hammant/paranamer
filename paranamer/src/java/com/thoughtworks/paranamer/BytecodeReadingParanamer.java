@@ -96,7 +96,7 @@ public class BytecodeReadingParanamer implements Paranamer {
             if (throwExceptionIfMissing) {
                 throw new ParameterNamesNotFoundException("Unable to get class bytes");
             } else {
-                return null;
+                return Paranamer.EMPTY_NAMES;
             }
         }
         try {
@@ -108,7 +108,7 @@ public class BytecodeReadingParanamer implements Paranamer {
             if (throwExceptionIfMissing) {
                 throw new ParameterNamesNotFoundException("IoException while reading class bytes", e);
             } else {
-                return null;
+                return Paranamer.EMPTY_NAMES;
             }
         }
     }
@@ -259,13 +259,13 @@ public class BytecodeReadingParanamer implements Paranamer {
 
         private String[] getParameterNamesForMethod() {
             if (collector == null) {
-                return null;
+                return Paranamer.EMPTY_NAMES;
             }
             if (!collector.isDebugInfoPresent()) {
                 if (throwExceptionIfMissing) {
                     throw new ParameterNamesNotFoundException("Parameter names not found for " + methodName);
                 } else {
-                    return null;
+                    return Paranamer.EMPTY_NAMES;
                 }
             }
             return collector.getResult().split(COMMA);

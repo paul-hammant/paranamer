@@ -93,13 +93,16 @@ public class AdaptiveParanamer implements Paranamer {
         }
 
         String[] names = delegate.lookupParameterNames(methodOrCtor, false);
-        if (names == null) {
+        if (names == Paranamer.EMPTY_NAMES) {
             names = fallback.lookupParameterNames(methodOrCtor, throwExceptionIfMissing);
         }
         return names;
 
     }
 
+    /**
+     * @Deperecated Use 'new CachingParanamer(new AdaptiveParanamer())' instead.
+     */
     public int areParameterNamesAvailable(Class clazz, String ctorOrMethodName) {
         int i = delegate.areParameterNamesAvailable(clazz, ctorOrMethodName);
         if (i != Paranamer.PARAMETER_NAMES_FOUND) {

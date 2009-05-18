@@ -82,6 +82,9 @@ public class CachingParanamer implements Paranamer {
         return names;
     }
 
+    /**
+     * @Deperecated Use 'new CachingParanamer(new AdaptiveParanamer())' instead.
+     */
     public int areParameterNamesAvailable(Class clazz, String ctorOrMethodName) {
         return delegate.areParameterNamesAvailable(clazz, ctorOrMethodName);
     }

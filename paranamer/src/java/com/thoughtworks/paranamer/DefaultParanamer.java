@@ -88,7 +88,7 @@ public class DefaultParanamer implements Paranamer {
             throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', methodOrCtor " + name
                     +" and parameter types "+parameterTypeNames);
             } else {
-                return null;
+                return Paranamer.EMPTY_NAMES;
             }
         }
         return names;
@@ -103,9 +103,12 @@ public class DefaultParanamer implements Paranamer {
             String parameterNames = parts[2];
             return parameterNames.split(COMMA);
         }
-        return null;
+        return Paranamer.EMPTY_NAMES;
     }
 
+    /**
+     * @Deperecated Use 'new CachingParanamer(new AdaptiveParanamer())' instead.
+     */
     public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName) {
         String data = getParameterListResource(clazz);
 

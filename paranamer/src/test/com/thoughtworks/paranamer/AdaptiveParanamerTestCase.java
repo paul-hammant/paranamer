@@ -56,8 +56,8 @@ public class AdaptiveParanamerTestCase extends MockObjectTestCase {
         Mock primary = mock(Paranamer.class);
         Mock fallback = mock(Paranamer.class);
 
-        Paranamer paranamer = new AdaptiveParanamer((Paranamer) primary.proxy(), (Paranamer) fallback.proxy());
-        primary.expects(once()).method("lookupParameterNames").with(same(one), eq(false)).will(returnValue(null));
+        AdaptiveParanamer paranamer = new AdaptiveParanamer((Paranamer) primary.proxy(), (Paranamer) fallback.proxy());
+        primary.expects(once()).method("lookupParameterNames").with(same(one), eq(false)).will(returnValue(Paranamer.EMPTY_NAMES));
         fallback.expects(once()).method("lookupParameterNames").with(same(one), eq(true)).will(returnValue(new String[] {"a","b"}));
         String[] paramNames = paranamer.lookupParameterNames(one, true);
         assertEquals(Arrays.asList(new String[]{"a", "b"}), Arrays.asList(paramNames));

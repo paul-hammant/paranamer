@@ -42,26 +42,30 @@ import java.lang.reflect.Method;
  */
 public interface Paranamer {
 
-    static final String[] EMPTY_NAMES = new String[]{};
+    static final String[] EMPTY_NAMES = new String[0];
 
     /**
 	 * Parameter names are available, but not for that class.
+     * @deprecated
 	 */
 	int NO_PARAMETER_NAMES_FOR_CLASS = 2;
 
 	/**
 	 * Parameter names are available for that class, but not for that constructor or
 	 * method.
+     * @deprecated
 	 */
 	int NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER = 3;
 
 	/**
 	 * Parameter names are generally not available.
+     * @deprecated
 	 */
 	int NO_PARAMETER_NAMES_LIST = 1;
 
 	/**
 	 * Parameter names are available for that class and constructor/method.
+     * @deprecated
 	 */
 	int PARAMETER_NAMES_FOUND = 0;
 

@@ -333,7 +333,7 @@ public class JavadocParanamer implements Paranamer {
                     throw new ParameterNamesNotFoundException(
 					    methodOrConstructor.toString());
                 } else {
-                    return null;
+                    return Paranamer.EMPTY_NAMES;
                 }
             }
             return names;
@@ -343,7 +343,7 @@ public class JavadocParanamer implements Paranamer {
 	    			methodOrConstructor.toString() + " due to an I/O error: "
 		    				+ e.getMessage());
             } else {
-                return null;
+                return Paranamer.EMPTY_NAMES;
             }
         }
 	}
@@ -428,7 +428,7 @@ public class JavadocParanamer implements Paranamer {
 		Matcher matcher = pattern.matcher(javadoc);
 		if (!matcher.find())
 			// not found
-			return null;
+			return Paranamer.EMPTY_NAMES;
 
 		// found it. Lookup the parameter names.
 		String[] names = new String[types.length];
@@ -440,7 +440,7 @@ public class JavadocParanamer implements Paranamer {
 		for (int i = 0; i < types.length; i++) {
 			boolean find = matcherParams.find(start);
 			if (!find)
-				return null;
+				return Paranamer.EMPTY_NAMES;
 			start = matcherParams.end();
 			names[i] = matcherParams.group(1);
 		}
