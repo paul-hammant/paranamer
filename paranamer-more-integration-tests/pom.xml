@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.5</version>
   </parent>
   <artifactId>paranamer-more-integration-tests</artifactId>
   <name>ParaNamer More Integration Tests</name>
@@ -11,7 +11,7 @@
       <dependency>
         <groupId>com.thoughtworks.paranamer</groupId>
         <artifactId>paranamer</artifactId>
-        <version>1.5-SNAPSHOT</version>
+        <version>1.5</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
