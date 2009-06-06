@@ -53,7 +53,7 @@ public class ParanamerGeneratorMojo extends AbstractMojo {
     /**
      * The directory containing the Java source files
      *
-     * @parameter
+     * @parameter default-value="${project.build.sourceDirectory}"
      * @required
      */
     protected String sourceDirectory;
@@ -61,7 +61,7 @@ public class ParanamerGeneratorMojo extends AbstractMojo {
     /**
      * The directory where the Paranamer generator will write the output
      *
-     * @parameter
+     * @parameter default-value="${project.build.outputDirectory}"
      * @required
      */
     protected String outputDirectory;
