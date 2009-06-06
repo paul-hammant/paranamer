@@ -172,6 +172,19 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
     }
 
+    // from http://jira.codehaus.org/browse/PARANAMER-10
+    public void testEmptyParameterShouldReturnAnEmptyArray() throws Exception {
+		BytecodeReadingParanamer paranamer = new BytecodeReadingParanamer();
+
+        Method method = NoArgs.class.getMethod("foo", new Class[]{});
+		String[] methNames = paranamer.lookupParameterNames(method);
+		assertEquals(0, methNames.length); //Failure here!
+	}
+
+    class NoArgs {
+	    public void foo() {}
+    }
+
     public static class SpecificMethodSearchable {
 
         String foo;
