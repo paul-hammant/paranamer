@@ -3,14 +3,17 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
-    <artifactId>paranamer-parent</artifactId>
+    <artifactId>paranamer-integration-tests</artifactId>
     <version>1.6-SNAPSHOT</version>
   </parent>
-  <artifactId>paranamer-integration-tests</artifactId>
-  <name>ParaNamer Integration Tests</name>
-  <packaging>pom</packaging>
-  <modules>
-    <module>it-009</module>
-    <module>it-011</module>
-  </modules>
+  <artifactId>paranamer-it-011</artifactId>
+  <name>ParaNamer IT 011: can use maven plugin defaults</name>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.thoughtworks.paranamer</groupId>
+        <artifactId>paranamer-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>
