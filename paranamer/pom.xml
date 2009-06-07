@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
@@ -7,33 +8,33 @@
   </parent>
   <artifactId>paranamer</artifactId>
   <name>ParaNamer Core</name>
-    <dependencies>
-      <dependency>
-        <groupId>com.thoughtworks.qdox</groupId>
-        <artifactId>qdox</artifactId>
-        <version>1.6.3</version>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-	<build>
-	  <plugins>
-	  <plugin>
-	         <groupId>com.thoughtworks.paranamer</groupId>
-	         <artifactId>paranamer-maven-plugin</artifactId>
-	         <version>${pom.version}</version>
-	         <executions>
-	           <execution>
-	             <phase>compile</phase>
-	             <goals>
-	               <goal>generate</goal>
-	             </goals>
-	           </execution>
-	         </executions>
-	         <configuration>
-	              <sourceDirectory>${pom.build.sourceDirectory}</sourceDirectory>
-	              <outputDirectory>${pom.build.outputDirectory}</outputDirectory>
-	          </configuration>
-	       </plugin>
-	  </plugins>
-	  </build>
+  <dependencies>
+    <dependency>
+      <groupId>com.thoughtworks.qdox</groupId>
+      <artifactId>qdox</artifactId>
+      <version>1.6.3</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.thoughtworks.paranamer</groupId>
+        <artifactId>paranamer-maven-plugin</artifactId>
+        <version>${pom.version}</version>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectory>${pom.build.sourceDirectory}</sourceDirectory>
+          <outputDirectory>${pom.build.outputDirectory}</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

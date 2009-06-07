@@ -72,11 +72,11 @@ public class ParanamerGeneratorMojo extends AbstractMojo {
     private ParanamerGenerator generator = new QdoxParanamerGenerator();
 
     public void execute() throws MojoExecutionException, MojoFailureException {
-        getLog().debug("Generating parameter names from " + sourceDirectory + " to " + outputDirectory);
+        getLog().info("Generating parameter names from " + sourceDirectory + " to " + outputDirectory);
         try {
             generator.processSourcePath(sourceDirectory, outputDirectory);
         } catch (IOException e) {
-            throw new MojoExecutionException("Failed to generate parameter names", e);
+            throw new MojoExecutionException("Failed to generate parameter names from "+sourceDirectory, e);
         }
     }
 

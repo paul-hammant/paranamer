@@ -30,6 +30,7 @@
 package com.thoughtworks.paranamer.ant;
 
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
 import com.thoughtworks.paranamer.generator.ParanamerGenerator;
@@ -47,11 +48,11 @@ public class ParanamerGeneratorTask extends Task {
     private String outputDirectory;
 
     public void execute() throws BuildException {
+        log("Generating parameter names from "+sourceDirectory+" to " + outputDirectory, Project.MSG_INFO);   
         try {
             generator.processSourcePath(sourceDirectory, outputDirectory);
-            log("Generated parameter names for '"+sourceDirectory+"' in '" + outputDirectory + "'");
         } catch (Exception e) {
-            throw new BuildException("Failed to generate parameter names for '"+sourceDirectory+"'", e);
+            throw new BuildException("Failed to generate parameter names from "+sourceDirectory, e);
         }
     }
 
