@@ -9,10 +9,12 @@
   <artifactId>paranamer-it-011</artifactId>
   <name>ParaNamer IT 011: can use maven plugin defaults</name>
   <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
     <plugins>
       <plugin>
         <groupId>com.thoughtworks.paranamer</groupId>
         <artifactId>paranamer-maven-plugin</artifactId>
+        <version>${pom.version}</version>
       </plugin>
     </plugins>
   </build>
