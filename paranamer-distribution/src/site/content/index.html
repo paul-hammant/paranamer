@@ -19,11 +19,11 @@ currently look like '<span style="font-family: monospace;">doSomething(mypkg.Per
   href="http://jruby.codehaus.org/">JRuby</a>, web action frameworks
   like <a href="http://waffle.codehaus.org">Waffle</a> and <a href="#"
   title="http://www.vraptor.org/">VRaptor</a> (that verge on the
-  tranparent) and the compelling <a href="http://grails.codehaus.org/">Grails</a>. SOAP and REST designs could also benefit.</p>
+  transparent) and the compelling <a href="http://grails.codehaus.org/">Grails</a>. SOAP and REST designs could also benefit.</p>
 <p>ParaNamer allows you to generate and use parameter name info for
 versions of Java prior to JDK 7.0.
 Parameter name access was scheduled for JDK 6.0, bit slipped as the development team ran out of time to implement it. It seems unlikely that it will ship with JDK 7.0 either.</p>
-<p>Paranamer is Open Source, and licensed as BSD. It is compatible with commercial/proprieatry, GPL, Apache use.<br>
+<p>Paranamer is Open Source, and licensed as BSD. It is compatible with commercial/proprietary, GPL, Apache use.<br>
 </p>
 <h1>Accessing Parameter Name data</h1>
 <p>There is a
@@ -39,7 +39,7 @@ method called <span class="code-object">'lookupParameterNames</span>' that retur
 </div>
 <p>The method throws a ParameterNamesNotFoundException if no parameter names
 are found. </p>
-<p>Instead of handling that exception, you could determine if parameter name data is available, but first calling areParameterNamesAvailable().<br>
+<p>Instead of handling that exception, you could determine if parameter name data is available, but first the same method with a second boolean 'throw excetpion if not found' parameter set to false.<br>
 </p>
 <p>ParaNamer does not have any runtime jar dependencies while looking
   up parameter info previously generated that's been zipped into a jar.</p>
@@ -60,7 +60,7 @@ method to that __PARANAMER_DATA field.&nbsp;&nbsp; See below.</p>
 <p>Its also interesting to note that CachingParanamertries tries to
   use DefaultParanamer and BytecodeReadingParanamer. The latter is a fallback strategy if the former cannot find
   parameter name data.</p>
-<h1>Creating Parameter Name data and Adding it to .class files</h1>
+<h1>Creating Parameter Name data and modifying compiled class files</h1>
 <h2>Optional Generation of Parameter Name data with Ant<br>
 </h2>
 <p>This for DefaultParanamer of course.</p>
