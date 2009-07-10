@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.AccessibleObject;
 
 import junit.framework.TestCase;
 
@@ -46,20 +47,6 @@ import junit.framework.TestCase;
 public abstract class AbstractParanamerTestCase extends TestCase {
 
     protected Paranamer paranamer;
-
-    public void testLookupParanamerCanIndicateAbleToGetParameterNames()
-            throws IOException {
-        int x = paranamer.areParameterNamesAvailable(
-                DefaultParanamer.class, "lookupParameterNames");
-        assertEquals(Paranamer.PARAMETER_NAMES_FOUND, x);
-    }
-
-    public void testLookupParanamerCanIndicateThatUnableToGetParameterNamesForRealClassButBogusMethod()
-            throws IOException {
-        int x = paranamer.areParameterNamesAvailable(
-                DefaultParanamer.class, "fooo");
-        assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER, x);
-    }
 
     public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
         Method method = DefaultParanamer.class.getMethod("toString", new Class[0]);
@@ -80,9 +67,9 @@ public abstract class AbstractParanamerTestCase extends TestCase {
     }
 
     public void testLookupParameterNamesForInterfaceMethod() throws Exception {
-        Method m = Paranamer.class.getDeclaredMethod("areParameterNamesAvailable", new Class[] {Class.class, String.class});
+        Method m = Paranamer.class.getDeclaredMethod("lookupParameterNames", new Class[] {AccessibleObject.class, boolean.class});
         String[] names = paranamer.lookupParameterNames(m);
-        assertThatParameterNamesMatch("clazz,constructorOrMethodName", names);
+        assertThatParameterNamesMatch("methodOrConstructor,throwExceptionIfMissing", names);
     }
 
     protected void assertThatParameterNamesMatch(String csv, String[] names) {

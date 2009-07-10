@@ -44,59 +44,6 @@ public interface Paranamer {
 
     static final String[] EMPTY_NAMES = new String[0];
 
-    /**
-	 * Parameter names are available, but not for that class.
-     * @deprecated
-	 */
-	int NO_PARAMETER_NAMES_FOR_CLASS = 2;
-
-	/**
-	 * Parameter names are available for that class, but not for that constructor or
-	 * method.
-     * @deprecated
-	 */
-	int NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER = 3;
-
-	/**
-	 * Parameter names are generally not available.
-     * @deprecated
-	 */
-	int NO_PARAMETER_NAMES_LIST = 1;
-
-	/**
-	 * Parameter names are available for that class and constructor/method.
-     * @deprecated
-	 */
-	int PARAMETER_NAMES_FOUND = 0;
-
-	/**
-	 * Determine if the parameter names are available.
-	 * <p>
-	 * Known issues:
-	 * <ul>
-	 * <li>If a method that belongs to the superclass is requested, this call may fail
-	 * where {@link #lookupParameterNames(AccessibleObject)} will succeed.</li>
-	 * <li>If a method or constructor is overloaded, this call may pass where
-	 * {@link #lookupParameterNames(AccessibleObject)} will fail.</li>
-	 * </ul>
-	 * Use of this method is discouraged.
-	 * 
-	 * @param clazz
-	 *            the name of the class to which the method or constructor belongs.
-	 * @param constructorOrMethodName
-	 *            the base name of the {@link Method} or {@link Constructor}. If a
-	 *            request is being made for the constructor, this should be
-	 *            <code>"&lt;init&gt;"</code>.
-	 * @return An int encoding the parameter names availability.
-	 * @throws NullPointerException
-	 *             if either parameter is null.
-	 * @throws SecurityException
-	 *             if reflection is not permitted on clazz
-     * @deprecated since 1.5, use the overloaded lookupParameterNames instead
-	 */
-    public int areParameterNamesAvailable(Class clazz,
-			String constructorOrMethodName);
-
 	/**
 	 * Lookup the parameter names of a given method.
 	 * 

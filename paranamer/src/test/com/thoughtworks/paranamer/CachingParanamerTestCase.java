@@ -52,9 +52,6 @@ public class CachingParanamerTestCase extends TestCase {
                 return new String[]{"foo","bar"};
             }
 
-            public int areParameterNamesAvailable(Class clazz, String ctorOrMethodName) {
-                return -1;  
-            }
         };
     }
 

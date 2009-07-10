@@ -113,39 +113,6 @@ public class BytecodeReadingParanamer implements Paranamer {
         }
     }
 
-    public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName) {
-        InputStream content = getClassAsStream(clazz.getClassLoader(), clazz.getName());
-        if (content == null) {
-            return NO_PARAMETER_NAMES_FOR_CLASS;
-        }
-        try {
-            ClassReader reader = new ClassReader(content);
-            TypeCollector visitor = null;
-            if (constructorOrMethodName.equals("<init>")) {
-                visitor = new TypeCollector(constructorOrMethodName, (clazz.getConstructors()[0]).getParameterTypes(), true);
-            } else {
-                List methods = getMatchingMethods(clazz.getClassLoader(), clazz.getName(), constructorOrMethodName);
-                if (methods.size() == 0) {
-                    return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
-                }
-                visitor = new TypeCollector(constructorOrMethodName, ((Method) methods.get(0)).getParameterTypes(), true);
-            }
-            reader.accept(visitor);
-            if (visitor.isClassFound()) {
-                if (!visitor.isMethodFound() || !visitor.isDebugInfoPresent()) {
-                    return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
-                }
-            } else {
-                return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS;
-            }
-            return Paranamer.PARAMETER_NAMES_FOUND;
-        } catch (IOException e) {
-            return Paranamer.NO_PARAMETER_NAMES_FOR_CLASS;
-        } catch (ClassNotFoundException e) {
-            return NO_PARAMETER_NAMES_FOR_CLASS;
-        }
-    }
-
     private InputStream getClassAsStream(Class clazz) {
         ClassLoader classLoader = clazz.getClassLoader();
         if (classLoader == null) {

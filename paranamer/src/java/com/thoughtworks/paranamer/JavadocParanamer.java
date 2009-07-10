@@ -261,42 +261,6 @@ public class JavadocParanamer implements Paranamer {
 		}
 	}
 
-	public int areParameterNamesAvailable(Class clazz,
-			String constructorOrMethodName) {
-		if ((clazz == null) || (constructorOrMethodName == null))
-			throw new NullPointerException();
-
-		// due to general problems with this method, we just delegate
-		// the first match we find to lookupParameterNames
-		AccessibleObject accessible = null;
-		if (constructorOrMethodName.equals("<init>"))
-			accessible = clazz.getDeclaredConstructors()[0];
-		else {
-			Method[] methods = clazz.getMethods();
-			if (methods == null)
-				// this method doesn't exist
-				return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
-			for (int i = 0; i < methods.length; i++) {
-				if (methods[i].getName().equals(constructorOrMethodName)) {
-					accessible = methods[i];
-					break;
-				}
-			}
-		}
-		if (accessible == null)
-			// this method doesn't exist
-			return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
-
-		try {
-			lookupParameterNames(accessible);
-			return PARAMETER_NAMES_FOUND;
-		} catch (ParameterNamesNotFoundException e) {
-			if (e == CLASS_NOT_SUPPORTED)
-				return NO_PARAMETER_NAMES_FOR_CLASS;
-			return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
-		}
-	}
-
     public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
     }

@@ -100,17 +100,6 @@ public class AdaptiveParanamer implements Paranamer {
 
     }
 
-    /**
-     * @Deperecated Use 'new CachingParanamer(new AdaptiveParanamer())' instead.
-     */
-    public int areParameterNamesAvailable(Class clazz, String ctorOrMethodName) {
-        int i = delegate.areParameterNamesAvailable(clazz, ctorOrMethodName);
-        if (i != Paranamer.PARAMETER_NAMES_FOUND) {
-            i = fallback.areParameterNamesAvailable(clazz, ctorOrMethodName);
-        }
-        return i;
-    }
-
     public String toString() {
          return new StringBuffer("[AdaptiveParanamer delegate=")
          .append(delegate).append(", fallback=").append(fallback).append("]").toString();

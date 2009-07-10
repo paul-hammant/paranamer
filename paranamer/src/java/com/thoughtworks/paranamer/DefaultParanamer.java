@@ -106,24 +106,6 @@ public class DefaultParanamer implements Paranamer {
         return Paranamer.EMPTY_NAMES;
     }
 
-    /**
-     * @Deperecated Use 'new CachingParanamer(new AdaptiveParanamer())' instead.
-     */
-    public int areParameterNamesAvailable(Class clazz, String constructorOrMethodName) {
-        String data = getParameterListResource(clazz);
-
-        if (data == null) {
-            return NO_PARAMETER_NAMES_LIST;
-        }
-
-        String line = findFirstMatchingLine(data, constructorOrMethodName + SPACE);
-        if (line.length() == 0) {
-            return NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER;
-        }
-
-        return PARAMETER_NAMES_FOUND;
-    }
-
     private static String getParameterTypeNamesCSV(Class[] parameterTypes) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < parameterTypes.length; i++) {

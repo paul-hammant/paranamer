@@ -92,10 +92,6 @@ public class JavadocParanamerTest extends TestCase {
 // testCanFindForAppropriateMethod(getDirectoryParanamerSun());
 // }
 
-	public void testCanFindForAppropriateMethodFile() throws IOException {
-		testCanFindForAppropriateMethod(getArchiveParanamerSun());
-	}
-
 //	public void testCanFindForAppropriateMethodURL() throws IOException {
 //		testCanFindForAppropriateMethod(getURLParanamerSun());
 //	}
@@ -104,11 +100,6 @@ public class JavadocParanamerTest extends TestCase {
 // throws IOException {
 // testCannotFindForInappropriateMethodsEtc(getDirectoryParanamerSun());
 // }
-
-	public void testCannotFindForInappropriateMethodsEtcFile()
-			throws IOException {
-		testCannotFindForInappropriateMethodsEtc(getArchiveParanamerSun());
-	}
 
 //	public void testCannotFindForInappropriateMethodsEtcURL()
 //			throws IOException {
@@ -191,25 +182,6 @@ public class JavadocParanamerTest extends TestCase {
 
 	private JavadocParanamer getURLParanamerSun() throws IOException {
 		return new JavadocParanamer(new URL(SUN_JAVADOC_URL));
-	}
-
-	private void testCanFindForAppropriateMethod(Paranamer paranamer) {
-		assertEquals(Paranamer.PARAMETER_NAMES_FOUND,
-			paranamer.areParameterNamesAvailable(File.class, "createTempFile"));
-	}
-
-	private void testCannotFindForInappropriateMethodsEtc(Paranamer paranamer) {
-		// this empty string should never return true
-		assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER,
-			paranamer.areParameterNamesAvailable(getClass(), ""));
-		assertEquals(Paranamer.NO_PARAMETER_NAMES_FOR_CLASS,
-			paranamer.areParameterNamesAvailable(getClass(), "<init>"));
-		assertEquals(Paranamer.PARAMETER_NAMES_FOUND,
-			paranamer.areParameterNamesAvailable(Random.class, "<init>"));
-		// make sure we're not just grepping on the javadocs
-		assertEquals(
-			Paranamer.NO_PARAMETER_NAMES_FOR_CLASS_AND_MEMBER,
-			paranamer.areParameterNamesAvailable(File.class, "operating system"));
 	}
 
 	private void testGenericsDontInterfereWithExtraction(Paranamer paranamer) {

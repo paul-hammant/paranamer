@@ -60,13 +60,6 @@ public class CachingParanamer implements Paranamer {
         this.delegate = delegate;
     }
 
-    /**
-     * @Deperecated Use 'new CachingParanamer(new AdaptiveParanamer())' instead.
-     */
-    public void switchtoAsm() {
-        delegate = new BytecodeReadingParanamer();
-    }
-
     public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
     }
@@ -80,13 +73,6 @@ public class CachingParanamer implements Paranamer {
         methodCache.put(methodOrCtor, names);
 
         return names;
-    }
-
-    /**
-     * @Deperecated Use 'new CachingParanamer(new AdaptiveParanamer())' instead.
-     */
-    public int areParameterNamesAvailable(Class clazz, String ctorOrMethodName) {
-        return delegate.areParameterNamesAvailable(clazz, ctorOrMethodName);
     }
 
     public String toString() {
