@@ -18,7 +18,7 @@
     <dependency>
       <groupId>asm</groupId>
       <artifactId>asm</artifactId>
-      <version>3.0</version>
+      <version>3.2</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
