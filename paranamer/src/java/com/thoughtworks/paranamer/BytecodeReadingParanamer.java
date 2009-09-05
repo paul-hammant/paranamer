@@ -561,13 +561,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                 v += 6 + readInt(v + 2);
             }
 
-            // visits the class annotations
-            for (i = 1; i >= 0; --i) {
-                v = i == 0 ? ianns : anns;
-                if (v != 0) {
-                    v += 2;
-                }
-            }
+            //annotations not needed.
 
             // visits the fields
             i = readUnsignedShort(u);
@@ -584,6 +578,7 @@ public class BytecodeReadingParanamer implements Paranamer {
             i = readUnsignedShort(u);
             u += 2;
             for (; i > 0; --i) {
+                // inlined in original ASM source, now a method call
                 u = readMethod(classVisitor, c, u);
             }
 
