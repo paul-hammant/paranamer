@@ -132,18 +132,6 @@ public class BytecodeReadingParanamer implements Paranamer {
         return asStream;
     }
 
-    private List getMatchingMethods(ClassLoader classLoader, String className, String name) throws ClassNotFoundException {
-        List list = new ArrayList();
-        Method[] methods = classLoader.loadClass(className).getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            Method method = methods[i];
-            if (method.getName().equals(name)) {
-                list.add(method);
-            }
-        }
-        return list;
-    }
-
     /**
      * The type collector waits for an specific method in order to start a method
      * collector.
@@ -220,10 +208,6 @@ public class BytecodeReadingParanamer implements Paranamer {
             return s;
         }
 
-        private boolean isDebugInfoPresent() {
-            return collector.isDebugInfoPresent();
-        }
-
         private String[] getParameterNamesForMethod() {
             if (collector == null) {
                 return Paranamer.EMPTY_NAMES;
@@ -238,13 +222,6 @@ public class BytecodeReadingParanamer implements Paranamer {
             return collector.getResult().split(COMMA);
         }
 
-        private boolean isMethodFound() {
-            return methodFound;
-        }
-
-        private boolean isClassFound() {
-            return classFound;
-        }
     }
 
     /**
