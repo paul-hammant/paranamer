@@ -20,7 +20,6 @@
       <plugin>
         <groupId>com.thoughtworks.paranamer</groupId>
         <artifactId>paranamer-maven-plugin</artifactId>
-        <version>${pom.version}</version>
         <executions>
           <execution>
             <phase>compile</phase>
