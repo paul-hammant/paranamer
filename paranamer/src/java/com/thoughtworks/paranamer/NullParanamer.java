@@ -31,8 +31,6 @@
 package com.thoughtworks.paranamer;
 
 import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 
 /**
  * Implementation of Paranamer which adheres to the NullObject pattern

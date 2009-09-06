@@ -30,8 +30,6 @@
 
 package com.thoughtworks.paranamer;
 
-import com.thoughtworks.paranamer.BytecodeReadingParanamer;
-
 import java.lang.reflect.AccessibleObject;
 import java.util.WeakHashMap;
 
