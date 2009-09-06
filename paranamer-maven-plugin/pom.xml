@@ -3,9 +3,10 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>2.1</version>
+    <version>2.2-SNAPSHOT</version>
   </parent>
   <artifactId>paranamer-maven-plugin</artifactId>
+  <version>2.1</version>
   <packaging>maven-plugin</packaging>
   <name>ParaNamer Maven plugin</name>
   <description>ParaNamer Maven plugin</description>
@@ -13,7 +14,7 @@
     <dependency>
       <groupId>${pom.groupId}</groupId>
       <artifactId>paranamer-generator</artifactId>
-      <version>${pom.version}</version>
+      <version>2.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
