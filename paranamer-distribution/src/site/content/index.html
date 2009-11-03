@@ -8,7 +8,7 @@
 <h1>What is it?</h1>
 <p>It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like '<span
   style="font-family: monospace;">doSometing(mypkg.Person <strong>toMe</strong>)</span>'
-currently look like '<span style="font-family: monospace;">doSomething(mypkg.Person
+currently look like '<span style="font-family: monospace;">doSomething(mypackage.Person
 <strong>???</strong>)</span>' to people using Java's reflection to inspect methods.&nbsp; </p>
 <p>To
   date parameter name access has not been very useful to Java application developers, but
@@ -22,7 +22,7 @@ currently look like '<span style="font-family: monospace;">doSomething(mypkg.Per
   transparent) and the compelling <a href="http://grails.codehaus.org/">Grails</a>. SOAP and REST designs could also benefit.</p>
 <p>ParaNamer allows you to generate and use parameter name info for
 versions of Java prior to JDK 7.0.
-Parameter name access was scheduled for JDK 6.0, bit slipped as the development team ran out of time to implement it. It seems unlikely that it will ship with JDK 7.0 either.</p>
+Parameter name access was scheduled for JDK 6.0, but was cancelled at a late stage as the spec-lead suggested the development team ran out of time to implement it. It is sadly not shipping in JDK 7.0 either.  Sun also had misgivings about the appropriateness of the this change to Java. It was felt that end users could end up depending on parameter names and that they essentially became part of constructor/method signatures and could never be changed if you wanted to be backwards compatible.  The view of the authors of Paranamer is that you should be aware that parameter names may change between releases, and code to not depend on them.</p>
 <p>Paranamer is Open Source, and licensed as BSD. It is compatible with commercial/proprietary, GPL, Apache use.<br>
 </p>
 <h1>Accessing Parameter Name data</h1>
@@ -34,21 +34,21 @@ method called <span class="code-object">'lookupParameterNames</span>' that retur
     <pre class="code-java"><span
   class="code-object">
  Method method = Foo.class.getMethod(...);<br>
- Paranamer paranamer = new CachingParanamer();<br> <br> String[] parameterNames = paranamer.lookupParameterNames(method)</span><br></pre>
+ Paranamer paranamer = new CachingParanamer();<br> <br>
+ String[] parameterNames = paranamer.lookupParameterNames(method) // throws ParameterNamesNotFoundException if not found<br>
+ String[] parameterNames = paranamer.lookupParameterNames(method, false) // will return null if not found </span><br>
+  </pre>
   </div>
 </div>
-<p>The method throws a ParameterNamesNotFoundException if no parameter names
-are found. </p>
-<p>Instead of handling that exception, you could determine if parameter name data is available, but first the same method with a second boolean 'throw excetpion if not found' parameter set to false.<br>
 </p>
 <p>ParaNamer does not have any runtime jar dependencies while looking
   up parameter info previously generated that's been zipped into a jar.</p>
 <h2>DefaultParanamer</h2>
-<p>DefaultParanamer tries to read parameter name data from an extra static field on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar.</p>
-<p>The static field essentially looks like -</p>
+<p>DefaultParanamer tries to read parameter name data from an extra public static field on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar. </p>
+<p>The static field essentially looks like this, but you really do not need to know this unless your going to make something compatible with Paranamer:</p>
 <div class="code">
 <div class="codeContent">
-<pre class="code-java">    private static final String __PARANAMER_DATA = "v1.0 \n"<br>        + "&lt;init&gt; \n"<br>        + "&lt;init&gt; com.foo.Bar bar \n"<br>        + "toString \n"<br>        + "setName java.lang.String,java.lang.String givenName,familyName \n";<br>        + "setDateOfBirth int,int,int day,month,year \n";</pre></div>
+<pre class="code-java">  private static final String __PARANAMER_DATA = "v1.0 \n"<br>      + "&lt;init&gt; \n"<br>      + "&lt;init&gt; com.foo.Bar bar \n"<br>      + "toString \n"<br>      + "setName java.lang.String,java.lang.String givenName,familyName \n";<br>      + "setDateOfBirth int,int,int day,month,year \n";</pre></div>
 </div>
 <p>Clearly the method's source needs to be analysed and lines added per
 method to that __PARANAMER_DATA field.&nbsp;&nbsp; See below.</p>
@@ -57,13 +57,13 @@ method to that __PARANAMER_DATA field.&nbsp;&nbsp; See below.</p>
   is not for you, try class BytecodeReadingParanamer as a runtime only solution. This uses a cut down forked and cut-down version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for  CachingParanamer when DefaultParanamer reports that there is no meta data for a class.</p>
 <h2> CachingParanamer</h2>
 <p>CachingParanamer  stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.</p>
-<p>Its also interesting to note that CachingParanamertries tries to
+<p>Its also interesting to note that CachingParanamer tries tries to
   use DefaultParanamer and BytecodeReadingParanamer. The latter is a fallback strategy if the former cannot find
   parameter name data.</p>
 <h1>Creating Parameter Name data and modifying compiled class files</h1>
 <h2>Optional Generation of Parameter Name data with Ant<br>
 </h2>
-<p>This for DefaultParanamer of course.</p>
+<p>This for DefaultParanamer usage of course, as BytecodeReadingParanamer does not need it.</p>
 <p>You need to download:</p>
 <ul>
   <li><a
@@ -82,19 +82,18 @@ and declare in your Ant script the following after &lt;javac/&gt;
 (remember to add to the taskdef classpath all the above jars):
 <br>
 <div class="code">
-<div class="codeContent"><pre class="code-java">&lt;taskdef name="paranamer" <br>       classname="com.thoughtworks.paranamer.ant.ParanamerGeneratorTask"/&gt;<br>&lt;paranamer sourceDirectory="src/java" outputDirectory="target/classes"/&gt;<br></pre>
+<div class="codeContent"><pre class="code-xml">  &lt;taskdef name="paranamer" <br>       classname="com.thoughtworks.paranamer.ant.ParanamerGeneratorTask"/&gt;<br>  &lt;paranamer sourceDirectory="src/java" outputDirectory="target/classes"/&gt;<br></pre>
 </div>
 </div>
 <p>Classes are changed to have an extra static String member variable that contains the member functions and their parameter names. Be sure to zip them up in to you final jar.<br>
 </p>
 <h2>Optional Generation of Parameter Name data with Maven 2<br>
 </h2>
-For Maven, it is simpler. Just add this to the
-&lt;build&gt;&lt;plugins&gt; section of your pom.xml:
+For Maven, configuration is simpler. Just add this to the build/plugins section of your pom.xml:
 <br>
 <br>
 <div class="code">
-<div class="codeContent"><pre style="margin-left: 40px;">&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;${project.build.sourceDirectory}&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${project.build.outputDirectory}&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;generate&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;
+<div class="codeContent"><pre style="margin-left: 16px;">&lt;plugin&gt;<br>&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;<br>&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;<br>&nbsp;&nbsp; &nbsp;&lt;executions&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;${project.build.sourceDirectory}&lt;/sourceDirectory&gt;<br>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${project.build.outputDirectory}&lt;/outputDirectory&gt;<br>&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;<br> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;generate&lt;/goal&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;<br>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;<br>&nbsp;&nbsp;&nbsp; &lt;/executions&gt;
 &nbsp;&nbsp;&nbsp; &lt;dependencies&gt;
         &lt;!-- if some of parameter names you need to retain are held in pre-existing jars, they need to be added to the classpath --&gt;<br>        &lt;dependency&gt;<br>            &lt;groupId&gt;some-artifact-group&lt;/groupId&gt;<br>            &lt;artifactId&gt;some-artifact&lt;/artifactId&gt;<br>            &lt;version&gt;1.0&lt;/version&gt;<br>        &lt;/dependency&gt;<br>    &lt;/dependencies&gt;<br>&lt;/plugin&gt;</pre>
 </div>
@@ -122,7 +121,7 @@ right?&nbsp; Simply consume the runtime paranamer jar into your project's jar us
    It will likely leverage a doclet tag.<br>
 </p>
 <h1>Paranamer's Future</h1>
-<p>ParaNamer will go away in the future when Java gets Reflection
+<p>Paranamer will go away in the future when Java gets Reflection
 access to Method parameter names. That should look like:<br>
 </p>
 <div class="code">
@@ -146,7 +145,8 @@ access to Method parameter names. That should look like:<br>
 <a href="http://waffle.codehaus.org/">Waffle - Web Framework</a><br>
 
 <h1>Releases</h1>
-<p>Release 2.0 - July 10 2009</p>
+<p>Release 2.1 - Sep 6 2009</p>
+<p>Release 2.0 - Jul 10 2009</p>
 <p>Release 1.5 - May 19 2009</p>
 <p>Release 1.4 - May 9 2009</p>
 <p>Release 1.3 - Feb 22 2009</p>
