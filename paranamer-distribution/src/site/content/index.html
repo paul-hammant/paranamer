@@ -31,12 +31,12 @@ method called <span class="code-object">'lookupParameterNames</span>' that retur
 <div class="code">
   <div class="codeHeader"><b>MySomethingOrOther.java</b></div>
   <div class="codeContent">
-    <pre class="code-java"><span
-  class="code-object">
+    <pre class="code-java">
  Method method = Foo.class.getMethod(...);<br>
  Paranamer paranamer = new CachingParanamer();<br> <br>
  String[] parameterNames = paranamer.lookupParameterNames(method) // throws ParameterNamesNotFoundException if not found<br>
- String[] parameterNames = paranamer.lookupParameterNames(method, false) // will return null if not found </span><br>
+ // or ...<br>
+ parameterNames = paranamer.lookupParameterNames(method, false) // will return null if not found
   </pre>
   </div>
 </div>
@@ -139,10 +139,11 @@ access to Method parameter names. That should look like:<br>
 <h1>Projects using it</h1>
 <a href="http://mandragora.sourceforge.net">Mandragora</a><br>
 <a href="http://oval.sourceforge.net/">Oval - Object Validation Framework</a>,<br>
-<a href="http://picocontainer.org/">PicoContainer - Dependency Injection Framework</a>,<br>
+<a href="http://picocontainer.org/">PicoContainer - Dependency Injection Container</a>,<br>
 <a href="http://picocontainer.org/web/remoting">PicoContainer Web-Remoting</a>,<br>
 <a href="http://vraptor.org/">VRaptor - Web Framework</a>,<br>
 <a href="http://waffle.codehaus.org/">Waffle - Web Framework</a><br>
+<a href="http://jbehave.codehaus.org/">JBehave - BDD tests for Java</a><br>
 
 <h1>Releases</h1>
 <p>Release 2.1 - Sep 6 2009</p>
