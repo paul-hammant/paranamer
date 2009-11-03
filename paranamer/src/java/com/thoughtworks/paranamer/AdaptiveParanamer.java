@@ -45,9 +45,7 @@ import java.lang.reflect.Constructor;
 public class AdaptiveParanamer implements Paranamer {
 
     public static final String __PARANAMER_DATA = "v1.0 \n"
-        + "com.thoughtworks.paranamer.AdaptiveParanamer AdaptiveParanamer \n"
         + "com.thoughtworks.paranamer.AdaptiveParanamer AdaptiveParanamer com.thoughtworks.paranamer.Paranamer,com.thoughtworks.paranamer.Paranamer delegate,fallback\n"
-        + "com.thoughtworks.paranamer.AdaptiveParanamer toString \n"
         + "com.thoughtworks.paranamer.AdaptiveParanamer lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
 
     private Paranamer delegate;

@@ -49,8 +49,6 @@ public class DefaultParanamer implements Paranamer {
     private static final String SPACE = " ";
 
     public static final String __PARANAMER_DATA = "v1.0 \n"
-        + "<init> \n"
-        + "toString \n"
         + "lookupParameterNames java.lang.AccessibleObject methodOrCtor \n"
         + "getParameterTypeName java.lang.Class cls\n";
 

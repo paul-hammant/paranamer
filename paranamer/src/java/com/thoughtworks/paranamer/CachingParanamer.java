@@ -42,9 +42,7 @@ import java.util.WeakHashMap;
 public class CachingParanamer implements Paranamer {
 
     public static final String __PARANAMER_DATA = "v1.0 \n"
-        + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer \n"
         + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer delegate \n"
-        + "com.thoughtworks.paranamer.CachingParanamer toString \n"
         + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
 
     private Paranamer delegate;
