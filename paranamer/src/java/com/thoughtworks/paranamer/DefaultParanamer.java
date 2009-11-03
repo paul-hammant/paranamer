@@ -172,7 +172,4 @@ public class DefaultParanamer implements Paranamer {
 
     }
 
-    public String toString() {
-        return super.toString();
-    }
 }
