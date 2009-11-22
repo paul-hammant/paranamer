@@ -43,14 +43,13 @@ import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
 * @author Mauro Talevi
 */
 public class ParanamerGeneratorTask extends Task {
-    private final ParanamerGenerator generator = new QdoxParanamerGenerator();
     private String sourceDirectory;
     private String outputDirectory;
 
     public void execute() throws BuildException {
         log("Generating parameter names from "+sourceDirectory+" to " + outputDirectory, Project.MSG_INFO);   
         try {
-            generator.processSourcePath(sourceDirectory, outputDirectory);
+            makeQdoxParanamerGenerator().processSourcePath(sourceDirectory, outputDirectory);
         } catch (Exception e) {
             throw new BuildException("Failed to generate parameter names from "+sourceDirectory, e);
         }
@@ -62,5 +61,9 @@ public class ParanamerGeneratorTask extends Task {
 
     public void setOutputDirectory(String outputDirectory) {
         this.outputDirectory = outputDirectory;
+    }
+
+    protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
+        return new QdoxParanamerGenerator();
     }
 }

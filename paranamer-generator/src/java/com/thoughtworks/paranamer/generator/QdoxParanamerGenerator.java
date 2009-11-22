@@ -73,11 +73,14 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         for (int i = 0; i < classes.length; i++) {
             JavaClass javaClass = classes[i];
             String content = addMethods(javaClass.getMethods());
-            Enhancer enhancer = new Enhancer();
             // TODO problem with inner classes
-            File classFile = new File(outputPath, javaClass.getFullyQualifiedName().replace('.',File.separatorChar) + ".class");
-            enhancer.enhance(classFile, content);
+            makeEnhancer().enhance(new File(outputPath, javaClass.getFullyQualifiedName().replace('.',File.separatorChar) + ".class"), content);
+
         }
+    }
+
+    public Enhancer makeEnhancer() {
+        return new Enhancer();
     }
 
     private String addMethods(JavaMethod[] methods) {
