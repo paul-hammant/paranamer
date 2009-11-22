@@ -69,7 +69,7 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         return classes;
     }
 
-    private void processClasses(JavaClass[] classes, String outputPath) throws IOException {
+    public void processClasses(JavaClass[] classes, String outputPath) throws IOException {
         for (int i = 0; i < classes.length; i++) {
             JavaClass javaClass = classes[i];
             String content = addMethods(javaClass.getMethods());
