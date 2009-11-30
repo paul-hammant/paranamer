@@ -10,15 +10,16 @@ import package2.C;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ParanamerGeneratorTaskTest extends TestCase {
     private static final File BASE = new File(ParanamerGeneratorTaskTest.class.getProtectionDomain().getCodeSource().getLocation().getFile()).getParentFile().getParentFile();
 
     public void testGenTaskCanFindClassesToProcessWithSimpleSourceRoot() {
 
-        final List classList = new ArrayList();
+        final Set result = new HashSet();
 
         ParanamerGeneratorTask paranamer = new ParanamerGeneratorTask() {
             public void log(java.lang.String msg, int msgLevel) {
@@ -29,7 +30,7 @@ public class ParanamerGeneratorTaskTest extends TestCase {
                     public void processClasses(JavaClass[] classes, String outputPath) throws IOException {
                         for (int i = 0; i < classes.length; i++) {
                             JavaClass aClass = classes[i];
-                            classList.add(aClass.getFullyQualifiedName());
+                            result.add(aClass.getFullyQualifiedName());
                         }
                     }
                 };
@@ -38,11 +39,19 @@ public class ParanamerGeneratorTaskTest extends TestCase {
         paranamer.setSourceDirectory(BASE.getAbsolutePath() + File.separator + "src" + File.separator + "test");
         paranamer.setOutputDirectory("nowhere");
         paranamer.execute();
-        assertTrue(classList.contains("Unpackaged"));
-        assertTrue(classList.contains(A.class.getName()));
-        assertTrue(classList.contains(B.class.getName()));
-        assertTrue(classList.contains(C.class.getName()));
-
+        final Set expected = new HashSet(Arrays.asList(new Object[] {
+                "Unpackaged",
+                A.class.getName(),
+                B.class.getName(),
+                C.class.getName(),
+                ParanamerGeneratorTaskTest.class.getName(),
+                ParanamerTaskTest.class.getName()
+            }));
+        assertTrue("Expected: "
+                    + expected
+                    + ". Found: "
+                    + result,
+                result.equals(expected));
     }
 
     public void testGenTaskCanDetermineWhatToEnhance() {
