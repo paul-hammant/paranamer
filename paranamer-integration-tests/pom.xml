@@ -6,10 +6,11 @@
     <version>2.2-SNAPSHOT</version>
   </parent>
   <artifactId>paranamer-integration-tests</artifactId>
-  <version>2.1</version>
+  <version>2.2-SNAPSHOT</version>
   <name>ParaNamer Integration Tests</name>
   <packaging>pom</packaging>
   <modules>
     <module>it-011</module>
+    <module>it-java5</module>
   </modules>
 </project>

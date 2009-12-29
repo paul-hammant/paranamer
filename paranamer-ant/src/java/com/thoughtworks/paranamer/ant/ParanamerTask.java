@@ -76,7 +76,7 @@ import java.util.*;
  *  - classdir: srcdir
  *  - includes: the default for ant standard file sets
  *  - excludes: the default for ant standard file sets
- * No additional filset generated from the attribute defaults will be
+ * No additional fileset generated from the attribute defaults will be
  * constructed when embedded filesets are used. i.e.
  * <paranamer>
  *  <fileset dir="directory" includes="*.java"/>

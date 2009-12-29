@@ -30,14 +30,11 @@
 
 package com.thoughtworks.paranamer;
 
-import com.thoughtworks.paranamer.BytecodeReadingParanamer;
-
 import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Method;
-import java.lang.reflect.Constructor;
 
 /**
- * Implementation of Paranamer which automatically chooses between two Paranamer implementations depending on which can supply data
+ * Implementation of Paranamer which chooses between a series of Paranamer instances depending on which can supply data.
+ * It prioritizes the paranamer instances according to the order they were passed in. 
  *
  * @author Paul Hammant
  * @author Mauro Talevi
@@ -46,30 +43,45 @@ public class AdaptiveParanamer implements Paranamer {
 
     public static final String __PARANAMER_DATA = "v1.0 \n"
         + "com.thoughtworks.paranamer.AdaptiveParanamer AdaptiveParanamer com.thoughtworks.paranamer.Paranamer,com.thoughtworks.paranamer.Paranamer delegate,fallback\n"
-        + "com.thoughtworks.paranamer.AdaptiveParanamer lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
+        + "com.thoughtworks.paranamer.AdaptiveParanamer AdaptiveParanamer com.thoughtworks.paranamer.Paranamer,com.thoughtworks.paranamer.Paranamer,com.thoughtworks.paranamer.Paranamer delegate,fallback,reserve\n"
+        + "com.thoughtworks.paranamer.AdaptiveParanamer AdaptiveParanamer com.thoughtworks.paranamer.Paranamer[] paranamers\n"
+        + "com.thoughtworks.paranamer.AdaptiveParanamer lookupParameterNames java.lang.AccessibleObject methodOrConstructor \n"
+        + "com.thoughtworks.paranamer.AdaptiveParanamer lookupParameterNames java.lang.AccessibleObject,boolean methodOrCtor,throwExceptionIfMissing \n";
 
-    private Paranamer delegate;
-    private Paranamer fallback;
+    private Paranamer[] paranamers;
 
     /**
-     * Cache a DefaultParanamer's lookups.
+     * Use DefaultParanamer ahead of BytecodeReadingParanamer
      */
     public AdaptiveParanamer() {
-        this(new DefaultParanamer(), new BytecodeReadingParanamer());
+        this(new Paranamer[] { new DefaultParanamer(), new BytecodeReadingParanamer() } );
     }
 
-
     /**
-     * Cache a primary and secondary Paranamer instance (the second is a fallback to the first)
+     * Prioritize a first Paranamer ahead of a second one
      * @param delegate first
      * @param fallback second
      */
     public AdaptiveParanamer(Paranamer delegate, Paranamer fallback) {
-        this.delegate = delegate;
-        this.fallback = fallback;
-        if (delegate == null || fallback == null || delegate == fallback) {
-            throw new RuntimeException("must supply delegate and fallback (which must be different)");
-        }
+        this(new Paranamer[] { delegate, fallback } );
+    }
+
+    /**
+     * Prioritize a first Paranamer ahead of a second one, ahead of a third one
+     * @param delegate first
+     * @param fallback second
+     * @param reserve third
+     */
+    public AdaptiveParanamer(Paranamer delegate, Paranamer fallback, Paranamer reserve) {
+        this(new Paranamer[] { delegate, fallback, reserve } );
+    }
+
+    /**
+     * Prioritize a series of Paranamers
+     * @param paranamers the paranamers in question
+     */
+    public AdaptiveParanamer(Paranamer[] paranamers) {
+        this.paranamers = paranamers;
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
@@ -77,30 +89,14 @@ public class AdaptiveParanamer implements Paranamer {
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
-
-        Class declaringClass = null;
-        String name = null;
-        if (methodOrCtor instanceof Method) {
-            Method method = (Method) methodOrCtor;
-            declaringClass = method.getDeclaringClass();
-            name = method.getName();
-        } else {
-            Constructor constructor = (Constructor) methodOrCtor;
-            declaringClass = constructor.getDeclaringClass();
-            name = constructor.getName();
+        for (int i = 0; i < paranamers.length; i++) {
+            Paranamer paranamer = paranamers[i];
+            String[] names = paranamer.lookupParameterNames(methodOrCtor, i+1 < paranamers.length ? false : throwExceptionIfMissing);
+            if (names != Paranamer.EMPTY_NAMES) {
+                return names;
+            }
         }
-
-        String[] names = delegate.lookupParameterNames(methodOrCtor, false);
-        if (names == Paranamer.EMPTY_NAMES) {
-            names = fallback.lookupParameterNames(methodOrCtor, throwExceptionIfMissing);
-        }
-        return names;
-
+        return Paranamer.EMPTY_NAMES;
     }
-
-    public String toString() {
-         return new StringBuffer("[AdaptiveParanamer delegate=")
-         .append(delegate).append(", fallback=").append(fallback).append("]").toString();
-     }
 
 }

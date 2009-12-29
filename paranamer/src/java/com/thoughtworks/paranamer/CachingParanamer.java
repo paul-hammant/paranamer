@@ -34,7 +34,7 @@ import java.lang.reflect.AccessibleObject;
 import java.util.WeakHashMap;
 
 /**
- * Implementation of Paranamer which delegate to another Paranamer implementation, adding caching functionality.
+ * Implementation of Paranamer which delegate to another Paranamer implementation, adding caching functionality to speed up usage.
  * 
  * @author Paul Hammant
  * @author Mauro Talevi
@@ -42,16 +42,24 @@ import java.util.WeakHashMap;
 public class CachingParanamer implements Paranamer {
 
     public static final String __PARANAMER_DATA = "v1.0 \n"
-        + "com.thoughtworks.paranamer.CachingParanamer CachingParanamer com.thoughtworks.paranamer.Paranamer delegate \n"
-        + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.AccessibleObject methodOrCtor \n";
+        + "com.thoughtworks.paranamer.CachingParanamer <init> com.thoughtworks.paranamer.Paranamer delegate \n"
+        + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.AccessibleObject methodOrConstructor \n"
+        + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.AccessibleObject, boolean methodOrCtor,throwExceptionIfMissing \n";
 
     private Paranamer delegate;
     private final WeakHashMap methodCache = new WeakHashMap();
 
+    /**
+     * Uses a DefaultParanamer as the implementation it delegates to.
+     */
     public CachingParanamer() {
         this(new DefaultParanamer());
     }
 
+    /**
+     * Specify a Paranamer instance to delegates to.
+     * @param delegate the paranamer instance to use
+     */
     public CachingParanamer(Paranamer delegate) {
         this.delegate = delegate;
     }
@@ -70,10 +78,5 @@ public class CachingParanamer implements Paranamer {
 
         return names;
     }
-
-    public String toString() {
-         return new StringBuffer("[CachingParanamer delegate=")
-         .append(delegate).append("]").toString();
-     }
 
 }

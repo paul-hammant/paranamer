@@ -37,11 +37,16 @@ import com.thoughtworks.paranamer.generator.ParanamerGenerator;
 import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
 
 /**
-* Ant Task to processSourcePath parameter names via ParanamerGenerator
-* 
-* @author Paul Hammant
-* @author Mauro Talevi
-*/
+ * Ant Task to process SourcePath parameters names via ParanamerGenerator
+ *
+ * Use ParanamerTask instead.
+ * Parameters 'sourceDirectory' maps to 'srcdir' and outputDirectory maps to 'classdir' in the new taskdef.
+ *
+ * @author Paul Hammant
+ * @author Mauro Talevi
+ * @see ParanamerTask
+ * @deprecated since 2.2
+ */
 public class ParanamerGeneratorTask extends Task {
     private String sourceDirectory;
     private String outputDirectory;

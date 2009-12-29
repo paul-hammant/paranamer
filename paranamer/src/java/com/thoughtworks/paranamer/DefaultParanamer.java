@@ -37,7 +37,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.AccessibleObject;
 
 /**
- * Default implementation of Paranamer
+ * Default implementation of Paranamer reads from a post-compile added field called '__PARANAMER_DATA'
  *
  * @author Paul Hammant
  * @author Mauro Talevi
@@ -49,7 +49,8 @@ public class DefaultParanamer implements Paranamer {
     private static final String SPACE = " ";
 
     public static final String __PARANAMER_DATA = "v1.0 \n"
-        + "lookupParameterNames java.lang.AccessibleObject methodOrCtor \n"
+        + "lookupParameterNames java.lang.AccessibleObject methodOrConstructor \n"
+        + "lookupParameterNames java.lang.AccessibleObject,boolean methodOrCtor,throwExceptionIfMissing \n"
         + "getParameterTypeName java.lang.Class cls\n";
 
     public DefaultParanamer() {
@@ -104,7 +105,7 @@ public class DefaultParanamer implements Paranamer {
         return Paranamer.EMPTY_NAMES;
     }
 
-    private static String getParameterTypeNamesCSV(Class[] parameterTypes) {
+    static String getParameterTypeNamesCSV(Class[] parameterTypes) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < parameterTypes.length; i++) {
             sb.append(getParameterTypeName(parameterTypes[i]));
@@ -171,5 +172,4 @@ public class DefaultParanamer implements Paranamer {
         return    parameterTypeNameName;
 
     }
-
 }
