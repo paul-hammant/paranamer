@@ -127,6 +127,22 @@ public class AnnotationParanamerTestCase {
         }
     }
 
+    @Test
+    public void testCanFindNamedAnnotationsWithFallback() {
+        Paranamer paranamer = new AnnotationParanamer(new BytecodeReadingParanamer());
+        String[] names = paranamer.lookupParameterNames(Yellow.class.getConstructors()[0], true);
+        Assert.assertEquals(2, names.length);
+        Assert.assertEquals("foo", names[0]);
+        Assert.assertEquals("bar", names[1]);
+
+
+    }
+
+    public static class Yellow {
+        public Yellow(String foo, @Named("bar") String otherParam) {
+        }
+    }
+
 
 
 }

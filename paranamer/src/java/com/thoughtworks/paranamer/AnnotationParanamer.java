@@ -48,6 +48,16 @@ public class AnnotationParanamer implements Paranamer {
     public static final String __PARANAMER_DATA = "v1.0 \n"
         + "lookupParameterNames java.lang.AccessibleObject methodOrConstructor \n"
         + "lookupParameterNames java.lang.AccessibleObject,boolean methodOrCtor,throwExceptionIfMissing \n";
+    private final Paranamer fallback;
+
+
+    public AnnotationParanamer() {
+        this(new NullParanamer());
+    }
+
+    public AnnotationParanamer(Paranamer fallback) {
+        this.fallback = fallback;
+    }
 
     public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
@@ -93,6 +103,25 @@ public class AnnotationParanamer implements Paranamer {
             }
 
         }
+
+        if (!allDone) {
+            allDone = true;
+            String[] altNames = fallback.lookupParameterNames(methodOrCtor, false);
+            if (altNames.length > 0) {
+                for (int i = 0; i < names.length; i++) {
+                    if (names[i] == null) {
+                        if (altNames[i] != null) {
+                            names[i] = altNames[i];
+                        } else {
+                            allDone = false;
+                        }
+                    }
+                }
+            } else {
+                allDone = false;                
+            }
+        }
+
         if (!allDone) {
             if (throwExceptionIfMissing) {
             throw new ParameterNamesNotFoundException("One or more @Named annotations missing for class '" + declaringClass.getName() + "', methodOrCtor " + name
