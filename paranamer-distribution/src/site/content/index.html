@@ -55,11 +55,23 @@ method to that __PARANAMER_DATA field.&nbsp;&nbsp; See below.</p>
 <h2>BytecodeReadingParanamer</h2>
 <p>If generating meta data for parameter names at compile time
   is not for you, try class BytecodeReadingParanamer as a runtime only solution. This uses a cut down forked and cut-down version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for  CachingParanamer when DefaultParanamer reports that there is no meta data for a class.</p>
+<h2>AnnotationParanamer</h2>
+<p>AnnotationParanamer uses the @Named annotation from JSR 330 and extracts names pertinent to parameters from that.</p>  
+<div class="code">
+<div class="codeContent">
+<pre class="code-java">
+public static class Something {
+    public void doSomething(@Named("usedName") String ignoredName) {
+    }
+}
+</pre></div>
+</div>
+<p>If you have an alternate annotation to @Named, then you can specify that in a subclass of AnnotationParanamer that overrides two methods getNamedValue and isNamed.  See the source for <a href="http://fisheye.codehaus.org/browse/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/AnnotationParanamer.java?r=HEAD">AnnotationParanamer</a> for clues as to how/what to override. </p>
+<p>If you are using @Named from JSR 330, you will need it in your classpath of course.  In Maven terms, Paranamer is built with the 'javax.atinject' module as an optional dependency.</p>
 <h2>CachingParanamer</h2>
 <p>CachingParanamer  stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.</p>
 <h2>AdaptiveParanamer</h2>
-<p>AdaptiveParanamer is designed for using DefaultParanamer and BytecodeReadingParanamer (or any two) together. The latter is a fallback strategy if the former cannot find
-  parameter name data.</p>
+<p>AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses DefaultParanamer with ByteCodeReadingParanamer as its contingency.</p>
 <h1>Creating Parameter Name data and modifying compiled class files</h1>
 <h2>Optional Generation of Parameter Name data with Ant<br>
 </h2>
@@ -146,7 +158,8 @@ access to Method parameter names. That should look like:<br>
 <a href="http://jbehave.codehaus.org/">JBehave - BDD tests for Java</a><br>
 
 <h1>Releases</h1>
-<p>Release 2.1 - Sep 6 2009</p>
+<p>Release 2.2 - Jan 3 2010</p>
+<p>Release 2.1 - Sep 6 2009 (last version that is compatible with JDK 1.4)</p>
 <p>Release 2.0 - Jul 10 2009</p>
 <p>Release 1.5 - May 19 2009</p>
 <p>Release 1.4 - May 9 2009</p>
