@@ -30,9 +30,12 @@
 
 package com.thoughtworks.paranamer;
 
-import javax.inject.Named;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.*;
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+
+import javax.inject.Named;
 
 /**
  * Implementation of Paranamer that uses @Named annotation of JSR 330.

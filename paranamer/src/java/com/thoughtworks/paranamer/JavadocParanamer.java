@@ -272,7 +272,7 @@ public class JavadocParanamer implements Paranamer {
 		String name;
 		Class<?>[] types;
 
-		if (methodOrConstructor instanceof Constructor) {
+		if (methodOrConstructor instanceof Constructor<?>) {
 			Constructor<?> constructor = (Constructor<?>) methodOrConstructor;
 			klass = constructor.getDeclaringClass();
 			name = constructor.getName();

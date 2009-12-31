@@ -36,6 +36,7 @@ package com.thoughtworks.paranamer;
  * @author Paul Hammant
  * @author Mauro Talevi
  */
+@SuppressWarnings("serial")
 public class ParameterNamesNotFoundException extends RuntimeException {
 
     public static final String __PARANAMER_DATA = "v1.0 \n"
