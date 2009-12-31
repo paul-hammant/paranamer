@@ -121,7 +121,7 @@ public class JavadocParanamer implements Paranamer {
 	private final URI location;
 
 	/** The packages which are supported by this instance. Contains Strings */
-	private final Set packages = new HashSet();
+	private final Set<String> packages = new HashSet<String>();
 
 	/**
 	 * Construct a Javadoc reading implementation of {@link Paranamer} using a local
@@ -191,12 +191,12 @@ public class JavadocParanamer implements Paranamer {
 				Enumeration entries = zip.entries();
 				// grr... http://javablog.co.uk/2007/11/25/enumeration-and-iterable
 				// Set<ZipEntry>
-				SortedMap packageLists = new TreeMap();
+				SortedMap<Long, ZipEntry> packageLists = new TreeMap<Long, ZipEntry>();
 				while (entries.hasMoreElements()) {
 					ZipEntry entry = (ZipEntry) entries.nextElement();
 					String name = entry.getName();
 					if (name.endsWith("package-list")) {
-						Long size = new Long(entry.getSize());
+						Long size = entry.getSize();
 						packageLists.put(size, entry);
 					}
 				}

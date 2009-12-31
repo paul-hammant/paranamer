@@ -90,7 +90,7 @@ public class AnnotationParanamer implements Paranamer {
             }
 
         }
-        if ( allDone == false ) {
+        if (!allDone) {
             if (throwExceptionIfMissing) {
             throw new ParameterNamesNotFoundException("One or more @Named annotations missing for class '" + declaringClass.getName() + "', methodOrCtor " + name
                     +" and parameter types "+ DefaultParanamer.getParameterTypeNamesCSV(types));

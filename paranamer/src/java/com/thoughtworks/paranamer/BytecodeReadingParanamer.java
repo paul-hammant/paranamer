@@ -168,8 +168,7 @@ public class BytecodeReadingParanamer implements Paranamer {
             methodFound = true;
             Type[] argumentTypes = Type.getArgumentTypes(desc);
             int longOrDoubleQuantity = 0;
-            for (int i1 = 0; i1 < argumentTypes.length; i1++) {
-                Type t = argumentTypes[i1];
+            for (Type t : argumentTypes) {
                 if (t.getClassName().equals("long")
                         || t.getClassName().equals("double")) {
                     longOrDoubleQuantity++;
@@ -1118,6 +1117,4 @@ public class BytecodeReadingParanamer implements Paranamer {
             }
         }
     }
-
-
 }

@@ -54,33 +54,14 @@ public class AdaptiveParanamer implements Paranamer {
      * Use DefaultParanamer ahead of BytecodeReadingParanamer
      */
     public AdaptiveParanamer() {
-        this(new Paranamer[] { new DefaultParanamer(), new BytecodeReadingParanamer() } );
-    }
-
-    /**
-     * Prioritize a first Paranamer ahead of a second one
-     * @param delegate first
-     * @param fallback second
-     */
-    public AdaptiveParanamer(Paranamer delegate, Paranamer fallback) {
-        this(new Paranamer[] { delegate, fallback } );
-    }
-
-    /**
-     * Prioritize a first Paranamer ahead of a second one, ahead of a third one
-     * @param delegate first
-     * @param fallback second
-     * @param reserve third
-     */
-    public AdaptiveParanamer(Paranamer delegate, Paranamer fallback, Paranamer reserve) {
-        this(new Paranamer[] { delegate, fallback, reserve } );
+        this(new DefaultParanamer(), new BytecodeReadingParanamer());
     }
 
     /**
      * Prioritize a series of Paranamers
      * @param paranamers the paranamers in question
      */
-    public AdaptiveParanamer(Paranamer[] paranamers) {
+    public AdaptiveParanamer(Paranamer... paranamers) {
         this.paranamers = paranamers;
     }
 

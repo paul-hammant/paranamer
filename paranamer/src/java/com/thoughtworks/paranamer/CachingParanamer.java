@@ -47,7 +47,7 @@ public class CachingParanamer implements Paranamer {
         + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.AccessibleObject, boolean methodOrCtor,throwExceptionIfMissing \n";
 
     private Paranamer delegate;
-    private final WeakHashMap methodCache = new WeakHashMap();
+    private final WeakHashMap<AccessibleObject,String[]> methodCache = new WeakHashMap<AccessibleObject,String[]>();
 
     /**
      * Uses a DefaultParanamer as the implementation it delegates to.
@@ -70,7 +70,7 @@ public class CachingParanamer implements Paranamer {
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
         if(methodCache.containsKey(methodOrCtor)) {
-            return (String[]) methodCache.get(methodOrCtor);
+            return methodCache.get(methodOrCtor);
         }
 
         String[] names = delegate.lookupParameterNames(methodOrCtor, throwExceptionIfMissing);
