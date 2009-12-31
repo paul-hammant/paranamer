@@ -33,67 +33,60 @@ package com.thoughtworks.paranamer;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import org.jmock.MockObjectTestCase;
-import org.jmock.Mock;
+import junit.framework.TestCase;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-public class AdaptiveParanamerTestCase extends MockObjectTestCase {
+@RunWith(JMock.class)
+public class AdaptiveParanamerTestCase {
 
-    private int count = 0;
+    Mockery context = new JUnit4Mockery();
+
     Method one = One.class.getMethods()[0];
-    Method two = Two.class.getMethods()[0];
-    private int fallbackCount = 0;
 
     public interface One {
         void one();
     }
 
-    public interface Two {
-        void two();
-    }
-
+    @Test
     public void testLookupOfParameterNamesWhenPrimaryDoesNotHaveItButSecondaryDoes() {
 
-        Mock primary = mock(Paranamer.class, "primary");
-        Mock fallback = mock(Paranamer.class, "fallback");
+        final Paranamer primary = context.mock(Paranamer.class, "primary");
+        final Paranamer fallback = context.mock(Paranamer.class, "fallback");
 
-        AdaptiveParanamer paranamer = new AdaptiveParanamer((Paranamer) primary.proxy(), (Paranamer) fallback.proxy());
-        primary.expects(once()).method("lookupParameterNames").with(same(one), eq(false)).will(returnValue(Paranamer.EMPTY_NAMES));
-        fallback.expects(once()).method("lookupParameterNames").with(same(one), eq(true)).will(returnValue(new String[] {"a","b"}));
+        AdaptiveParanamer paranamer = new AdaptiveParanamer(primary, fallback);
+
+        context.checking(new Expectations() {{
+            oneOf (primary).lookupParameterNames(one, false);
+            will(returnValue(Paranamer.EMPTY_NAMES));
+            oneOf (fallback).lookupParameterNames(one, true);
+            will(returnValue(new String[]{"a", "b"}));
+        }});
         String[] paramNames = paranamer.lookupParameterNames(one, true);
-        assertEquals(Arrays.asList(new String[]{"a", "b"}), Arrays.asList(paramNames));
+        Assert.assertEquals(Arrays.asList("a", "b"), Arrays.asList(paramNames));
         System.out.println("-->" + paranamer.toString());
-
     }
 
+    @Test
     public void testLookupOfParameterNamesWhenPrimaryDoesHaveIt() {
+        final Paranamer primary = context.mock(Paranamer.class, "primary");
+        final Paranamer fallback = context.mock(Paranamer.class, "fallback");
 
-        Mock primary = mock(Paranamer.class);
-        Mock fallback = mock(Paranamer.class);
+        AdaptiveParanamer paranamer = new AdaptiveParanamer(primary, fallback);
 
-        Paranamer paranamer = new AdaptiveParanamer((Paranamer) primary.proxy(), (Paranamer) fallback.proxy());
-        primary.expects(once()).method("lookupParameterNames").with(same(one), eq(false)).will(returnValue(new String[] {"a","b"}));
+        context.checking(new Expectations() {{
+            oneOf (primary).lookupParameterNames(one, false);
+            will(returnValue(new String[]{"a", "b"}));
+        }});
+
         String[] paramNames = paranamer.lookupParameterNames(one, true);
-        assertEquals(Arrays.asList(new String[]{"a", "b"}), Arrays.asList(paramNames));
+        Assert.assertEquals(Arrays.asList("a", "b"), Arrays.asList(paramNames));
 
-    }
-
-    public void testMissingAndWrongPermutationsAreThrown() {
-        try {
-            new AdaptiveParanamer(null, new DefaultParanamer());
-        } catch (RuntimeException e) {
-            assertEquals("must supply delegate and fallback (which must be different)", e.getMessage());
-        }
-        try {
-            new AdaptiveParanamer(new DefaultParanamer(), null);
-        } catch (RuntimeException e) {
-            assertEquals("must supply delegate and fallback (which must be different)", e.getMessage());
-        }
-        try {
-            DefaultParanamer pn = new DefaultParanamer();
-            new AdaptiveParanamer(pn, pn);
-        } catch (RuntimeException e) {
-            assertEquals("must supply delegate and fallback (which must be different)", e.getMessage());
-        }
     }
 
 }

@@ -52,7 +52,7 @@ import java.util.Map;
  */
 public class BytecodeReadingParanamer implements Paranamer {
 
-    private static final Map primitives = new HashMap() {
+    private static final Map<String, String> primitives = new HashMap<String, String>() {
         {
             put("int","I");
             put("boolean","Z");
@@ -70,8 +70,8 @@ public class BytecodeReadingParanamer implements Paranamer {
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
 
-        Class[] types = null;
-        Class declaringClass = null;
+        Class<?>[] types = null;
+        Class<?> declaringClass = null;
         String name = null;
         if (methodOrCtor instanceof Method) {
             Method method = (Method) methodOrCtor;
@@ -79,7 +79,7 @@ public class BytecodeReadingParanamer implements Paranamer {
             name = method.getName();
             declaringClass = method.getDeclaringClass();
         } else {
-            Constructor constructor = (Constructor) methodOrCtor;
+            Constructor<?> constructor = (Constructor<?>) methodOrCtor;
             types = constructor.getParameterTypes();
             declaringClass = constructor.getDeclaringClass();
             name = "<init>";
@@ -110,7 +110,7 @@ public class BytecodeReadingParanamer implements Paranamer {
         }
     }
 
-    private InputStream getClassAsStream(Class clazz) {
+    private InputStream getClassAsStream(Class<?> clazz) {
         ClassLoader classLoader = clazz.getClassLoader();
         if (classLoader == null) {
             classLoader = ClassLoader.getSystemClassLoader();
@@ -141,14 +141,14 @@ public class BytecodeReadingParanamer implements Paranamer {
 
         private final String methodName;
 
-        private final Class[] parameterTypes;
+        private final Class<?>[] parameterTypes;
         private final boolean throwExceptionIfMissing;
 
         private MethodCollector collector;
         private boolean methodFound = false;
         private boolean classFound = false;
 
-        private TypeCollector(String methodName, Class[] parameterTypes, boolean throwExceptionIfMissing) {
+        private TypeCollector(String methodName, Class<?>[] parameterTypes, boolean throwExceptionIfMissing) {
             this.methodName = methodName;
             this.parameterTypes = parameterTypes;
             this.throwExceptionIfMissing = throwExceptionIfMissing;

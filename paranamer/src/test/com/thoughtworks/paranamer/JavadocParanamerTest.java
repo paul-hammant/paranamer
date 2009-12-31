@@ -209,7 +209,7 @@ public class JavadocParanamerTest extends TestCase {
 			{
 				// parameters with generic type are erased to Object using reflection
 				try {
-					Class[] params = new Class[] { Object[].class };
+					Class<?>[] params = new Class<?>[] { Object[].class };
 					Method method =
 							Collection.class.getMethod("toArray", params);
 					paranamer.lookupParameterNames(method);
@@ -226,14 +226,13 @@ public class JavadocParanamerTest extends TestCase {
 
 	private void testNamesInIterativeManner(Paranamer paranamer) {
 		Method[] methods = Random.class.getMethods();
-		for (int i = 0; i < methods.length; i++) {
-			Method method = methods[i];
-			try {
-				paranamer.lookupParameterNames(method);
-			} catch (ParameterNamesNotFoundException e) {
-				fail("Unable to find names for " + e.getMessage());
-			}
-		}
+        for (Method method : methods) {
+            try {
+                paranamer.lookupParameterNames(method);
+            } catch (ParameterNamesNotFoundException e) {
+                fail("Unable to find names for " + e.getMessage());
+            }
+        }
 	}
 
 }

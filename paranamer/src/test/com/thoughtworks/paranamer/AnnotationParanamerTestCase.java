@@ -31,6 +31,8 @@
 package com.thoughtworks.paranamer;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 import javax.inject.Named;
 import java.lang.annotation.Annotation;
@@ -40,38 +42,42 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-public class AnnotationParanamerTestCase extends TestCase {
+public class AnnotationParanamerTestCase {
 
+    @Test
     public void testCanFindNamedAnnotationsForConstructors() {
         Paranamer paranamer = new AnnotationParanamer();
         String[] names = paranamer.lookupParameterNames(Red.class.getConstructors()[0]);
-        assertNotNull(names);
-        assertEquals(1, names.length);
-        assertEquals("FF0000", names[0]);
+        Assert.assertNotNull(names);
+        Assert.assertEquals(1, names.length);
+        Assert.assertEquals("FF0000", names[0]);
     }
 
+    @Test
     public void testCanFindNamedAnnotationsForMethods() throws NoSuchMethodException {
         Paranamer paranamer = new AnnotationParanamer();
         String[] names = paranamer.lookupParameterNames(Red.class.getDeclaredMethod("rouge", String.class));
-        assertNotNull(names);
-        assertEquals(1, names.length);
-        assertEquals("FF0000", names[0]);
+        Assert.assertNotNull(names);
+        Assert.assertEquals(1, names.length);
+        Assert.assertEquals("FF0000", names[0]);
     }
 
+    @Test
     public void testCantFindNamedAnnotations() {
         Paranamer paranamer = new AnnotationParanamer();
         String[] names = paranamer.lookupParameterNames(Blue.class.getConstructors()[0], false);
-        assertEquals(0, names.length);
+        Assert.assertEquals(0, names.length);
     }
 
+    @Test
     public void testCantFindNamedAnnotationsAndThrow() {
         Paranamer paranamer = new AnnotationParanamer();
         try {
             String[] names = paranamer.lookupParameterNames(Blue.class.getConstructors()[0], true);
         } catch (ParameterNamesNotFoundException e) {
-            assertTrue(e.getMessage().indexOf("One or more @Named annotations missing") > -1);
-            assertTrue(e.getMessage().indexOf("TestCase$Blue") > -1);
-            assertTrue(e.getMessage().indexOf("methodOrCtor <init> and parameter types java.lang.String") > -1);
+            Assert.assertTrue(e.getMessage().indexOf("One or more @Named annotations missing") > -1);
+            Assert.assertTrue(e.getMessage().indexOf("TestCase$Blue") > -1);
+            Assert.assertTrue(e.getMessage().indexOf("methodOrCtor <init> and parameter types java.lang.String") > -1);
         }
     }
 
@@ -89,6 +95,7 @@ public class AnnotationParanamerTestCase extends TestCase {
     }
 
 
+    @Test
     public void testCanFindOverridenAnnotations() {
         Paranamer paranamer = new AnnotationParanamer() {
             @Override
@@ -102,9 +109,9 @@ public class AnnotationParanamerTestCase extends TestCase {
             }
         };
         String[] names = paranamer.lookupParameterNames(Green.class.getConstructors()[0]);
-        assertNotNull(names);
-        assertEquals(1, names.length);
-        assertEquals("green", names[0]);
+        Assert.assertNotNull(names);
+        Assert.assertEquals(1, names.length);
+        Assert.assertEquals("green", names[0]);
     }
 
 

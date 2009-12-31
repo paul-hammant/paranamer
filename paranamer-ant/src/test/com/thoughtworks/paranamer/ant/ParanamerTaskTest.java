@@ -5,8 +5,8 @@ import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
 
 import com.thoughtworks.qdox.model.JavaClass;
 
-import junit.framework.TestCase;
-
+import org.junit.Assert;
+import org.junit.Test;
 import package1.A;
 import package1.B;
 import package2.C;
@@ -23,7 +23,7 @@ import org.apache.tools.ant.Target;
 
 import org.apache.tools.ant.types.FileSet;
 
-public class ParanamerTaskTest extends TestCase {
+public class ParanamerTaskTest {
     private static final File BASE = new File(ParanamerTaskTest.class
             .getProtectionDomain()
             .getCodeSource()
@@ -49,8 +49,9 @@ public class ParanamerTaskTest extends TestCase {
      * task will generate name data for all java files under the base directory
      * of the project, and expect the class files to be in this same directory.
      */
+    @Test
     public void testNoAttributesNoFileSets() {
-        final Set result = new HashSet();
+        final Set<String> result = new HashSet<String>();
         class Paranamer extends ParanamerTask {
             public Paranamer() {
                 project = makeProject();
@@ -66,8 +67,7 @@ public class ParanamerTaskTest extends TestCase {
                 return new QdoxParanamerGenerator() {
                     public void processClasses(JavaClass[] classes, String outputPath)
                         throws IOException {
-                        for (int i = 0; i < classes.length; i++) {
-                            JavaClass aClass = classes[i];
+                        for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
                         }
                     }
@@ -78,20 +78,18 @@ public class ParanamerTaskTest extends TestCase {
         paranamer.execute();
         // when no attributes are set, paranamer will attempt to generate
         // parameter names for all java files under the project base directory
-        final Set expected = new HashSet(Arrays.asList(new Object[] {
-                "Unpackaged",
-                com.thoughtworks.paranamer.ant.ParanamerTaskTest.class.getName(),
+        final Set<String> expected = new HashSet<String>(Arrays.asList("Unpackaged",
+                ParanamerTaskTest.class.getName(),
                 A.class.getName(),
                 B.class.getName(),
                 C.class.getName(),
-                com.thoughtworks.paranamer.ant.ParanamerGeneratorTaskTest.class.getName()
-            }));
-        assertTrue("Expected: "
-                    + expected
-                    + " given basedir="
-                    + paranamer.getProject().getBaseDir()
-                    + "\". Found: "
-                    + result,
+                ParanamerGeneratorTaskTest.class.getName()));
+        Assert.assertTrue("Expected: "
+                + expected
+                + " given basedir="
+                + paranamer.getProject().getBaseDir()
+                + "\". Found: "
+                + result,
                 result.equals(expected));
     }
 
@@ -99,8 +97,9 @@ public class ParanamerTaskTest extends TestCase {
      * Test that a specification of the srcdir will result in all java files
      * under srcdir being included for parameter name generation.
      */
+    @Test
     public void testSrcDirBaseDirNoIncludesNoFileSets() {
-        final Set result = new HashSet();
+        final Set<String> result = new HashSet<String>();
         class Paranamer extends ParanamerTask {
             public Paranamer() {
                 project = makeProject();
@@ -116,8 +115,7 @@ public class ParanamerTaskTest extends TestCase {
                 return new QdoxParanamerGenerator() {
                     public void processClasses(JavaClass[] classes, String outputPath)
                         throws IOException {
-                        for (int i = 0; i < classes.length; i++) {
-                            JavaClass aClass = classes[i];
+                        for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
                         }
                     }
@@ -131,20 +129,18 @@ public class ParanamerTaskTest extends TestCase {
                         + File.separator
                         + "test");
         paranamer.execute();
-        final Set expected = new HashSet(Arrays.asList(new Object[] {
-                "Unpackaged",
+        final Set<String> expected = new HashSet<String>(Arrays.asList("Unpackaged",
                 A.class.getName(),
                 B.class.getName(),
                 C.class.getName(),
                 ParanamerTaskTest.class.getName(),
-                ParanamerGeneratorTaskTest.class.getName()
-            }));
-        assertTrue("Expected: "
-                    + expected
-                    + " given basedir="
-                    + paranamer.getProject().getBaseDir()
-                    + "\". Found: "
-                    + result,
+                ParanamerGeneratorTaskTest.class.getName()));
+        Assert.assertTrue("Expected: "
+                + expected
+                + " given basedir="
+                + paranamer.getProject().getBaseDir()
+                + "\". Found: "
+                + result,
                 result.equals(expected));
     }
 
@@ -152,8 +148,9 @@ public class ParanamerTaskTest extends TestCase {
      * Test that a specification of the srcdir will result in all java files
      * under srcdir being included for parameter name generation.
      */
+    @Test
     public void testSrcDirPackage1NoIncludesNoFileSets() {
-        final Set result = new HashSet();
+        final Set<String> result = new HashSet<String>();
         class Paranamer extends ParanamerTask {
             public Paranamer() {
                 project = makeProject();
@@ -169,8 +166,7 @@ public class ParanamerTaskTest extends TestCase {
                 return new QdoxParanamerGenerator() {
                     public void processClasses(JavaClass[] classes, String outputPath)
                         throws IOException {
-                        for (int i = 0; i < classes.length; i++) {
-                            JavaClass aClass = classes[i];
+                        for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
                         }
                     }
@@ -186,16 +182,14 @@ public class ParanamerTaskTest extends TestCase {
                         + File.separator
                         + "package1");
         paranamer.execute();
-        final Set expected = new HashSet(Arrays.asList(new Object[] {
-                A.class.getName(),
-                B.class.getName()
-            }));
-        assertTrue("Expected: "
-                    + expected
-                    + " given basedir="
-                    + paranamer.getProject().getBaseDir()
-                    + "\". Found: "
-                    + result,
+        final Set<String> expected = new HashSet<String>(Arrays.asList(A.class.getName(),
+                B.class.getName()));
+        Assert.assertTrue("Expected: "
+                + expected
+                + " given basedir="
+                + paranamer.getProject().getBaseDir()
+                + "\". Found: "
+                + result,
                 result.equals(expected));
     }
 
@@ -204,8 +198,9 @@ public class ParanamerTaskTest extends TestCase {
      * will use the default srcdir value and include only those files that
      * satisfy the include pattern.
      */
+    @Test
     public void testNoSrcDirIncludeUnpackagedNoFileSets() {
-        final Set result = new HashSet();
+        final Set<String> result = new HashSet<String>();
         class Paranamer extends ParanamerTask {
             public Paranamer() {
                 project = makeProject();
@@ -221,8 +216,7 @@ public class ParanamerTaskTest extends TestCase {
                 return new QdoxParanamerGenerator() {
                     public void processClasses(JavaClass[] classes, String outputPath)
                         throws IOException {
-                        for (int i = 0; i < classes.length; i++) {
-                            JavaClass aClass = classes[i];
+                        for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
                         }
                     }
@@ -232,15 +226,13 @@ public class ParanamerTaskTest extends TestCase {
         Paranamer paranamer = new Paranamer();
         paranamer.setIncludes("*.java");
         paranamer.execute();
-        final Set expected = new HashSet(Arrays.asList(new Object[] {
-                "Unpackaged"
-            }));
-        assertTrue("Expected: "
-                    + expected
-                    + " given basedir="
-                    + paranamer.getProject().getBaseDir()
-                    + "\". Found: "
-                    + result,
+        final Set<String> expected = new HashSet<String>(Arrays.asList("Unpackaged"));
+        Assert.assertTrue("Expected: "
+                + expected
+                + " given basedir="
+                + paranamer.getProject().getBaseDir()
+                + "\". Found: "
+                + result,
                 result.equals(expected));
     }
 
@@ -250,8 +242,9 @@ public class ParanamerTaskTest extends TestCase {
      * only those files that satisfy the default include pattern and the input
      * exclude pattern.
      */
+    @Test
     public void testNoSrcDirExcludePackage1NoFileSets() {
-        final Set result = new HashSet();
+        final Set<String> result = new HashSet<String>();
         class Paranamer extends ParanamerTask {
             public Paranamer() {
                 project = makeProject();
@@ -267,8 +260,7 @@ public class ParanamerTaskTest extends TestCase {
                 return new QdoxParanamerGenerator() {
                     public void processClasses(JavaClass[] classes, String outputPath)
                         throws IOException {
-                        for (int i = 0; i < classes.length; i++) {
-                            JavaClass aClass = classes[i];
+                        for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
                         }
                     }
@@ -278,18 +270,16 @@ public class ParanamerTaskTest extends TestCase {
         Paranamer paranamer = new Paranamer();
         paranamer.setExcludes("package1/**");
         paranamer.execute();
-        final Set expected = new HashSet(Arrays.asList(new Object[] {
-                "Unpackaged",
+        final Set<String> expected = new HashSet<String>(Arrays.asList("Unpackaged",
                 C.class.getName(),
                 ParanamerTaskTest.class.getName(),
-                ParanamerGeneratorTaskTest.class.getName()
-            }));
-        assertTrue("Expected: "
-                    + expected
-                    + " given basedir="
-                    + paranamer.getProject().getBaseDir()
-                    + "\". Found: "
-                    + result,
+                ParanamerGeneratorTaskTest.class.getName()));
+        Assert.assertTrue("Expected: "
+                + expected
+                + " given basedir="
+                + paranamer.getProject().getBaseDir()
+                + "\". Found: "
+                + result,
                 result.equals(expected));
     }
 
@@ -298,8 +288,9 @@ public class ParanamerTaskTest extends TestCase {
      * and include directives. Ensure only the files required by the embedded
      * fileset are to be processed.
      */
+    @Test
     public void testNoSrcDirAandCFileSet() {
-        final Set result = new HashSet();
+        final Set<String> result = new HashSet<String>();
         class Paranamer extends ParanamerTask {
             public Paranamer() {
                 project = makeProject();
@@ -315,8 +306,7 @@ public class ParanamerTaskTest extends TestCase {
                 return new QdoxParanamerGenerator() {
                     public void processClasses(JavaClass[] classes, String outputPath)
                         throws IOException {
-                        for (int i = 0; i < classes.length; i++) {
-                            JavaClass aClass = classes[i];
+                        for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
                         }
                     }
@@ -329,16 +319,14 @@ public class ParanamerTaskTest extends TestCase {
         fileset.appendIncludes(new String[] { "**/A.java", "**/C.java" });
         paranamer.addFileset(fileset);
         paranamer.execute();
-        final Set expected = new HashSet(Arrays.asList(new Object[] {
-                A.class.getName(),
-                C.class.getName()
-            }));
-        assertTrue("Expected: "
-                    + expected
-                    + " given basedir="
-                    + paranamer.getProject().getBaseDir()
-                    + "\". Found: "
-                    + result,
+        final Set<String> expected = new HashSet<String>(Arrays.asList(A.class.getName(),
+                C.class.getName()));
+        Assert.assertTrue("Expected: "
+                + expected
+                + " given basedir="
+                + paranamer.getProject().getBaseDir()
+                + "\". Found: "
+                + result,
                 result.equals(expected));
     }
 
@@ -346,8 +334,9 @@ public class ParanamerTaskTest extends TestCase {
      * Test that multiple embedded filesets are all processed and the
      * defaults for srcdir and includes are ignored.
      */
+    @Test
     public void testNoSrcDirAandCFileSets() {
-        final Set result = new HashSet();
+        final Set<String> result = new HashSet<String>();
         class Paranamer extends ParanamerTask {
             public Paranamer() {
                 project = makeProject();
@@ -363,8 +352,7 @@ public class ParanamerTaskTest extends TestCase {
                 return new QdoxParanamerGenerator() {
                     public void processClasses(JavaClass[] classes, String outputPath)
                         throws IOException {
-                        for (int i = 0; i < classes.length; i++) {
-                            JavaClass aClass = classes[i];
+                        for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
                         }
                     }
@@ -381,16 +369,14 @@ public class ParanamerTaskTest extends TestCase {
         c.appendIncludes(new String[] { "**/C.java" });
         paranamer.addFileset(c);
         paranamer.execute();
-        final Set expected = new HashSet(Arrays.asList(new Object[] {
-                A.class.getName(),
-                C.class.getName()
-            }));
-        assertTrue("Expected: "
-                    + expected
-                    + " given basedir="
-                    + paranamer.getProject().getBaseDir()
-                    + "\". Found: "
-                    + result,
+        final Set<String> expected = new HashSet<String>(Arrays.asList(A.class.getName(),
+                C.class.getName()));
+        Assert.assertTrue("Expected: "
+                + expected
+                + " given basedir="
+                + paranamer.getProject().getBaseDir()
+                + "\". Found: "
+                + result,
                 result.equals(expected));
     }
 
@@ -398,8 +384,9 @@ public class ParanamerTaskTest extends TestCase {
      * Test that a specified includes attribute and an embedded fileset are both
      * processed with the includes attribute processed relative to basedir.
      */
+    @Test
     public void testIncludesAandCFileSet() {
-        final Set result = new HashSet();
+        final Set<String> result = new HashSet<String>();
         class Paranamer extends ParanamerTask {
             public Paranamer() {
                 project = makeProject();
@@ -415,8 +402,7 @@ public class ParanamerTaskTest extends TestCase {
                 return new QdoxParanamerGenerator() {
                     public void processClasses(JavaClass[] classes, String outputPath)
                         throws IOException {
-                        for (int i = 0; i < classes.length; i++) {
-                            JavaClass aClass = classes[i];
+                        for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
                         }
                     }
@@ -430,16 +416,14 @@ public class ParanamerTaskTest extends TestCase {
         fileset.appendIncludes(new String[] { "**/C.java" });
         paranamer.addFileset(fileset);
         paranamer.execute();
-        final Set expected = new HashSet(Arrays.asList(new Object[] {
-                A.class.getName(),
-                C.class.getName()
-            }));
-        assertTrue("Expected: "
-                    + expected
-                    + " given basedir="
-                    + paranamer.getProject().getBaseDir()
-                    + "\". Found: "
-                    + result,
+        final Set<String> expected = new HashSet<String>(Arrays.asList(A.class.getName(),
+                C.class.getName()));
+        Assert.assertTrue("Expected: "
+                + expected
+                + " given basedir="
+                + paranamer.getProject().getBaseDir()
+                + "\". Found: "
+                + result,
                 result.equals(expected));
     }
 
@@ -447,8 +431,9 @@ public class ParanamerTaskTest extends TestCase {
      * Test that a specified srcdir attribute and an embedded fileset are both
      * processed.
      */
+    @Test
     public void testSrcDirPackage1andCFileSet() {
-        final Set result = new HashSet();
+        final Set<String> result = new HashSet<String>();
         class Paranamer extends ParanamerTask {
             public Paranamer() {
                 project = makeProject();
@@ -464,8 +449,7 @@ public class ParanamerTaskTest extends TestCase {
                 return new QdoxParanamerGenerator() {
                     public void processClasses(JavaClass[] classes, String outputPath)
                         throws IOException {
-                        for (int i = 0; i < classes.length; i++) {
-                            JavaClass aClass = classes[i];
+                        for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
                         }
                     }
@@ -479,20 +463,19 @@ public class ParanamerTaskTest extends TestCase {
         fileset.appendIncludes(new String[] { "**/C.java" });
         paranamer.addFileset(fileset);
         paranamer.execute();
-        final Set expected = new HashSet(Arrays.asList(new Object[] {
-                A.class.getName(),
+        final Set<String> expected = new HashSet<String>(Arrays.asList(A.class.getName(),
                 B.class.getName(),
-                C.class.getName()
-            }));
-        assertTrue("Expected: "
-                    + expected
-                    + " given basedir="
-                    + paranamer.getProject().getBaseDir()
-                    + "\". Found: "
-                    + result,
+                C.class.getName()));
+        Assert.assertTrue("Expected: "
+                + expected
+                + " given basedir="
+                + paranamer.getProject().getBaseDir()
+                + "\". Found: "
+                + result,
                 result.equals(expected));
     }
 
+    @Test
     public void testEnhance() {
         // need to use a single element array (or other wrapper object such as
         // a collection) so that the value can change but the variable itself
@@ -516,10 +499,10 @@ public class ParanamerTaskTest extends TestCase {
                                 throws IOException {
                                 enhanced[0] = true;
                                 super.enhance(classFile, parameterNameData);
-                                assertTrue(classFile.getAbsolutePath().endsWith("C.class"));
-                                assertEquals(
+                                Assert.assertTrue(classFile.getAbsolutePath().endsWith("C.class"));
+                                Assert.assertEquals(
                                         "method1OfC int,int arg1,arg2 \n" +
-                                        "method2OfC int arg \n", parameterNameData);
+                                                "method2OfC int arg \n", parameterNameData);
                             }
                         };
                     }
@@ -540,6 +523,6 @@ public class ParanamerTaskTest extends TestCase {
                 + File.separator
                 + "test-classes");
         paranamer.execute();
-        assertTrue(enhanced[0]);
+        Assert.assertTrue(enhanced[0]);
     }
 }

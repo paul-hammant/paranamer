@@ -35,6 +35,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * 
@@ -42,28 +47,32 @@ import junit.framework.TestCase;
  * @author Mauro Talevi
  * @author Guilherme Silveira
  */
-public abstract class AbstractParanamerTestCase extends TestCase {
+public abstract class AbstractParanamerTestCase {
 
     protected Paranamer paranamer;
 
+    @Test
     public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
         Method method = DefaultParanamer.class.getMethod("toString", new Class[0]);
         String[] names = paranamer.lookupParameterNames(method);
-        assertEquals(0, names.length);
+        Assert.assertEquals(0, names.length);
     }
 
+    @Test
     public void testLookupParameterNamesForConstructorWithStringArg() throws Exception {
-        Constructor ctor = ParameterNamesNotFoundException.class.getConstructor(new Class[] {String.class});
+        Constructor<?> ctor = ParameterNamesNotFoundException.class.getConstructor(String.class);
         String[] names = paranamer.lookupParameterNames(ctor);
         assertThatParameterNamesMatch("message", names);
     }
 
+    @Test
     public void testLookupParameterNamesForPrivateMethod() throws Exception {
         Method m = DefaultParanamer.class.getDeclaredMethod("getParameterTypeName", new Class[] {Class.class});
         String[] names = paranamer.lookupParameterNames(m);
         assertThatParameterNamesMatch("cls", names);
     }
 
+    @Test
     public void testLookupParameterNamesForInterfaceMethod() throws Exception {
         Method m = Paranamer.class.getDeclaredMethod("lookupParameterNames", new Class[] {AccessibleObject.class, boolean.class});
         String[] names = paranamer.lookupParameterNames(m);

@@ -70,11 +70,10 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     }
 
     public void processClasses(JavaClass[] classes, String outputPath) throws IOException {
-        for (int i = 0; i < classes.length; i++) {
-            JavaClass javaClass = classes[i];
+        for (JavaClass javaClass : classes) {
             String content = addMethods(javaClass.getMethods());
             // TODO problem with inner classes
-            makeEnhancer().enhance(new File(outputPath, javaClass.getFullyQualifiedName().replace('.',File.separatorChar) + ".class"), content);
+            makeEnhancer().enhance(new File(outputPath, javaClass.getFullyQualifiedName().replace('.', File.separatorChar) + ".class"), content);
 
         }
     }
@@ -86,8 +85,7 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     private String addMethods(JavaMethod[] methods) {
         Arrays.sort(methods);
         StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < methods.length; i++) {
-            JavaMethod javaMethod = methods[i];
+        for (JavaMethod javaMethod : methods) {
             if (!Arrays.asList(javaMethod.getModifiers()).contains("private")
                     && javaMethod.getParameters().length > 0) {
                 buffer.append(addMethod(javaMethod));

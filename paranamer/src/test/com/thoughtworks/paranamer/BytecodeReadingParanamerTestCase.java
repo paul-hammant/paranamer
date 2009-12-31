@@ -30,10 +30,16 @@
 
 package com.thoughtworks.paranamer;
 
+import org.junit.Before;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
+
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -42,7 +48,8 @@ import java.net.URLClassLoader;
  */
 public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase {
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         paranamer = new BytecodeReadingParanamer();
     }
 
@@ -56,7 +63,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
 
     public void testRetrievesParameterNamesFromAConstructor() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
-        Constructor ctor = SpecificMethodSearchable.class.getConstructor(new Class[] { String.class });
+        Constructor<?> ctor = SpecificMethodSearchable.class.getConstructor(String.class);
         String[] names = asm.lookupParameterNames(ctor);
         assertThatParameterNamesMatch("foo", names);
     }
@@ -139,16 +146,16 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
             throws ClassNotFoundException, NoSuchMethodException {
         URL url = getClass().getResource("/test.jar");
         URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
-        Class clazz = Class.forName("com.thoughtworks.paranamer.SpecificMethodSearchable", true, classLoader);
+        Class<?> clazz = Class.forName("com.thoughtworks.paranamer.SpecificMethodSearchable", true, classLoader);
 
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
-        Constructor ctor = clazz.getConstructor(new Class[]{String.class});
+        Constructor<?> ctor = clazz.getConstructor(String.class);
         assertThatParameterNamesMatch("foo", asm.lookupParameterNames(ctor));
     }
 
     public void testRetrievesParameterNamesFromBootstrapClassLoader() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
-        Constructor ctor = Integer.class.getConstructor(new Class[] { int.class });
+        Constructor<?> ctor = Integer.class.getConstructor(int.class);
         try {
             asm.lookupParameterNames(ctor);
             fail("Should not find names for classes loaded by the bootstrap class loader.");

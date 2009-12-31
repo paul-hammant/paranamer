@@ -9,9 +9,15 @@
   <name>ParaNamer Core</name>
   <dependencies>
 	<dependency>
-	    <groupId>jmock</groupId>
+	    <groupId>org.jmock</groupId>
 	    <artifactId>jmock</artifactId>
-	    <version>1.2.0</version>
+	    <version>2.5.1</version>
+        <scope>test</scope>
+	</dependency>
+	<dependency>
+	    <groupId>org.jmock</groupId>
+	    <artifactId>jmock-junit4</artifactId>
+	    <version>2.5.1</version>
         <scope>test</scope>
 	</dependency>
     <dependency>

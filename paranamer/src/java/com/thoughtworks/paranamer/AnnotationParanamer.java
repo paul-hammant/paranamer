@@ -52,8 +52,8 @@ public class AnnotationParanamer implements Paranamer {
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
         // Oh for some commonality between Constructor and Method !!
-        Class[] types = null;
-        Class declaringClass = null;
+        Class<?>[] types = null;
+        Class<?> declaringClass = null;
         String name = null;
         Annotation[][] anns = null;
         if (methodOrCtor instanceof Method) {
@@ -63,7 +63,7 @@ public class AnnotationParanamer implements Paranamer {
             declaringClass = method.getDeclaringClass();
             anns = method.getParameterAnnotations();
         } else {
-            Constructor constructor = (Constructor) methodOrCtor;
+            Constructor<?> constructor = (Constructor<?>) methodOrCtor;
             types = constructor.getParameterTypes();
             declaringClass = constructor.getDeclaringClass();
             name = "<init>";

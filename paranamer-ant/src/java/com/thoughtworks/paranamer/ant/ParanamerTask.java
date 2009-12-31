@@ -27,7 +27,6 @@
  */
 package com.thoughtworks.paranamer.ant;
 
-import java.util.Iterator;
 import java.util.Arrays;
 import java.util.Vector;
 import java.util.Collection;
@@ -39,13 +38,11 @@ import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.types.FileSet;
 
 import com.thoughtworks.qdox.JavaDocBuilder;
-import com.thoughtworks.qdox.model.JavaClass;
 
 import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
 
 /**
  * Ant Task to process parameter names. This ant task facilitates the
@@ -151,7 +148,7 @@ public class ParanamerTask extends Task {
     /**
      * The collection of nested file sets containing the files to be processed.
      */
-    private Collection filesets = new Vector();
+    private Collection<FileSet> filesets = new Vector<FileSet>();
 
     /**
      * Execute the task.
@@ -162,29 +159,25 @@ public class ParanamerTask extends Task {
             FileSet set = new FileSet();
             set.setDir(getProject().resolveFile(srcdir));
             // ensure whitespace is ignored from around the components of the includes
-            for (Iterator iterator = Arrays.asList(includes.split(",")).iterator();
-                    iterator.hasNext();) {
-                set.appendIncludes(new String[] { ((String) iterator.next()).trim() });
+            for (Object o : Arrays.asList(includes.split(","))) {
+                set.appendIncludes(new String[]{((String) o).trim()});
             }
             // ensure whitespace is ignored from around the components of the excludes
-            for (Iterator iterator = Arrays.asList(excludes.split(",")).iterator();
-                    iterator.hasNext();) {
-                set.appendExcludes(new String[] { ((String) iterator.next()).trim() });
+            for (Object o : Arrays.asList(excludes.split(","))) {
+                set.appendExcludes(new String[]{((String) o).trim()});
             }
             filesets.add(set);
         }
-        for(Iterator fsIter = filesets.iterator();
-                fsIter.hasNext();) {
-            FileSet fs = (FileSet) fsIter.next();
+        for (Object fileset : filesets) {
+            FileSet fs = (FileSet) fileset;
             DirectoryScanner ds = fs.getDirectoryScanner(getProject());
             String[] includedFiles = ds.getIncludedFiles();
             log("Generating parameter names for"
                     + includedFiles.length
                     + " files in "
                     + ds.getBasedir());
-            for (Iterator ifIter = Arrays.asList(includedFiles).iterator();
-                    ifIter.hasNext();) {
-                String file = (String) ifIter.next();
+            for (Object o : Arrays.asList(includedFiles)) {
+                String file = (String) o;
                 JavaDocBuilder builder = new JavaDocBuilder();
                 try {
                     builder.addSource(new File(ds.getBasedir(), file));
@@ -194,17 +187,17 @@ public class ParanamerTask extends Task {
                     if (classdirSet) {
                         makeQdoxParanamerGenerator()
                                 .processClasses(builder.getClasses(),
-                                    classdir);
+                                        classdir);
                     } else {
                         makeQdoxParanamerGenerator()
                                 .processClasses(builder.getClasses(),
-                                    ds.getBasedir().getPath());
+                                        ds.getBasedir().getPath());
                     }
                 } catch (final IOException exception) {
                     throw new BuildException("Error processing: "
-                                + file
-                                + ". "
-                                + exception.getMessage());
+                            + file
+                            + ". "
+                            + exception.getMessage());
                 }
             }
         }

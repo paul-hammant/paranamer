@@ -30,17 +30,14 @@
 
 package com.thoughtworks.paranamer;
 
+import org.junit.Before;
+import org.junit.Test;
+
 public class DefaultParanamerTestCase extends AbstractParanamerTestCase {
-    
-    protected void setUp() throws Exception {
+
+    @Before
+    public void setUp() throws Exception {
         paranamer = new DefaultParanamer();
-    }
-
-
-    public void testLookupParameterNamesForConstructorWithStringArg() throws Exception {
-        //for (int i = 0; i < 1000000; i++) {
-            super.testLookupParameterNamesForConstructorWithStringArg();
-        //}
     }
 
 }

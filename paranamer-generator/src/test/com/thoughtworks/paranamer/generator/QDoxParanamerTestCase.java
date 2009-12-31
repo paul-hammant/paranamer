@@ -35,17 +35,22 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class QDoxParanamerTestCase extends TestCase {
+public class QDoxParanamerTestCase {
 
     private String root;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         ParanamerGenerator generator = new QdoxParanamerGenerator();
         root = new File(".").getAbsolutePath();
         generator.processSourcePath(root + "/src/test", root + "/target/test-classes/");
     }
 
+    @Test
     public void testFoo() throws IOException, NoSuchFieldException, IllegalAccessException {
 
         FileInputStream fis = new FileInputStream(root + "/target/test-classes/com/thoughtworks/paranamer/generator/Elephant.class");
@@ -56,18 +61,18 @@ public class QDoxParanamerTestCase extends TestCase {
 
         MyClassLoader cl = new MyClassLoader();
 
-        Class enhancedClazz = cl.defineEnhancerClass(bytes2, read);
+        Class<?> enhancedClazz = cl.defineEnhancerClass(bytes2, read);
         Field f = enhancedClazz.getField("__PARANAMER_DATA");
-        assertNotNull(f);
+        Assert.assertNotNull(f);
         String s1 = ((String) f.get(null));
         String s2 = ("<init> java.util.Map map \n" +
                         "setMap java.util.Map map \n");
-        assertEquals(s2, s1);
+        Assert.assertEquals(s2, s1);
     }
 
 
     private static class MyClassLoader extends ClassLoader {
-        public Class defineEnhancerClass(byte[] bytes, int length) {
+        public Class<?> defineEnhancerClass(byte[] bytes, int length) {
             return defineClass("com.thoughtworks.paranamer.generator.Elephant", bytes, 0, bytes.length);
         }
     }

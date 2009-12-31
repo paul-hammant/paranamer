@@ -188,7 +188,7 @@ public class JavadocParanamer implements Paranamer {
 				// but we cannot use ZipFile.getEntry for suffix names
 				// so we have to look through all the entries.
 				// We then pick the largest file.
-				Enumeration entries = zip.entries();
+				Enumeration<? extends ZipEntry> entries = zip.entries();
 				// grr... http://javablog.co.uk/2007/11/25/enumeration-and-iterable
 				// Set<ZipEntry>
 				SortedMap<Long, ZipEntry> packageLists = new TreeMap<Long, ZipEntry>();
@@ -268,12 +268,12 @@ public class JavadocParanamer implements Paranamer {
 		if (methodOrConstructor == null)
 			throw new NullPointerException();
 
-		Class klass;
+		Class<?> klass;
 		String name;
-		Class[] types;
+		Class<?>[] types;
 
 		if (methodOrConstructor instanceof Constructor) {
-			Constructor constructor = (Constructor) methodOrConstructor;
+			Constructor<?> constructor = (Constructor<?>) methodOrConstructor;
 			klass = constructor.getDeclaringClass();
 			name = constructor.getName();
 			types = constructor.getParameterTypes();
@@ -313,8 +313,8 @@ public class JavadocParanamer implements Paranamer {
 
 	// throws CLASS_NOT_SUPPORTED if the class file is not found in the javadocs
 	// return null if the parameter names were not found
-	private String[] getParameterNames(Class klass,
-			String constructorOrMethodName, Class[] types) throws IOException {
+	private String[] getParameterNames(Class<?> klass,
+			String constructorOrMethodName, Class<?>[] types) throws IOException {
 		// silly request for names of a parameterless method/constructor!
 		if ((types != null) && (types.length == 0))
 			return new String[0];
@@ -353,7 +353,7 @@ public class JavadocParanamer implements Paranamer {
 	 * chain. Don't forget to close the input!
 	 */
 	private String[] getParameterNames2(InputStream input,
-			String constructorOrMethodName, Class[] types) throws IOException {
+			String constructorOrMethodName, Class<?>[] types) throws IOException {
 		String javadoc = streamToString(input);
 		input.close();
 
@@ -411,7 +411,7 @@ public class JavadocParanamer implements Paranamer {
 	}
 
 	// doesn't support names of nested classes
-	private String getCanonicalName(Class klass) {
+	private String getCanonicalName(Class<?> klass) {
 		if (klass.isArray())
 			return getCanonicalName(klass.getComponentType()) + "[]";
 

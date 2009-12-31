@@ -35,12 +35,16 @@ import java.lang.reflect.AccessibleObject;
 import java.util.Arrays;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-public class CachingParanamerTestCase extends TestCase {
+public class CachingParanamerTestCase {
     private Paranamer paranamer;
     private int count = 0;
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         paranamer = new Paranamer() {
 
             public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
@@ -56,16 +60,17 @@ public class CachingParanamerTestCase extends TestCase {
     }
 
 
+     @Test
      public void testLookupOfParameterNamesForMethod() {
         Paranamer cachingParanamer = new CachingParanamer(paranamer);
         String[] paramNames = cachingParanamer.lookupParameterNames((Method)null);
-        assertEquals(Arrays.asList(new String[]{"foo","bar"}), Arrays.asList(paramNames));
-        assertEquals(1, count);
+        Assert.assertEquals(Arrays.asList(new String[]{"foo", "bar"}), Arrays.asList(paramNames));
+        Assert.assertEquals(1, count);
 
         // cache hit
         paramNames = cachingParanamer.lookupParameterNames((Method)null);
-        assertEquals(Arrays.asList(new String[]{"foo","bar"}), Arrays.asList(paramNames));
-        assertEquals(1, count);
+        Assert.assertEquals(Arrays.asList(new String[]{"foo", "bar"}), Arrays.asList(paramNames));
+        Assert.assertEquals(1, count);
     }
     
 }

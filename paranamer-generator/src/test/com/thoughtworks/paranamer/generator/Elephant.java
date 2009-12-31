@@ -32,17 +32,17 @@ package com.thoughtworks.paranamer.generator;
 import java.util.Map;
 
 public class Elephant {
-    private Map map;
+    private Map<?,?> map;
 
-    public Elephant(Map map) {
+    public Elephant(Map<?,?> map) {
         this.map = map;
     }
 
-    public Map getMap() {
+    public Map<?,?> getMap() {
         return map;
     }
 
-    public void setMap(Map map) {
+    public void setMap(Map<?,?> map) {
         this.map = map;
     }
 }
