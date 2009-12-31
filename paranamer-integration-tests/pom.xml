@@ -11,6 +11,5 @@
   <packaging>pom</packaging>
   <modules>
     <module>it-011</module>
-    <module>it-java5</module>
   </modules>
 </project>
