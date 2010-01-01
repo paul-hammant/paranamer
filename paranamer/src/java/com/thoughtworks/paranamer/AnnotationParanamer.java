@@ -142,8 +142,13 @@ public class AnnotationParanamer implements Paranamer {
      * @return a the name value.
      */
     protected String getNamedValue(Annotation ann) {
-        return ((Named) ann).value();
+        if ("javax.inject.Named".equals(ann.annotationType().getName())) {
+            return Jsr330Helper.getNamedValue(ann);
+        } else {
+            return null;
+        }
     }
+
 
     /**
      * Override this if you want something other than JSR 330's Named annotation.
@@ -154,7 +159,24 @@ public class AnnotationParanamer implements Paranamer {
      * @return whether it is the annotation holding the parameter name
      */
     protected boolean isNamed(Annotation ann) {
-        return ann instanceof Named;
+        if ("javax.inject.Named".equals(ann.annotationType().getName())) {
+            return Jsr330Helper.isNamed(ann);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * This is a different class, because the @Inject jar may not be in the classpath.
+     */
+    public static class Jsr330Helper {
+        private static boolean isNamed(Annotation ann) {
+            return ann instanceof Named;
+        }
+        private static String getNamedValue(Annotation ann) {
+            return ((Named) ann).value();
+        }
+
     }
 
 }
