@@ -193,7 +193,7 @@ public class JavadocParanamer implements Paranamer {
 				// Set<ZipEntry>
 				SortedMap<Long, ZipEntry> packageLists = new TreeMap<Long, ZipEntry>();
 				while (entries.hasMoreElements()) {
-					ZipEntry entry = (ZipEntry) entries.nextElement();
+					ZipEntry entry = entries.nextElement();
 					String name = entry.getName();
 					if (name.endsWith("package-list")) {
 						Long size = entry.getSize();
@@ -205,8 +205,7 @@ public class JavadocParanamer implements Paranamer {
 						"no package-list found in archive");
 
 				// pick the largest package-list file, it's most likely the one we want
-				ZipEntry entry =
-						(ZipEntry) packageLists.get(packageLists.lastKey());
+				ZipEntry entry = packageLists.get(packageLists.lastKey());
 				String name = entry.getName();
 				base =
 						name.substring(0, name.length()
@@ -228,7 +227,7 @@ public class JavadocParanamer implements Paranamer {
 	}
 
 	/**
-	 * @param url
+	 * @param url The URL of the JavaDoc
 	 * @throws IOException
 	 *             if there was a problem connecting to the remote Javadocs
 	 * @throws FileNotFoundException

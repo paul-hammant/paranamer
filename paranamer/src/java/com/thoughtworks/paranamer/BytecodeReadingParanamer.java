@@ -145,8 +145,6 @@ public class BytecodeReadingParanamer implements Paranamer {
         private final boolean throwExceptionIfMissing;
 
         private MethodCollector collector;
-        private boolean methodFound = false;
-        private boolean classFound = false;
 
         private TypeCollector(String methodName, Class<?>[] parameterTypes, boolean throwExceptionIfMissing) {
             this.methodName = methodName;
@@ -157,7 +155,6 @@ public class BytecodeReadingParanamer implements Paranamer {
 
         public MethodCollector visitMethod(int access, String name, String desc) {
             // already found the method, skip any processing
-            classFound = true;
             if (collector != null) {
                 return null;
             }
@@ -165,7 +162,6 @@ public class BytecodeReadingParanamer implements Paranamer {
             if (!name.equals(methodName)) {
                 return null;
             }
-            methodFound = true;
             Type[] argumentTypes = Type.getArgumentTypes(desc);
             int longOrDoubleQuantity = 0;
             for (Type t : argumentTypes) {
@@ -243,7 +239,7 @@ public class BytecodeReadingParanamer implements Paranamer {
             this.result = new StringBuffer();
             this.currentParameter = 0;
             // if there are 0 parameters, there is no need for debug info
-            this.debugInfoPresent = paramCount == 0 ? true : false;
+            this.debugInfoPresent = paramCount == 0;
         }
 
         public void visitLocalVariable(String name, int index) {

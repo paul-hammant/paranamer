@@ -67,7 +67,8 @@ public interface Paranamer {
 	 * @param methodOrConstructor
 	 *            the {@link Method} or {@link Constructor} for which the parameter names
 	 *            are looked up.
-	 * @return A list of the parameter names.
+	 * @param throwExceptionIfMissing whether to throw an exception if no Paranamer data found (versus return null).
+     * @return A list of the parameter names.
 	 * @throws ParameterNamesNotFoundException
 	 *             if no parameter names were found.
 	 * @throws NullPointerException

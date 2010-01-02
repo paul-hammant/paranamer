@@ -48,7 +48,7 @@ public class AdaptiveParanamer implements Paranamer {
         + "com.thoughtworks.paranamer.AdaptiveParanamer lookupParameterNames java.lang.AccessibleObject methodOrConstructor \n"
         + "com.thoughtworks.paranamer.AdaptiveParanamer lookupParameterNames java.lang.AccessibleObject,boolean methodOrCtor,throwExceptionIfMissing \n";
 
-    private Paranamer[] paranamers;
+    private final Paranamer[] paranamers;
 
     /**
      * Use DefaultParanamer ahead of BytecodeReadingParanamer
