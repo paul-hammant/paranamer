@@ -87,7 +87,7 @@ public class AnnotationParanamer implements Paranamer {
             return EMPTY_NAMES;
         }
 
-
+        
         final String[] names = new String[types.length];
         boolean allDone = true;
         for (int i = 0; i < names.length; i++) {
@@ -104,6 +104,7 @@ public class AnnotationParanamer implements Paranamer {
 
         }
 
+        // fill in blanks from fallback if possible.
         if (!allDone) {
             allDone = true;
             String[] altNames = fallback.lookupParameterNames(methodOrCtor, false);
@@ -122,6 +123,7 @@ public class AnnotationParanamer implements Paranamer {
             }
         }
 
+        // error if applicable
         if (!allDone) {
             if (throwExceptionIfMissing) {
             throw new ParameterNamesNotFoundException("One or more @Named annotations missing for class '" + declaringClass.getName() + "', methodOrCtor " + name
