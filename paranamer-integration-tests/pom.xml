@@ -3,10 +3,10 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.2</version>
   </parent>
   <artifactId>paranamer-integration-tests</artifactId>
-  <version>2.2-SNAPSHOT</version>
+  <version>2.2</version>
   <name>ParaNamer Integration Tests</name>
   <packaging>pom</packaging>
   <modules>
