@@ -21,8 +21,8 @@ currently look like '<span style="font-family: monospace;">doSomething(mypackage
   title="http://www.vraptor.org/">VRaptor</a> (that verge on the
   transparent) and the compelling <a href="http://grails.codehaus.org/">Grails</a>. SOAP and REST designs could also benefit.</p>
 <p>ParaNamer allows you to generate and use parameter name info for
-versions of Java prior to JDK 7.0.
-Parameter name access was scheduled for JDK 6.0, but was cancelled at a late stage as the spec-lead suggested the development team ran out of time to implement it. It is sadly not shipping in JDK 7.0 either.  Sun also had misgivings about the appropriateness of the this change to Java. It was felt that end users could end up depending on parameter names and that they essentially became part of constructor/method signatures and could never be changed if you wanted to be backwards compatible.  The view of the authors of Paranamer is that you should be aware that parameter names may change between releases, and code to not depend on them.</p>
+versions of Java prior to JDK 5.0 and above.
+Parameter name access was scheduled for JDK 6.0, but was cancelled at a late stage as the spec-lead suggested the development team ran out of time to implement it. It is sadly not shipping in JDK 7.0 either.  Sun also had misgivings about the appropriateness of the this change to Java. It was felt that applications could end up depending on parameter names, and that they essentially became part of constructor/method signatures and could never be changed if you wanted to be backwards compatible.  The view of the authors of Paranamer is that you should be aware that parameter names may change between releases, and code to not depend on them.</p>
 <p>Paranamer is Open Source, and licensed as BSD. It is compatible with commercial/proprietary, GPL, Apache use.<br>
 </p>
 <h1>Accessing Parameter Name data</h1>
@@ -66,7 +66,8 @@ public static class Something {
 }
 </pre></div>
 </div>
-<p>If you have an alternate annotation to @Named, then you can specify that in a subclass of AnnotationParanamer that overrides two methods getNamedValue and isNamed.  See the source for <a href="http://fisheye.codehaus.org/browse/paranamer/trunk/paranamer/src/java/com/thoughtworks/paranamer/AnnotationParanamer.java?r=HEAD">AnnotationParanamer</a> for clues as to how/what to override. </p>
+<p>AnnotationParanamer takes a delegate paranamer instance as an optional constructor arg.  This will allow constructors and methods to only partly leverage @Named, with other parameters having non-annotated parameter names (the via say DefaulParanamer or BytecodeReadingParanamer).</p>
+<p>If you have an alternate annotation to @Named, then you can specify that in a subclass of AnnotationParanamer that overrides two methods isNamed and getNamedValue.  Your overridden methods should do the equivalent of 'return ann instanceof Named;' and 'return ((Named) ann).value();' respectively.</p>
 <p>If you are using @Named from JSR 330, you will need it in your classpath of course.  In Maven terms, Paranamer is built with the 'javax.atinject' module as an optional dependency.</p>
 <h2>CachingParanamer</h2>
 <p>CachingParanamer  stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.</p>
@@ -158,7 +159,7 @@ access to Method parameter names. That should look like:<br>
 <a href="http://jbehave.codehaus.org/">JBehave - BDD tests for Java</a><br>
 
 <h1>Releases</h1>
-<p>Release 2.2 - Jan 3 2010</p>
+<p>Release 2.2 - Jan 3 2010 (JDK 5.0 and above)</p>
 <p>Release 2.1 - Sep 6 2009 (last version that is compatible with JDK 1.4)</p>
 <p>Release 2.0 - Jul 10 2009</p>
 <p>Release 1.5 - May 19 2009</p>
