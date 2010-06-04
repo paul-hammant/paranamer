@@ -862,47 +862,56 @@ public class BytecodeReadingParanamer implements Paranamer {
         /**
          * The <tt>void</tt> type.
          */
-        private final static Type VOID_TYPE = new Type(VOID);
+        private final static Type VOID_TYPE = new Type(VOID, null, ('V' << 24) 
+            | (5 << 16) | (0 << 8) | 0, 1);
 
         /**
          * The <tt>boolean</tt> type.
          */
-        private final static Type BOOLEAN_TYPE = new Type(BOOLEAN);
+        private final static Type BOOLEAN_TYPE = new Type(BOOLEAN, null, ('Z' << 24) 
+            | (0 << 16) | (5 << 8) | 1, 1);
 
         /**
          * The <tt>char</tt> type.
          */
-        private final static Type CHAR_TYPE = new Type(CHAR);
+        private final static Type CHAR_TYPE = new Type(CHAR, null, ('C' << 24) 
+            | (0 << 16) | (6 << 8) | 1, 1);
 
         /**
          * The <tt>byte</tt> type.
          */
-        private final static Type BYTE_TYPE = new Type(BYTE);
+        private final static Type BYTE_TYPE = new Type(BYTE, null, ('B' << 24) 
+            | (0 << 16) | (5 << 8) | 1, 1);
 
         /**
          * The <tt>short</tt> type.
          */
-        private final static Type SHORT_TYPE = new Type(SHORT);
+        private final static Type SHORT_TYPE = new Type(SHORT, null, ('S' << 24) 
+            | (0 << 16) | (7 << 8) | 1, 1);
 
         /**
          * The <tt>int</tt> type.
          */
-        private final static Type INT_TYPE = new Type(INT);
+        private final static Type INT_TYPE = new Type(INT, null, ('I' << 24) 
+            | (0 << 16) | (0 << 8) | 1, 1);
 
         /**
          * The <tt>float</tt> type.
          */
-        private final static Type FLOAT_TYPE = new Type(FLOAT);
+        private final static Type FLOAT_TYPE = new Type(FLOAT, null, ('F' << 24) 
+            | (2 << 16) | (2 << 8) | 1, 1);
 
         /**
          * The <tt>long</tt> type.
          */
-        private final static Type LONG_TYPE = new Type(LONG);
+        private final static Type LONG_TYPE = new Type(LONG, null, ('J' << 24) 
+            | (1 << 16) | (1 << 8) | 2, 1);
 
         /**
          * The <tt>double</tt> type.
          */
-        private final static Type DOUBLE_TYPE = new Type(DOUBLE);
+        private final static Type DOUBLE_TYPE = new Type(DOUBLE, null, ('D' << 24) 
+            | (3 << 16) | (3 << 8) | 2, 1);
 
         // ------------------------------------------------------------------------
         // Fields
@@ -920,14 +929,15 @@ public class BytecodeReadingParanamer implements Paranamer {
         private char[] buf;
 
         /**
-         * The offset of the internal name of this Java type in {@link #buf buf}.
-         * This field is only used for reference types.
+         * The offset of the internal name of this Java type in {@link #buf buf} or,
+         * for primitive types, the size, descriptor and getOpcode offsets for this
+         * type (byte 0 contains the size, byte 1 the descriptor, byte 2 the offset
+         * for IALOAD or IASTORE, byte 3 the offset for all other instructions).
          */
         private int off;
 
         /**
-         * The length of the internal name of this Java type. This field is only
-         * used for reference types.
+         * The length of the internal name of this Java type.
          */
         private final int len;
 
