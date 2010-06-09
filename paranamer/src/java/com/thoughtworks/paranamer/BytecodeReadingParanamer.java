@@ -30,8 +30,15 @@
 
 package com.thoughtworks.paranamer;
 
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.Label;
+import org.objectweb.asm.MethodAdapter;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
 import java.io.IOException;
@@ -150,14 +157,51 @@ public class BytecodeReadingParanamer implements Paranamer {
         private MethodCollector collector;
 
         private TypeCollector(String methodName, Class<?>[] parameterTypes, boolean throwExceptionIfMissing) {
-            super(null);
+            super(new ClassVisitor() {
+                public void visit(int i, int i1, String s, String s1, String s2, String[] strings) {
+
+                }
+
+                public void visitSource(String s, String s1) {
+
+                }
+
+                public void visitOuterClass(String s, String s1, String s2) {
+
+                }
+
+                public AnnotationVisitor visitAnnotation(String s, boolean b) {
+                    return null;
+                }
+
+                public void visitAttribute(Attribute attribute) {
+
+                }
+
+                public void visitInnerClass(String s, String s1, String s2, int i) {
+
+                }
+
+                public FieldVisitor visitField(int i, String s, String s1, String s2, Object o) {
+                    return null;
+                }
+
+                public MethodVisitor visitMethod(int i, String s, String s1, String s2, String[] strings) {
+                    return null;
+                }
+
+                public void visitEnd() {
+
+                }
+            });
             this.methodName = methodName;
             this.parameterTypes = parameterTypes;
             this.throwExceptionIfMissing = throwExceptionIfMissing;
             this.collector = null;
         }
 
-        public MethodCollector visitMethod(int access, String name, String desc) {
+        @Override
+        public MethodVisitor visitMethod(int access, String name, String desc, String s2, String[] strings) {
             // already found the method, skip any processing
             if (collector != null) {
                 return null;
@@ -225,7 +269,7 @@ public class BytecodeReadingParanamer implements Paranamer {
      *
      * @author Guilherme Silveira
      */
-    private static class MethodCollector {
+    private static class MethodCollector extends MethodAdapter {
 
         private final int paramCount;
 
@@ -238,6 +282,103 @@ public class BytecodeReadingParanamer implements Paranamer {
         private boolean debugInfoPresent;
 
         private MethodCollector(int ignoreCount, int paramCount) {
+            super(new MethodVisitor() {
+                public AnnotationVisitor visitAnnotationDefault() {
+                    return null;
+                }
+
+                public AnnotationVisitor visitAnnotation(String s, boolean b) {
+                    return null;
+                }
+
+                public AnnotationVisitor visitParameterAnnotation(int i, String s, boolean b) {
+                    return null;
+                }
+
+                public void visitAttribute(Attribute attribute) {
+
+                }
+
+                public void visitCode() {
+
+                }
+
+                public void visitFrame(int i, int i1, Object[] objects, int i2, Object[] objects1) {
+
+                }
+
+                public void visitInsn(int i) {
+
+                }
+
+                public void visitIntInsn(int i, int i1) {
+
+                }
+
+                public void visitVarInsn(int i, int i1) {
+
+                }
+
+                public void visitTypeInsn(int i, String s) {
+
+                }
+
+                public void visitFieldInsn(int i, String s, String s1, String s2) {
+
+                }
+
+                public void visitMethodInsn(int i, String s, String s1, String s2) {
+
+                }
+
+                public void visitJumpInsn(int i, Label label) {
+
+                }
+
+                public void visitLabel(Label label) {
+
+                }
+
+                public void visitLdcInsn(Object o) {
+
+                }
+
+                public void visitIincInsn(int i, int i1) {
+
+                }
+
+                public void visitTableSwitchInsn(int i, int i1, Label label, Label[] labels) {
+
+                }
+
+                public void visitLookupSwitchInsn(Label label, int[] ints, Label[] labels) {
+
+                }
+
+                public void visitMultiANewArrayInsn(String s, int i) {
+
+                }
+
+                public void visitTryCatchBlock(Label label, Label label1, Label label2, String s) {
+
+                }
+
+                public void visitLocalVariable(String s, String s1, String s2, Label label, Label label1, int i) {
+
+                }
+
+                public void visitLineNumber(int i, Label label) {
+
+                }
+
+                public void visitMaxs(int i, int i1) {
+
+                }
+
+                public void visitEnd() {
+
+                }
+            });
             this.ignoreCount = ignoreCount;
             this.paramCount = paramCount;
             this.result = new StringBuffer();
@@ -246,7 +387,8 @@ public class BytecodeReadingParanamer implements Paranamer {
             this.debugInfoPresent = paramCount == 0;
         }
 
-        public void visitLocalVariable(String name, int index) {
+        @Override
+        public void visitLocalVariable(String name, String s1, String s2, Label label, Label label1, int index) {
             if (index >= ignoreCount && index < ignoreCount + paramCount) {
                 if (!name.equals("arg" + currentParameter)) {
                     debugInfoPresent = true;
