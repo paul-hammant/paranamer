@@ -210,8 +210,8 @@
     </plugins>
   </reporting>
   <scm>
-    <connection>scm:git:git://git.codehaus.org/paranamer.git</connection>
-    <developerConnection>scm:git:ssh://git@git.codehaus.org/paranamer.git</developerConnection>
+    <connection>scm:git:git://git.codehaus.org/paranamer.git/tree/real_asm</connection>
+    <developerConnection>scm:git:ssh://git@git.codehaus.org/paranamer.git/tree/real_asm</developerConnection>
     <url>http://git.codehaus.org/gitweb.cgi?p=paranamer.git</url>
   </scm>    
   <licenses>
