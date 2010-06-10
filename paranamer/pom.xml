@@ -3,10 +3,11 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.2</version>
   </parent>
   <artifactId>paranamer</artifactId>
   <name>ParaNamer Core</name>
+  <version>2.2-withdeps-SNAPSHOT</version>
   <dependencies>
 	<dependency>
 	    <groupId>org.jmock</groupId>
