@@ -195,13 +195,13 @@
     </plugins>
   </reporting>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/paranamer/trunk</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/paranamer/trunk</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/paranamer/trunk</url>
+      <connection>scm:git:git@github.com:paul-hammant/paranamer.git</connection>
+      <developerConnection>scm:git:git@github.com:paul-hammant/paranamer.git</developerConnection>
+      <url>scm:git:git@github.com:paul-hammant/paranamer.git</url>
   </scm>
   <licenses>
     <license>
-      <name>Public Domain</name>
+      <name>BSD</name>
       <url>LICENSE.txt</url>
     </license>
   </licenses>
