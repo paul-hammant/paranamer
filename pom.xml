@@ -1,35 +1,34 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.thoughtworks.paranamer</groupId>
-  <artifactId>paranamer-parent</artifactId>
-  <packaging>pom</packaging>
-  <version>2.3-SNAPSHOT</version>
-  <name>ParaNamer Parent</name>
-  <url>http://paranamer.codehaus.org</url>
-  <modules>
-    <module>paranamer</module>
-    <module>paranamer-generator</module>
-    <module>paranamer-ant</module>
-    <module>paranamer-maven-plugin</module>
-    <module>paranamer-integration-tests</module>
-    <module>paranamer-distribution</module>
-  </modules>
-  <dependencyManagement>
-    <dependencies>
-      <!-- Test dependencies -->
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.7</version>
-        <scope>test</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+  <artifactId>paranamer</artifactId>
+  <name>ParaNamer Core</name>
+  <version>2.3-debug-SNAPSHOT </version>
   <dependencies>
-    <!-- Test dependencies -->
+	<dependency>
+	    <groupId>org.jmock</groupId>
+	    <artifactId>jmock</artifactId>
+	    <version>2.5.1</version>
+        <scope>test</scope>
+	</dependency>
+	<dependency>
+	    <groupId>org.jmock</groupId>
+	    <artifactId>jmock-junit4</artifactId>
+	    <version>2.5.1</version>
+        <scope>test</scope>
+	</dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>1</version>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>3.2</version>
+      <scope>compile</scope>
+      <optional>true</optional>
     </dependency>
   </dependencies>
   <build>
@@ -59,6 +58,22 @@
       </testResource>
     </testResources>
     <plugins>
+      <plugin>
+        <groupId>com.thoughtworks.paranamer</groupId>
+        <artifactId>paranamer-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectory>${pom.build.sourceDirectory}</sourceDirectory>
+          <outputDirectory>${pom.build.outputDirectory}</outputDirectory>
+        </configuration>
+      </plugin>        
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -100,7 +115,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.3</version>
+        <version>2.5</version>
         <configuration>
           <forkMode>once</forkMode>
           <printSummary>true</printSummary>
@@ -195,10 +210,10 @@
     </plugins>
   </reporting>
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/paranamer/trunk</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/paranamer/trunk</developerConnection>
-    <url>scm:svn:https://svn.codehaus.org/paranamer/trunk</url>
-  </scm>
+             <connection>scm:git:ssh://git@git.codehaus.org/paranamer-git.git</connection>
+    <developerConnection>scm:git:ssh://git@git.codehaus.org/paranamer-git.git</developerConnection>
+    <url>http://git.codehaus.org/gitweb.cgi?p=paranamer-git.git</url>
+  </scm>    
   <licenses>
     <license>
       <name>Public Domain</name>
@@ -249,5 +264,5 @@
       </roles>
       <timezone>-3</timezone>
     </developer>
-  </developers>
+  </developers>    
 </project>
