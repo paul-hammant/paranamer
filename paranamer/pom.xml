@@ -3,7 +3,7 @@
   <groupId>com.thoughtworks.paranamer</groupId>
   <artifactId>paranamer</artifactId>
   <name>ParaNamer Core</name>
-  <version>2.2.1-debug</version>
+  <version>2.2.1-debugB-SNAPSHOT</version>
   <dependencies>
 	<dependency>
 	    <groupId>org.jmock</groupId>
