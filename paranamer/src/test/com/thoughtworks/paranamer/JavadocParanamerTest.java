@@ -34,6 +34,9 @@
  */
 package com.thoughtworks.paranamer;
 
+import junit.framework.TestCase;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,8 +45,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Random;
-
-import junit.framework.TestCase;
 
 /**
  * @author Samuel Halliday, ThinkTank Maths Limited
@@ -106,6 +107,7 @@ public class JavadocParanamerTest extends TestCase {
 //		testCannotFindForInappropriateMethodsEtc(getURLParanamerSun());
 //	}
 
+    @Test
 	public void testFailsIfABadUrl() throws MalformedURLException, IOException {
 		try {
 			new JavadocParanamer(
@@ -117,6 +119,7 @@ public class JavadocParanamerTest extends TestCase {
 		}
 	}
 
+    @Test
 	public void testFailsIfNotAFile() throws IOException {
 		try {
 			new JavadocParanamer(new File("non-existant-file"));
@@ -126,6 +129,7 @@ public class JavadocParanamerTest extends TestCase {
 		}
 	}
 
+    @Test
 	public void testFailsIfNotAJavadocDirectory() throws IOException {
 		try {
 			new JavadocParanamer(new File("./"));
@@ -139,6 +143,7 @@ public class JavadocParanamerTest extends TestCase {
 // testGenericsDontInterfereWithExtraction(getDirectoryParanamerSun());
 // }
 
+    @Test
 	public void testGenericsDontInterfereWithExtractionFile()
 			throws IOException {
 		testGenericsDontInterfereWithExtraction(getArchiveParanamerSun());
@@ -152,6 +157,7 @@ public class JavadocParanamerTest extends TestCase {
 // testNamesInIterativeManner(getDirectoryParanamerSun());
 // }
 
+    @Test
 	public void testNamesInIterativeMannerFile() throws IOException {
 		testNamesInIterativeManner(getArchiveParanamerSun());
 	}

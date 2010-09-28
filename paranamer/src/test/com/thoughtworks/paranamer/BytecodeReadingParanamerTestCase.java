@@ -31,9 +31,10 @@
 package com.thoughtworks.paranamer;
 
 import org.junit.Before;
+import org.junit.Test;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -53,6 +54,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         paranamer = new BytecodeReadingParanamer();
     }
 
+    @Test
     public void testRetrievesParameterNamesFromAMethod() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Method method = SpecificMethodSearchable.class.getMethod("singleString", new Class[] { String.class });
@@ -61,6 +63,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
     }
 
 
+    @Test
     public void testRetrievesParameterNamesFromAConstructor() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Constructor<?> ctor = SpecificMethodSearchable.class.getConstructor(String.class);
@@ -69,6 +72,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
     }
 
 
+    @Test
     public void testRetrievesParameterNamesFromAMethodWithoutParameters() throws SecurityException,
             NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
@@ -77,6 +81,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("", names);
     }
 
+    @Test
     public void testRetrievesParameterNamesFromAMethodWithoutParametersWithLocalVariable() throws SecurityException,
             NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
@@ -85,6 +90,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("", names);
     }
 
+    @Test
     public void testRetrievesParameterNamesFromAStaticMethod() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
@@ -92,6 +98,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("i", names);
     }
 
+    @Test
     public void testRetrievesParameterNamesFromMethodWithLong() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod("hasLong",
@@ -99,6 +106,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("l", names);
     }
 
+    @Test
     public void testRetrievesParameterNamesFromMethodWithDoubleMixedInTheParameters() throws SecurityException,
             NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
@@ -107,6 +115,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("d,s", names);
     }
 
+    @Test
     public void testDoesNotRetrieveParagmeterNamedArg0() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         try {
@@ -118,30 +127,42 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
     }
 
+    @Test
     public void testRetrievesParameterNamesFromMethodWithArray() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Method method = SpecificMethodSearchable.class.getMethod("stringArray", new Class[]{String[].class});
         assertThatParameterNamesMatch("strings", asm.lookupParameterNames(method));
     }
 
+    @Test
+    public void testRetrievesParameterNamesFromMethodWithTwoDimensionalArray() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("twoDimensionalArray", new Class[]{String[][].class});
+        assertThatParameterNamesMatch("strings2D", asm.lookupParameterNames(method));
+    }
+
+    @Test
     public void testRetrievesParameterNamesFromIntArrayMethod() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Method method = SpecificMethodSearchable.class.getMethod("intArray", new Class[] { int[].class });
         assertThatParameterNamesMatch("ints", asm.lookupParameterNames(method));
     }
 
+    @Test
     public void testRetrievesParameterNamesFromDoubleArrayMethod() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Method method = SpecificMethodSearchable.class.getMethod("doubleArray", new Class[] { double[].class });
         assertThatParameterNamesMatch("doubles", asm.lookupParameterNames(method));
     }
 
+    @Test
     public void testRetrievesParameterNamesFromOtherArrayMethod() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Method method = SpecificMethodSearchable.class.getMethod("otherArray", new Class[] { Other[].class });
         assertThatParameterNamesMatch("others", asm.lookupParameterNames(method));
     }
 
+    @Test
     public void testRetrievesParameterNamesFromAConstructorInJar()
             throws ClassNotFoundException, NoSuchMethodException {
         URL url = getClass().getResource("/test.jar");
@@ -153,6 +174,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("foo", asm.lookupParameterNames(ctor));
     }
 
+    @Test
     public void testRetrievesParameterNamesFromBootstrapClassLoader() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Constructor<?> ctor = Integer.class.getConstructor(int.class);
@@ -164,6 +186,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
     }
 
+    @Test
     public void testLookupParameterNamesForInterfaceMethod() {
         try {
             super.testLookupParameterNamesForInterfaceMethod();
@@ -173,6 +196,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
     }
 
+    @Test
     // from http://jira.codehaus.org/browse/PARANAMER-10
     public void testEmptyParameterShouldReturnAnEmptyArray() throws Exception {
 		BytecodeReadingParanamer paranamer = new BytecodeReadingParanamer();
@@ -227,6 +251,10 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
 
         public void stringArray(String[] strings) {
         }
+
+        public void twoDimensionalArray(String[][] strings2D) {
+        }
+
 
         public void intArray(int[] ints) {
         }
