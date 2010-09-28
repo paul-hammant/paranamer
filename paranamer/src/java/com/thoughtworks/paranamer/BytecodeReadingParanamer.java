@@ -242,12 +242,16 @@ public class BytecodeReadingParanamer implements Paranamer {
         private String correctTypeName(Type[] argumentTypes, int i) {
             String s = argumentTypes[i].getClassName();
             // array notation needs cleanup.
-            if (s.endsWith("[]")) {
-                String prefix = s.substring(0, s.length() - 2);
-                if (primitives.containsKey(prefix)) {
-                    s = "[" + primitives.get(prefix);
+            String braces = "";
+            while (s.endsWith("[]")) {
+                braces = braces + "[";
+                s = s.substring(0, s.length() - 2);
+            }
+            if (!braces.equals("")) {
+                if (primitives.containsKey(s)) {
+                    s = braces + primitives.get(s);
                 } else {
-                s = "[L" + prefix + ";";
+                s = braces + "L" + s + ";";
                 }
             }
             return s;
