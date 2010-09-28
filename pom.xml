@@ -3,7 +3,7 @@
   <groupId>com.thoughtworks.paranamer</groupId>
   <artifactId>paranamer-parent</artifactId>
   <packaging>pom</packaging>
-  <version>2.4-SNAPSHOT</version>
+  <version>2.3-SNAPSHOT</version>
   <name>ParaNamer Parent</name>
   <url>http://paranamer.codehaus.org</url>
   <modules>
