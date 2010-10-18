@@ -282,9 +282,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://git.codehaus.org/paranamer.git</connection>
-        <developerConnection>scm:git:ssh://git@git.codehaus.org/paranamer.git</developerConnection>
-        <url>http://git.codehaus.org/gitweb.cgi?p=paranamer.git</url>
+        <connection>scm:git:git://git.codehaus.org/paranamer-git.git</connection>
+        <developerConnection>scm:git:ssh://git@git.codehaus.org/paranamer-git.git</developerConnection>
+        <url>http://git.codehaus.org/gitweb.cgi?p=paranamer-git.git</url>
     </scm>
     
 </project>
