@@ -7,19 +7,15 @@
         <version>1</version>
     </parent>
     <groupId>com.thoughtworks.paranamer</groupId>
-    <artifactId>paranamer-parent</artifactId>
+    <artifactId>paranamer-parent-debug</artifactId>
     <packaging>pom</packaging>
-    <version>2.3-SNAPSHOT</version>
+    <version>2.3-debug-SNAPSHOT</version>
     <name>ParaNamer Parent</name>
     <inceptionYear>2007</inceptionYear>    
     <description>Paranamer allows runtime access to constructor and method parameter names for Java classes</description>
     <url>http://paranamer.codehaus.org</url>
     <modules>
         <module>paranamer</module>
-        <module>paranamer-generator</module>
-        <module>paranamer-ant</module>
-        <module>paranamer-maven-plugin</module>
-        <module>paranamer-integration-tests</module>
         <module>paranamer-distribution</module>
         
     </modules>

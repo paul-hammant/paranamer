@@ -1,9 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.thoughtworks.paranamer</groupId>
+  <parent>
+    <groupId>com.thoughtworks.paranamer</groupId>
+    <artifactId>paranamer-parent-debug</artifactId>
+    <version>2.3-debug-SNAPSHOT</version>
+  </parent>
   <artifactId>paranamer</artifactId>
-  <name>ParaNamer Core</name>
-  <version>2.3-debug-SNAPSHOT</version>
+  <name>ParaNamer Core (debug edition)</name>
   <dependencies>
 	<dependency>
 	    <groupId>org.jmock</groupId>
