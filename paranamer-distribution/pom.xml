@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
-    <version>2.4-SNAPSHOT</version>
+    <version>2.3</version>
   </parent>
   <artifactId>paranamer-distribution</artifactId>
   <packaging>pom</packaging>
@@ -63,22 +62,17 @@
             <configuration>
               <tasks>
                 <delete includeEmptyDirs="true">
-                  <fileset dir="${project.build.directory}/site"
-                    includes="**/META-INF/*" />
-                  <fileset dir="${project.build.directory}/site"
-                    includes="**/META-INF" />
+                  <fileset dir="${project.build.directory}/site" includes="**/META-INF/*" />
+                  <fileset dir="${project.build.directory}/site" includes="**/META-INF" />
                 </delete>
                 <mkdir dir="${project.build.directory}/docs" />
-                <copy todir="${project.build.directory}/docs"
-                  overwrite="true" failonerror="false">
+                <copy todir="${project.build.directory}/docs" overwrite="true" failonerror="false">
                   <fileset dir="${basedir}">
                     <include name="target/site/**" />
                     <exclude name="target/site" />
                   </fileset>
                   <filtermapper>
-                    <replacestring
-                      from="target${file.separator}site${file.separator}"
-                      to="${file.separator}" />
+                    <replacestring from="target${file.separator}site${file.separator}" to="${file.separator}" />
                   </filtermapper>
                 </copy>
               </tasks>
