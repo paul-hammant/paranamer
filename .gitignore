@@ -1,8 +1,8 @@
+target/
+.classpath
+.project
+.settings/
 *.iml
 *.ipr
 *.iws
-<<<<<<< HEAD
 target
-=======
-target
->>>>>>> 4cd373d... fixed file handle leak - thanks to Johann Burkard
