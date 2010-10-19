@@ -55,7 +55,6 @@ import java.util.Map;
  * An ASM-based implementation of Paranamer. It relies on debug information compiled
  * with the "-g" javac option to retrieve parameter names.
  * <p/>
- * Portions of this source file are a fork of ASM.
  *
  * @author Guilherme Silveira
  * @author Paul Hammant
