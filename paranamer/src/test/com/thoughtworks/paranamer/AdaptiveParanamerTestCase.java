@@ -69,6 +69,7 @@ public class AdaptiveParanamerTestCase {
         }});
         String[] paramNames = paranamer.lookupParameterNames(one, true);
         Assert.assertEquals(Arrays.asList("a", "b"), Arrays.asList(paramNames));
+        System.out.println("-->" + paranamer.toString());
     }
 
     @Test
