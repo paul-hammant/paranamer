@@ -77,26 +77,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.xsite</groupId>
-        <artifactId>xsite-maven-plugin</artifactId>
-        <version>1.0</version>
-        <configuration>
-          <sourceDirectoryPath>${basedir}/src/site</sourceDirectoryPath>
-          <sitemapPath>content/sitemap.xml</sitemapPath>
-          <skinPath>templates/skin.html</skinPath>
-          <resourcePaths>resources</resourcePaths>
-          <outputDirectoryPath>${project.build.directory}/site</outputDirectoryPath>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.2-beta-5</version>
         <executions>
