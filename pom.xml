@@ -14,9 +14,7 @@
     <description>Paranamer allows runtime access to constructor and method parameter names for Java classes</description>
     <url>http://paranamer.codehaus.org</url>
     <modules>
-        <module>paranamer</module>
-        <module>paranamer-distribution</module>
-        
+        <module>paranamer</module>        
     </modules>
     <dependencyManagement>
         <dependencies>
