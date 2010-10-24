@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>Introduction</title>
+<title>Introduction to Paranamer</title>
 </head>
 <body>
 
@@ -33,7 +33,7 @@ method called <span class="code-object">'lookupParameterNames</span>' that retur
   <div class="codeContent">
     <pre class="code-java">
  Method method = Foo.class.getMethod(...);<br>
- Paranamer paranamer = new CachingParanamer();<br>
+ Paranamer paranamer = new DefaultParanamer();<br>
  String[] parameterNames = paranamer.lookupParameterNames(method) // throws ParameterNamesNotFoundException if not found<br>
  // or ...<br>
  parameterNames = paranamer.lookupParameterNames(method, false) // will return null if not found
@@ -44,7 +44,7 @@ method called <span class="code-object">'lookupParameterNames</span>' that retur
 <p>ParaNamer does not have any runtime jar dependencies while looking
   up parameter info previously generated that's been zipped into a jar.</p>
 <h2>DefaultParanamer</h2>
-<p>DefaultParanamer tries to read parameter name data from an extra public static field on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar. </p>
+<p>DefaultParanamer tries to read parameter name data from an extra public static field on the class. This field need to be added after compilation of the class, and before you zip the resulting classes in a jar. </p>
 <p>The static field essentially looks like the following. You really do not need to know this unless your going to make something compatible with Paranamer:</p>
 <div class="code">
 <div class="codeContent">
@@ -55,6 +55,7 @@ method to that __PARANAMER_DATA field.&nbsp;&nbsp; See below.</p>
 <h2>BytecodeReadingParanamer</h2>
 <p>If generating meta data for parameter names at compile time
   is not for you, try class BytecodeReadingParanamer as a runtime only solution. This uses a cut down forked and cut-down version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for  CachingParanamer when DefaultParanamer reports that there is no meta data for a class.</p>
+<p>As it happens Groovy classes loaded through <a href="http://groovy.codehaus.org/Embedding+Groovy">parseClass</a> are compatible with Paranamer.  That said, <a href="http://groovy.codehaus.org/api/groovy/lang/GroovyClassLoader.html">GroovyClassLoader</a> does not make the bytecode available by default after loading.  Take a look at the way this was <a href="http://github.com/jbehave/jbehave-core/blob/master/jbehave-groovy/src/main/java/org/jbehave/core/configuration/groovy/BytecodeGroovyClassLoader.java">solved by the JBehave team</a>.</p>
 <h2>AnnotationParanamer</h2>
 <p>AnnotationParanamer uses the @Named annotation from JSR 330 and extracts names pertinent to parameters from that.</p>  
 <div class="code">
@@ -70,13 +71,13 @@ public static class Something {
 <p>If you have an alternate annotation to @Named, then you can specify that in a subclass of AnnotationParanamer that overrides two methods isNamed and getNamedValue.  Your overridden methods should do the equivalent of 'return ann instanceof Named;' and 'return ((Named) ann).value();' respectively.</p>
 <p>If you are using @Named from JSR 330, you will need it in your classpath of course.  In Maven terms, Paranamer is built with the 'javax.atinject' module as an optional dependency.</p>
 <h2>CachingParanamer</h2>
-<p>CachingParanamer  stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.</p>
+<p>CachingParanamer  stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.  Pass in another Paranamer implementation via constructor so that the CachingParanamer can defer to it for cache misses.</p>
 <h2>AdaptiveParanamer</h2>
 <p>AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses DefaultParanamer with ByteCodeReadingParanamer as its contingency.</p>
-<h1>Creating Parameter Name data and modifying compiled class files</h1>
-<h2>Optional Generation of Parameter Name data with Ant<br>
+<h1>Generating Parameter Name Data for DefaultParanamer</h1>
+<p>This is only needed for DefaultParanamer as BytecodeReadingParanamer relies on the presence of a debug table in bytecode.  It is also only a solution for Java source, as Groovy source is not compatible with the underlying technologies.</p>
+<h2>With Ant<br>
 </h2>
-<p>This for DefaultParanamer usage of course, as BytecodeReadingParanamer does not need it.</p>
 <p>You need to download:</p>
 <ul>
   <li><a
@@ -100,8 +101,7 @@ and declare in your Ant script the following after &lt;javac/&gt;
 </div>
 <p>Classes are changed to have an extra static String member variable that contains the member functions and their parameter names. Be sure to zip them up in to you final jar.<br>
 </p>
-<h2>Optional Generation of Parameter Name data with Maven 2<br>
-</h2>
+<h2>With Maven2 or Maven3</h2>
 For Maven, configuration is simpler. Just add this to the build/plugins section of your pom.xml:
 <br>
 <br>
@@ -114,8 +114,7 @@ For Maven, configuration is simpler. Just add this to the build/plugins section 
 <br>
 The classes in the ultimate jar file will automatically be made with parameter name data.<br>
 <h2>Using Paranamer in your application without depending on Paranamer's jar</h2>
-<p>There are already too many jar's for day to day Java development
-right?&nbsp; Simply consume the runtime paranamer jar into your project's jar using the Maven2 'shade' plugin.<br>
+<p>Many people feel there are already too many jars required for day to day Java development. If you feel this way, simply consume the main paranamer jar into your project's jar using the <a href="http://maven.apache.org/plugins/maven-shade-plugin/">Maven2 shade plugin</a>.<br>
 </p>
 <div class="code">
 <div class="codeHeader"><b>Put in your POM.xml file</b></div>
