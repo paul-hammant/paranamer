@@ -191,6 +191,28 @@ public class BytecodeReadingParanamer implements Paranamer {
             return collector;
         }
 
+//        {
+//           String s = argumentTypes[i].getClassName();
+//           // array notation needs cleanup.
+//           if (s.endsWith("[]")) {
+//               String prefix = s.substring(0, s.length() - 2);
+//
+//               // adufilie: added brackets variable and while loop to fix bug with multi-dimensional arrays.
+//               String brackets = "[";
+//               while (prefix.endsWith("[]"))
+//               {
+//                   prefix = prefix.substring(0, prefix.length() - 2);
+//                   brackets += "[";
+//               }
+//
+//               if (primitives.containsKey(prefix)) {
+//                   s = brackets + primitives.get(prefix);
+//               } else {
+//                   s = brackets + "L" + prefix + ";";
+//               }
+//           }
+//           return s;        }
+
         private String correctTypeName(Type[] argumentTypes, int i) {
             String s = argumentTypes[i].getClassName();
             // array notation needs cleanup.

@@ -142,6 +142,13 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
     }
 
     @Test
+    public void testRetrievesParameterNamesFromMethodWithTwoDimensionalPrimitiveArray() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("twoDimensionalArray", new Class[]{long[][].class});
+        assertThatParameterNamesMatch("long2D", asm.lookupParameterNames(method));
+    }
+
+    @Test
     public void testRetrievesParameterNamesFromIntArrayMethod() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Method method = SpecificMethodSearchable.class.getMethod("intArray", new Class[] { int[].class });
@@ -255,6 +262,8 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         public void twoDimensionalArray(String[][] strings2D) {
         }
 
+        public void twoDimensionalArray(long[][] long2D) {
+        }
 
         public void intArray(int[] ints) {
         }
