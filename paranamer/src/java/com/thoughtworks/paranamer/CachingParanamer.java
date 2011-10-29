@@ -69,17 +69,12 @@ public class CachingParanamer implements Paranamer {
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
-        if(methodCache.containsKey(methodOrCtor)) {
-            // refer PARANAMER-19
-            String[] strings = methodCache.get(methodOrCtor);
-            if (strings != null) {
-                return strings;
-            }
+        String[] names = methodCache.get(methodOrCtor);
+        // refer PARANAMER-19
+        if(names == null) {
+            names = delegate.lookupParameterNames(methodOrCtor, throwExceptionIfMissing);
+            methodCache.put(methodOrCtor, names);
         }
-
-        String[] names = delegate.lookupParameterNames(methodOrCtor, throwExceptionIfMissing);
-        methodCache.put(methodOrCtor, names);
-
         return names;
     }
 
