@@ -107,6 +107,14 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
     }
 
     @Test
+    public void testRetrievesParameterNamesFromMethodWithLongs() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod("hasLongs",
+                new Class[] { long[].class }));
+        assertThatParameterNamesMatch("l", names);
+    }
+
+    @Test
     public void testRetrievesParameterNamesFromMethodWithDoubleMixedInTheParameters() throws SecurityException,
             NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
@@ -246,6 +254,10 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
 
         public void hasLong(long l) {
+
+        }
+
+        public void hasLongs(long[] l) {
 
         }
 
