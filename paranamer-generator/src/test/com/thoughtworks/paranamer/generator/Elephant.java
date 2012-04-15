@@ -45,4 +45,9 @@ public class Elephant {
     public void setMap(Map<?,?> map) {
         this.map = map;
     }
+
+    public long longArray(long[] longs) {
+        return longs[0] + longs[1];
+    }
+
 }

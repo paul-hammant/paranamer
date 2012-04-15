@@ -29,15 +29,14 @@
  */
 package com.thoughtworks.paranamer.generator;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-
-import junit.framework.TestCase;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 public class QDoxParanamerTestCase {
 
@@ -66,6 +65,7 @@ public class QDoxParanamerTestCase {
         Assert.assertNotNull(f);
         String s1 = ((String) f.get(null));
         String s2 = ("<init> java.util.Map map \n" +
+                        "longArray long[] longs \n" +
                         "setMap java.util.Map map \n");
         Assert.assertEquals(s2, s1);
     }
