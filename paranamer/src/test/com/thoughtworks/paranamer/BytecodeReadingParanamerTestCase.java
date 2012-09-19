@@ -99,11 +99,35 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
     }
 
     @Test
+    public void testRetrievesParameterNamesFromMethodWithShort() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod("hasShort",
+                new Class[] { short.class }));
+        assertThatParameterNamesMatch("s", names);
+    }
+
+    @Test
     public void testRetrievesParameterNamesFromMethodWithLong() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod("hasLong",
                 new Class[] { long.class }));
         assertThatParameterNamesMatch("l", names);
+    }
+
+    @Test
+    public void testRetrievesParameterNamesFromMethodWithLongs() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod("hasLongs",
+                new Class[] { long[].class }));
+        assertThatParameterNamesMatch("l", names);
+    }
+
+    @Test
+    public void testRetrievesParameterNamesFromMethodWithShorts() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        String[] names = asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod("hasShorts",
+                new Class[] { short[].class }));
+        assertThatParameterNamesMatch("s", names);
     }
 
     @Test
@@ -239,6 +263,18 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
 
         public void hasLong(long l) {
+
+        }
+
+        public void hasShort(short s) {
+
+        }
+
+        public void hasLongs(long[] l) {
+
+        }
+
+        public void hasShorts(short[] s) {
 
         }
 
