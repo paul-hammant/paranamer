@@ -140,7 +140,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
     }
 
     @Test
-    public void testDoesNotRetrieveParagmeterNamedArg0() throws SecurityException, NoSuchMethodException {
+    public void testDoesNotRetrieveParameterNamedArg0() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         try {
         	asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
@@ -184,6 +184,34 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Method method = SpecificMethodSearchable.class.getMethod("doubleArray", new Class[] { double[].class });
         assertThatParameterNamesMatch("doubles", asm.lookupParameterNames(method));
+    }
+
+    @Test
+    public void testRetrievesParameterNamesFromByteArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("byteArray", new Class[] { byte[].class });
+        assertThatParameterNamesMatch("bytes", asm.lookupParameterNames(method));
+    }
+
+    @Test
+    public void testRetrievesParameterNamesFromBooleanArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("booleanArray", new Class[] { boolean[].class });
+        assertThatParameterNamesMatch("flags", asm.lookupParameterNames(method));
+    }
+
+    @Test
+    public void testRetrievesParameterNamesFromCharArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("charArray", new Class[] { char[].class });
+        assertThatParameterNamesMatch("chars", asm.lookupParameterNames(method));
+    }
+
+    @Test
+    public void testRetrievesParameterNamesFromFloatArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("floatArray", new Class[] { float[].class });
+        assertThatParameterNamesMatch("floats", asm.lookupParameterNames(method));
     }
 
     @Test
@@ -242,7 +270,6 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
     }
 
     public static class SpecificMethodSearchable {
-
         String foo;
         int bar = 11;
 
@@ -263,30 +290,24 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
 
         public static void staticWithParameter(int i) {
-
         }
 
         public void noParameters() {
         }
 
         public void hasLong(long l) {
-
         }
 
         public void hasShort(short s) {
-
         }
 
         public void hasLongs(long[] l) {
-
         }
 
         public void hasShorts(short[] s) {
-
         }
 
         public void mixedParameters(double d, String s) {
-
         }
 
         public void unsupportedParameterNames(String arg0) {
@@ -307,17 +328,30 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         public void doubleArray(double[] doubles) {
         }
 
+        public void byteArray(byte[] bytes) {
+        }
+
+        public void booleanArray(boolean[] flags) {
+        }
+
+        public void charArray(char[] chars) {
+        }
+
+        public void floatArray(float[] floats) {
+        }
+
         public void otherArray(Other[] others) {
         }
     }
-    public static class Other{}
 
+    public static class Other {
+    }
 
     public static class SearchableTypeByMethodName {
         public void overloaded(int a) {
         }
+
         public void overloaded(String b) {
         }
     }
-
 }
