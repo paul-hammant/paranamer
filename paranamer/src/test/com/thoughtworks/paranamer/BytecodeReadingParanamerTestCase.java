@@ -187,6 +187,13 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
     }
 
     @Test
+    public void testRetrievesParameterNamesFromByteArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("byteArray", new Class[] { byte[].class });
+        assertThatParameterNamesMatch("bytes", asm.lookupParameterNames(method));
+    }
+
+    @Test
     public void testRetrievesParameterNamesFromOtherArrayMethod() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Method method = SpecificMethodSearchable.class.getMethod("otherArray", new Class[] { Other[].class });
@@ -305,6 +312,9 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
 
         public void doubleArray(double[] doubles) {
+        }
+
+        public void byteArray(byte[] bytes) {
         }
 
         public void otherArray(Other[] others) {
