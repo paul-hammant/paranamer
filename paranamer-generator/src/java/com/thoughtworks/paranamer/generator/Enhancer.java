@@ -46,34 +46,26 @@ import org.objectweb.asm.Opcodes;
  */
 public class Enhancer implements Opcodes {
 
-	public void enhance(File classFile, String parameterNameData)
-			throws IOException {
+    public void enhance(File classFile, String parameterNameData) throws IOException {
+        byte[] classBytecode = addExtraStaticField(classFile, parameterNameData);
+        FileOutputStream os = new FileOutputStream(classFile);
+        os.write(classBytecode);
+        os.close();
+    }
 
-		byte[] classBytecode = addExtraStaticField(classFile, parameterNameData);
-		FileOutputStream os = new FileOutputStream(classFile);
-		os.write(classBytecode);
-		os.close();
-	}
+    private byte[] addExtraStaticField(File classFile, String parameterNameData) throws IOException {
+        InputStream inputStream = new FileInputStream(classFile);
+        ClassReader reader = new ClassReader(inputStream);
 
-	private byte[] addExtraStaticField(File classFile,
-			final String parameterNameData) throws IOException {
+        ClassWriter writer = new ClassWriter(reader, 0);
+        // TODO doc typo on page 21: recommended
+        AddFieldAdapter adapter = new AddFieldAdapter(writer, ACC_PUBLIC + ACC_FINAL + ACC_STATIC,
+                "__PARANAMER_DATA", "Ljava/lang/String;", parameterNameData);
 
-		InputStream inputStream = new FileInputStream(classFile);
-		ClassReader reader = new ClassReader(inputStream);
+        reader.accept(adapter, 0);
 
-		ClassWriter writer = new ClassWriter(reader, 0);
-		// TODO fix problem with inner classes, two classes in one classFile and
-		// so on...
-		// TODO doc typo on page 21: recommended
-
-		AddFieldAdapter adapter = new AddFieldAdapter(writer, ACC_PUBLIC
-				+ ACC_FINAL + ACC_STATIC, "__PARANAMER_DATA",
-				"Ljava/lang/String;", parameterNameData);
-
-		reader.accept(adapter, 0);
-
-		inputStream.close();
-		return writer.toByteArray();
-	}
+        inputStream.close();
+        return writer.toByteArray();
+    }
 
 }
