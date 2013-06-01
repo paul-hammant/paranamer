@@ -134,7 +134,16 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     private String getParameterTypes(JavaParameter[] parameters) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < parameters.length; i++) {
-            sb.append(parameters[i].getType());
+
+            // This code is a bit dodgy to ensure that both inner classes and arrays shows up correctly.
+            // It is based in the Type.toString() method, but using getFullyQualifiedName() instead of getValue().
+            Type t = parameters[i].getType();
+            sb.append(t.getFullyQualifiedName());
+            int dimensions = t.getDimensions();
+            for (int d = 0; d < dimensions; d++) {
+                sb.append(BRACKETS);
+            }
+
             sb.append(comma(i, parameters.length));
         }
         return sb.toString();
