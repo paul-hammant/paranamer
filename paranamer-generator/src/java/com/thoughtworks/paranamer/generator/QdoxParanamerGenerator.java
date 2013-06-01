@@ -33,10 +33,11 @@ import com.thoughtworks.qdox.JavaDocBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
+import com.thoughtworks.qdox.model.Type;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * Qdox-based implementation of ParanamerGenerator which parses Java source files to processSourcePath
@@ -107,7 +108,7 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
 
         // processClasses line structure:  methodName paramTypes paramNames
         sb.append(methodName).append(SPACE);
-        if (paramTypes.length() > 0) {
+        if (parameters.length > 0) {
             formatParameterTypes(sb, parameters);
             sb.append(SPACE);
             formatParameterNames(sb, parameters);
@@ -116,14 +117,14 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         sb.append(NEWLINE);
     }
 
-    private void getParameterNames(StringBuilder sb, JavaParameter[] parameters) {
+    private void formatParameterNames(StringBuilder sb, JavaParameter[] parameters) {
         for (int i = 0; i < parameters.length; i++) {
             sb.append(parameters[i].getName());
             sb.append(comma(i, parameters.length));
         }
     }
 
-    private void getParameterTypes(StringBuilder sb, JavaParameter[] parameters) {
+    private void formatParameterTypes(StringBuilder sb, JavaParameter[] parameters) {
         for (int i = 0; i < parameters.length; i++) {
 
             // This code is a bit dodgy to ensure that both inner classes and arrays shows up correctly.
