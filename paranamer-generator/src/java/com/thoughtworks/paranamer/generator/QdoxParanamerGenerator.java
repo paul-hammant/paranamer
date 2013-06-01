@@ -52,6 +52,7 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     private static final String NEWLINE = "\n";
     private static final String COMMA = ",";
     private static final String EMPTY = "";
+    private static final String BRACKETS = "[]";
 
     public QdoxParanamerGenerator() {
     }
@@ -72,9 +73,7 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     public void processClasses(JavaClass[] classes, String outputPath) throws IOException {
         for (JavaClass javaClass : classes) {
             String content = addMethods(javaClass.getMethods());
-            // TODO problem with inner classes
             makeEnhancer().enhance(new File(outputPath, javaClass.getFullyQualifiedName().replace('.', File.separatorChar) + ".class"), content);
-
         }
     }
 
