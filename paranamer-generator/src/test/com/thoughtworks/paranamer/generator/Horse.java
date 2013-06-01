@@ -1,5 +1,5 @@
 /***
- *
++ *
  * Copyright (c) 2007 Paul Hammant
  * All rights reserved.
  *
@@ -29,25 +29,23 @@
  */
 package com.thoughtworks.paranamer.generator;
 
-import java.util.Map;
+public class Horse<E extends Elephant> {
+    private E dumbo;
 
-public class Elephant {
-    private Map<?, ?> map;
-
-    public Elephant(Map<?, ?> map) {
-        this.map = map;
+    public Horse(E dumbo) {
+        this.dumbo = dumbo;
     }
 
-    public Map<?, ?> getMap() {
-        return map;
+    public E getElephant() {
+        return dumbo;
     }
 
-    public void setMap(Map<?, ?> map) {
-        this.map = map;
+    public void setElephant(E dumboss) {
+        this.dumbo = dumboss;
     }
 
-    public long longArray(long[] longs) {
-        return longs[0] + longs[1];
+    public E[] elephantArrays(E[] theArrayParameter, String otherParameter) {
+        return theArrayParameter;
     }
 
 }

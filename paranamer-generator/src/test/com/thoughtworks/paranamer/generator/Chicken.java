@@ -29,25 +29,24 @@
  */
 package com.thoughtworks.paranamer.generator;
 
-import java.util.Map;
+class Fox {
+    public void foxMethod(int foxEatsChicken) {
+    }
+}
 
-public class Elephant {
-    private Map<?, ?> map;
-
-    public Elephant(Map<?, ?> map) {
-        this.map = map;
+public class Chicken {
+    public void aMethod(String aParamater) {
     }
 
-    public Map<?, ?> getMap() {
-        return map;
+    // Exports a non-public class through a public API, but we don't care about that.
+    public void strangeMethod(Fox aFox) {
+    }
+}
+
+class Dog {
+    public void woof(String woofWoof) {
     }
 
-    public void setMap(Map<?, ?> map) {
-        this.map = map;
+    public void crazyMethod(Chicken aChicken) {
     }
-
-    public long longArray(long[] longs) {
-        return longs[0] + longs[1];
-    }
-
 }

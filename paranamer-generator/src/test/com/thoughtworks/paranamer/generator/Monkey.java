@@ -29,25 +29,19 @@
  */
 package com.thoughtworks.paranamer.generator;
 
-import java.util.Map;
+public class Monkey {
 
-public class Elephant {
-    private Map<?, ?> map;
-
-    public Elephant(Map<?, ?> map) {
-        this.map = map;
+    public static class Banana {
+        public void bananaMethod(int number) {
+        }
     }
 
-    public Map<?, ?> getMap() {
-        return map;
+    public class Avocado {
     }
 
-    public void setMap(Map<?, ?> map) {
-        this.map = map;
+    public Monkey(Banana monkeyEatsBanana) {
     }
 
-    public long longArray(long[] longs) {
-        return longs[0] + longs[1];
+    public void aMethod(Avocado theInnerAvocado) {
     }
-
 }

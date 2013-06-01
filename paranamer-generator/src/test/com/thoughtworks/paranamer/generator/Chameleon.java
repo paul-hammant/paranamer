@@ -29,25 +29,13 @@
  */
 package com.thoughtworks.paranamer.generator;
 
-import java.util.Map;
+/**
+ * This class has evil purposes. It is called chameleon, though it is in the Goat.java class.
+ * It's purpose is to check what happens when the file name does not matches the class name.
+ */
+class Chameleon {
 
-public class Elephant {
-    private Map<?, ?> map;
-
-    public Elephant(Map<?, ?> map) {
-        this.map = map;
+    public int thisIsCrazy(Monkey veryCrazy) {
+        return 0;
     }
-
-    public Map<?, ?> getMap() {
-        return map;
-    }
-
-    public void setMap(Map<?, ?> map) {
-        this.map = map;
-    }
-
-    public long longArray(long[] longs) {
-        return longs[0] + longs[1];
-    }
-
 }
