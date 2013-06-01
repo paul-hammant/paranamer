@@ -45,6 +45,7 @@ import java.util.*;
  * @author Paul Hammant
  * @author Mauro Talevi
  * @author Guilherme Silveira
+ * @author Victor Williams Stafusa da Silva
  */
 public class QdoxParanamerGenerator implements ParanamerGenerator {
 
@@ -73,7 +74,8 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
     public void processClasses(JavaClass[] classes, String outputPath) throws IOException {
         for (JavaClass javaClass : classes) {
             String content = addMethods(javaClass.getMethods());
-            makeEnhancer().enhance(new File(outputPath, javaClass.getFullyQualifiedName().replace('.', File.separatorChar) + ".class"), content);
+            File f = new File(outputPath, javaClass.getFullyQualifiedName().replace('.', File.separatorChar) + ".class");
+            makeEnhancer().enhance(f, content);
         }
     }
 
@@ -83,55 +85,45 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
 
     private String addMethods(JavaMethod[] methods) {
         Arrays.sort(methods);
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (JavaMethod javaMethod : methods) {
-            if (!Arrays.asList(javaMethod.getModifiers()).contains("private")
-                    && javaMethod.getParameters().length > 0) {
-                buffer.append(addMethod(javaMethod));
+            if (!Arrays.asList(javaMethod.getModifiers()).contains("private") && javaMethod.getParameters().length > 0) {
+                addMethod(buffer, javaMethod);
             }
         }
         return buffer.toString();
     }
 
-    private String addMethod(JavaMethod method) {
+    private void addMethod(StringBuilder sb, JavaMethod method) {
         JavaParameter[] parameters = method.getParameters();
-        return format(method, parameters);
+        formatMethod(sb, method, parameters);
     }
 
-    private String format(JavaMethod method, JavaParameter[] parameters) {
-        StringBuffer sb = new StringBuffer();
+    private void formatMethod(StringBuilder sb, JavaMethod method, JavaParameter[] parameters) {
         String methodName = method.getName();
         if (method.isConstructor()) {
             methodName = "<init>";
         }
-        String parameterTypes = getParameterTypes(parameters);
-        sb.append(formatLine(methodName, parameterTypes, getParameterNames(parameters)));
-        return sb.toString();
-    }
 
-    private String formatLine(String methodName, String paramTypes, String paramNames){
-        StringBuffer sb = new StringBuffer();
         // processClasses line structure:  methodName paramTypes paramNames
         sb.append(methodName).append(SPACE);
-        if ( paramTypes.length() > 0 ) {
-            sb.append(paramTypes.trim()).append(SPACE);
-            sb.append(paramNames.trim()).append(SPACE);
+        if (paramTypes.length() > 0) {
+            formatParameterTypes(sb, parameters);
+            sb.append(SPACE);
+            formatParameterNames(sb, parameters);
+            sb.append(SPACE);
         }
         sb.append(NEWLINE);
-        return sb.toString();
     }
 
-    private String getParameterNames(JavaParameter[] parameters) {
-        StringBuffer sb = new StringBuffer();
+    private void getParameterNames(StringBuilder sb, JavaParameter[] parameters) {
         for (int i = 0; i < parameters.length; i++) {
             sb.append(parameters[i].getName());
             sb.append(comma(i, parameters.length));
         }
-        return sb.toString();
     }
 
-    private String getParameterTypes(JavaParameter[] parameters) {
-        StringBuffer sb = new StringBuffer();
+    private void getParameterTypes(StringBuilder sb, JavaParameter[] parameters) {
         for (int i = 0; i < parameters.length; i++) {
 
             // This code is a bit dodgy to ensure that both inner classes and arrays shows up correctly.
@@ -145,7 +137,6 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
 
             sb.append(comma(i, parameters.length));
         }
-        return sb.toString();
     }
 
     private String comma(int index, int size) {
