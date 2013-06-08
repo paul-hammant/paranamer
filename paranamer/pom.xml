@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent-debug</artifactId>
-    <version>2.5.4-debug-SNAPSHOT</version>
+    <version>2.5.3-debug-SNAPSHOT</version>
   </parent>
   <artifactId>paranamer</artifactId>
   <name>ParaNamer Core (debug edition)</name>
