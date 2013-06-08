@@ -30,22 +30,17 @@
 
 package com.thoughtworks.paranamer;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-import org.jmock.Expectations;
-import org.jmock.Mockery;
-import org.jmock.integration.junit4.JMock;
-import org.jmock.integration.junit4.JUnit4Mockery;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-@RunWith(JMock.class)
 public class AdaptiveParanamerTestCase {
 
-    Mockery context = new JUnit4Mockery();
 
     Method one = One.class.getMethods()[0];
 
@@ -56,17 +51,14 @@ public class AdaptiveParanamerTestCase {
     @Test
     public void testLookupOfParameterNamesWhenPrimaryDoesNotHaveItButSecondaryDoes() {
 
-        final Paranamer primary = context.mock(Paranamer.class, "primary");
-        final Paranamer fallback = context.mock(Paranamer.class, "fallback");
+        final Paranamer primary = mock(Paranamer.class);
+        final Paranamer fallback = mock(Paranamer.class);
 
         AdaptiveParanamer paranamer = new AdaptiveParanamer(primary, fallback);
 
-        context.checking(new Expectations() {{
-            oneOf (primary).lookupParameterNames(one, false);
-            will(returnValue(Paranamer.EMPTY_NAMES));
-            oneOf (fallback).lookupParameterNames(one, true);
-            will(returnValue(new String[]{"a", "b"}));
-        }});
+        when(primary.lookupParameterNames(one, false)).thenReturn(Paranamer.EMPTY_NAMES);
+        when(fallback.lookupParameterNames(one, true)).thenReturn(new String[]{"a", "b"});
+
         String[] paramNames = paranamer.lookupParameterNames(one, true);
         Assert.assertEquals(Arrays.asList("a", "b"), Arrays.asList(paramNames));
         System.out.println("-->" + paranamer.toString());
@@ -74,15 +66,12 @@ public class AdaptiveParanamerTestCase {
 
     @Test
     public void testLookupOfParameterNamesWhenPrimaryDoesHaveIt() {
-        final Paranamer primary = context.mock(Paranamer.class, "primary");
-        final Paranamer fallback = context.mock(Paranamer.class, "fallback");
+        final Paranamer primary = mock(Paranamer.class);
+        final Paranamer fallback = mock(Paranamer.class);
 
         AdaptiveParanamer paranamer = new AdaptiveParanamer(primary, fallback);
 
-        context.checking(new Expectations() {{
-            oneOf (primary).lookupParameterNames(one, false);
-            will(returnValue(new String[]{"a", "b"}));
-        }});
+        when(primary.lookupParameterNames(one, false)).thenReturn(new String[]{"a", "b"});
 
         String[] paramNames = paranamer.lookupParameterNames(one, true);
         Assert.assertEquals(Arrays.asList("a", "b"), Arrays.asList(paramNames));
