@@ -12,13 +12,13 @@
  * are met:
  * 
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
+ *	notice, this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
+ *	notice, this list of conditions and the following disclaimer in the
+ *	documentation and/or other materials provided with the distribution.
  * 3. Neither the name of the copyright holders nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
+ *	contributors may be used to endorse or promote products derived from
+ *	this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -107,7 +107,9 @@ public class JavadocParanamer implements Paranamer {
 	private static final ParameterNamesNotFoundException CLASS_NOT_SUPPORTED =
 			new ParameterNamesNotFoundException("class not supported");
 
-	/** In the case of an archive, this stores the path up to the base of the Javadocs */
+	/**
+	 * In the case of an archive, this stores the path up to the base of the Javadocs
+	 */
 	private String base = null;
 	private final boolean isArchive;
 	private final boolean isDirectory;
@@ -120,26 +122,23 @@ public class JavadocParanamer implements Paranamer {
 	 */
 	private final URI location;
 
-	/** The packages which are supported by this instance. Contains Strings */
+	/**
+	 * The packages which are supported by this instance. Contains Strings
+	 */
 	private final Set<String> packages = new HashSet<String>();
 
 	/**
 	 * Construct a Javadoc reading implementation of {@link Paranamer} using a local
 	 * directory or zip archive as a source.
-	 * 
-	 * @param archiveOrDirectory
-	 *            either a zip archive of Javadocs or the base directory of Javadocs.
-	 * @throws IOException
-	 *             if there was an error when reading from either the archive or the
-	 *             package-list file.
-	 * @throws FileNotFoundException
-	 *             if the archive, directory or <code>package-list</code> file does not
-	 *             exist.
-	 * @throws NullPointerException
-	 *             if any parameter is null
-	 * @throws IllegalArgumentException
-	 *             If the given parameter is not a file or directory or if it is a file
-	 *             but not a javadoc zip archive.
+	 *
+	 * @param archiveOrDirectory either a zip archive of Javadocs or the base directory of Javadocs.
+	 * @throws java.io.IOException		   if there was an error when reading from either the archive or the
+	 *									   package-list file.
+	 * @throws java.io.FileNotFoundException if the archive, directory or <code>package-list</code> file does not
+	 *									   exist.
+	 * @throws NullPointerException		  if any parameter is null
+	 * @throws IllegalArgumentException	  If the given parameter is not a file or directory or if it is a file
+	 *									   but not a javadoc zip archive.
 	 */
 	public JavadocParanamer(File archiveOrDirectory) throws IOException {
 		if (archiveOrDirectory == null)
@@ -177,7 +176,7 @@ public class JavadocParanamer implements Paranamer {
 			isArchive = true;
 			isDirectory = false;
 			File archive = archiveOrDirectory;
-			if (!archive.getAbsolutePath().toLowerCase().endsWith(".zip"))
+			if (!archive.getAbsolutePath().toLowerCase().matches(".*\\.(zip|jar)$"))
 				throw new IllegalArgumentException(archive.getAbsolutePath()
 						+ " is not a zip file.");
 			// check that a "package-list" exists somewhere in the archive
@@ -228,12 +227,9 @@ public class JavadocParanamer implements Paranamer {
 
 	/**
 	 * @param url The URL of the JavaDoc
-	 * @throws IOException
-	 *             if there was a problem connecting to the remote Javadocs
-	 * @throws FileNotFoundException
-	 *             if the url does not have a <code>/package-list</code>
-	 * @throws NullPointerException
-	 *             if any parameter is null
+	 * @throws IOException		   if there was a problem connecting to the remote Javadocs
+	 * @throws FileNotFoundException if the url does not have a <code>/package-list</code>
+	 * @throws NullPointerException  if any parameter is null
 	 */
 	public JavadocParanamer(URL url) throws IOException {
 		if (url == null)
@@ -259,11 +255,11 @@ public class JavadocParanamer implements Paranamer {
 		}
 	}
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return lookupParameterNames(methodOrConstructor, true);
-    }
+	public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+		return lookupParameterNames(methodOrConstructor, true);
+	}
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
+	public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
 		if (methodOrConstructor == null)
 			throw new NullPointerException();
 
@@ -291,29 +287,29 @@ public class JavadocParanamer implements Paranamer {
 		try {
 			String[] names = getParameterNames(klass, name, types);
 			if (names == null) {
-                if (throwExceptionIfMissing) {
-                    throw new ParameterNamesNotFoundException(
-					    methodOrConstructor.toString());
-                } else {
-                    return Paranamer.EMPTY_NAMES;
-                }
-            }
-            return names;
+				if (throwExceptionIfMissing) {
+					throw new ParameterNamesNotFoundException(
+							methodOrConstructor.toString());
+				} else {
+					return Paranamer.EMPTY_NAMES;
+				}
+			}
+			return names;
 		} catch (IOException e) {
-            if (throwExceptionIfMissing) {
-                throw new ParameterNamesNotFoundException(
-	    			methodOrConstructor.toString() + " due to an I/O error: "
-		    				+ e.getMessage());
-            } else {
-                return Paranamer.EMPTY_NAMES;
-            }
-        }
+			if (throwExceptionIfMissing) {
+				throw new ParameterNamesNotFoundException(
+						methodOrConstructor.toString() + " due to an I/O error: "
+								+ e.getMessage());
+			} else {
+				return Paranamer.EMPTY_NAMES;
+			}
+		}
 	}
 
 	// throws CLASS_NOT_SUPPORTED if the class file is not found in the javadocs
 	// return null if the parameter names were not found
 	private String[] getParameterNames(Class<?> klass,
-			String constructorOrMethodName, Class<?>[] types) throws IOException {
+									   String constructorOrMethodName, Class<?>[] types) throws IOException {
 		// silly request for names of a parameterless method/constructor!
 		if ((types != null) && (types.length == 0))
 			return new String[0];
@@ -342,7 +338,7 @@ public class JavadocParanamer implements Paranamer {
 			}
 		}
 		throw new RuntimeException(
-			"bug in JavadocParanamer. Should not reach here.");
+				"bug in JavadocParanamer. Should not reach here.");
 	}
 
 	/*
@@ -352,22 +348,22 @@ public class JavadocParanamer implements Paranamer {
 	 * chain. Don't forget to close the input!
 	 */
 	private String[] getParameterNames2(InputStream input,
-			String constructorOrMethodName, Class<?>[] types) throws IOException {
+										String constructorOrMethodName, Class<?>[] types) throws IOException {
 		String javadoc = streamToString(input);
 		input.close();
 
 		// String we're looking for is like
-		// 
+		//
 		// NAME="constructorOrMethodName(obj.ClassName, ...)"...noise...
 		// <DT><B>Parameters:</B><DD><CODE>parameter_name_1</CODE>...noise...
 		// <DD><CODE>parameter_name_2</CODE>...noise...
 		// ...
 		// <DD><CODE>parameter_name_N</CODE>...noise...
-		// 
+		//
 		// We cannot rely on the Parameters line existing as it depends on the author
 		// having correctly marked-up their code. The NAME element is auto-generated
 		// and should be checked for aggressively.
-		// 
+		//
 		// Also note that Javadoc parameter names may differ from the names in the source.
 
 		// we don't have Pattern/Matcher :-(
@@ -402,9 +398,35 @@ public class JavadocParanamer implements Paranamer {
 		for (int i = 0; i < types.length; i++) {
 			boolean find = matcherParams.find(start);
 			if (!find)
-				return Paranamer.EMPTY_NAMES;
+				return fallbackHack(javadoc, constructorOrMethodName, types);
 			start = matcherParams.end();
 			names[i] = matcherParams.group(1);
+		}
+		return names;
+	}
+
+	// sometimes (e.g. jlapack static methods) the pattern is different
+	private String[] fallbackHack(String javadoc, String method, Class<?>[] types) {
+		String[] names = new String[types.length];
+		int begin = javadoc.indexOf("METHOD SUMMARY");
+		Pattern pattern = Pattern.compile("\\Q>" + method + "</A></B>(\\E");
+		Matcher matcher = pattern.matcher(javadoc);
+		boolean matched = matcher.find(begin);
+		assert matched;
+		begin = matcher.end();
+		pattern = Pattern.compile("\\Q)</CODE>\\E");
+		matcher = pattern.matcher(javadoc);
+		matched = matcher.find(begin);
+		assert matched;
+		int end = matcher.start();
+		pattern = Pattern.compile("&nbsp;([^,]*)(,|$)");
+		matcher = pattern.matcher(javadoc);
+		matcher.region(begin, end);
+		int cnt = 0;
+		while (matcher.find()) {
+			String name = matcher.group(1);
+			names[cnt] = name;
+			cnt++;
 		}
 		return names;
 	}
