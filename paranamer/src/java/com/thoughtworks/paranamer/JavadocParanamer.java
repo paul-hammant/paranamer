@@ -65,7 +65,7 @@ public class JavadocParanamer implements Paranamer {
      */
     public JavadocParanamer(File archiveOrDirectory) throws IOException {
         if (!archiveOrDirectory.exists())
-            throw new FileNotFoundException("does not exist: " + archiveOrDirectory);
+            throw new FileNotFoundException(archiveOrDirectory.getAbsolutePath());
         if (archiveOrDirectory.isDirectory())
             provider = new DirJavadocProvider(archiveOrDirectory);
         else if (archiveOrDirectory.isFile())
@@ -136,7 +136,7 @@ public class JavadocParanamer implements Paranamer {
         BufferedReader buffered = new BufferedReader(reader);
         try {
             String line;
-            StringBuffer builder = new StringBuffer();
+            StringBuilder builder = new StringBuilder();
             while ((line = buffered.readLine()) != null) {
                 builder.append(line);
                 builder.append("\n");
