@@ -113,6 +113,22 @@ public class JavadocParanamer implements Paranamer {
         throw new UnsupportedOperationException();
     }
 
+    /* Some example patterns
+     *
+     * File#listFiles(FileFilter filter)
+     * =================================
+     *
+     * Java 4, 5 & 6
+     * -------------
+     *
+     * <CODE><B><A HREF="../../java/io/File.html#listFiles(java.io.FileFilter)">listFiles</A></B>(<A HREF="../../java/io/FileFilter.html" title="interface in java.io">FileFilter</A>&nbsp;filter)</CODE>
+     *
+     * Java 7
+     * ------
+     *
+     * <code><strong><a href="../../java/io/File.html#listFiles(java.io.FileFilter)">listFiles</a></strong>(<a href="../../java/io/FileFilter.html" title="interface in java.io">FileFilter</a>&nbsp;filter)</code>
+     *
+     */
     private String[] getMethodParameterNames(Method accessible, String raw) {
         throw new UnsupportedOperationException();
     }

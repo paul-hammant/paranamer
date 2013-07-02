@@ -58,12 +58,14 @@ public class JavadocParanamerTest {
     private static final String JAVADOCS_F2J = "http://icl.cs.utk.edu/projectsfiles/f2j/javadoc/";
 
     private static final String JAVADOCS_4_PARTIAL_DIR = "paranamer/src/java/resources/javadocs/jdk1.4/docs/api";
-    private static final String JAVADOCS_5_PARTIAL_DIR = "paranamer/src/java/resources/javadocs/jdk5/docs/api";
+    private static final String JAVADOCS_5_PARTIAL_DIR = "paranamer/src/java/resources/javadocs/jdk5/docs";
     private static final String JAVADOCS_6_PARTIAL_DIR = "paranamer/src/java/resources/javadocs/jdk6/docs/api";
+    private static final String JAVADOCS_7_PARTIAL_DIR = "paranamer/src/java/resources/javadocs/jdk7";
 
     private static final String JAVADOCS_4_PARTIAL_ZIP = "paranamer/src/java/resources/javadocs/jdk1.4.zip";
     private static final String JAVADOCS_5_PARTIAL_ZIP = "paranamer/src/java/resources/javadocs/jdk5.zip";
     private static final String JAVADOCS_6_PARTIAL_ZIP = "paranamer/src/java/resources/javadocs/jdk6.zip";
+    private static final String JAVADOCS_7_PARTIAL_ZIP = "paranamer/src/java/resources/javadocs/jdk7.zip";
 
     @Test(expected = FileNotFoundException.class)
     public void failsIfBadInput() throws Exception {
@@ -85,6 +87,7 @@ public class JavadocParanamerTest {
         testJavaIoFile(JAVADOCS_4_PARTIAL_DIR);
         testJavaIoFile(JAVADOCS_5_PARTIAL_DIR);
         testJavaIoFile(JAVADOCS_6_PARTIAL_DIR);
+        testJavaIoFile(JAVADOCS_7_PARTIAL_DIR);
     }
 
     @Test
@@ -92,6 +95,7 @@ public class JavadocParanamerTest {
         testJavaIoFile(JAVADOCS_4_PARTIAL_ZIP);
         testJavaIoFile(JAVADOCS_5_PARTIAL_ZIP);
         testJavaIoFile(JAVADOCS_6_PARTIAL_ZIP);
+        testJavaIoFile(JAVADOCS_7_PARTIAL_ZIP);
     }
 
     private void testJavaIoFile(String fileOrDirectory) throws Exception {
