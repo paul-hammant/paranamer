@@ -137,9 +137,6 @@ public class JavadocParanamer implements Paranamer {
      *
      */
     private String[] getMethodParameterNames(Method method, String raw) {
-        if (method.getParameterTypes().length == 0)
-            return new String[0];
-
         StringBuilder regex = new StringBuilder();
         regex.append(format(">\\Q%s\\E</A></B>\\(", method.getName()));
         for (Class klass : method.getParameterTypes()) {
@@ -149,16 +146,20 @@ public class JavadocParanamer implements Paranamer {
             ));
         }
         regex.append(format("\\)</CODE>"));
+        return getParameterNames(method, regex.toString(), method.getParameterTypes(), raw);
+    }
+
+    private String[] getParameterNames(AccessibleObject a, String regex, Class<?>[] types, String raw) {
+        if (types.length == 0)
+            return new String[0];
 
         Pattern pattern = Pattern.compile(regex.toString(), Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(raw);
 
         if (!matcher.find())
-            throw new ParameterNamesNotFoundException(method + ", " + regex);
+            throw new ParameterNamesNotFoundException(a + ", " + regex);
 
-//        System.out.println(matcher.group());
-
-        String[] names = new String[method.getParameterTypes().length];
+        String[] names = new String[types.length];
         for (int i = 0 ; i < names.length ; i++)
             names[i] = matcher.group(1 + i).trim();
 
