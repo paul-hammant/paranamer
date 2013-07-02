@@ -124,17 +124,27 @@ public class JavadocParanamer implements Paranamer {
     /* Some example patterns
      *
      * File#listFiles(FileFilter filter)
-     * File#(File parent, String child)
+     * File(File parent, String child)
+     * Collections#containsAll(Collection<?> c)
      * =================================
      * Java 4, 5 & 6
      * -------------
      * <CODE><B><A HREF="../../java/io/File.html#listFiles(java.io.FileFilter)">listFiles</A></B>(<A HREF="../../java/io/FileFilter.html" title="interface in java.io">FileFilter</A>&nbsp;filter)</CODE>
      * <CODE><B><A HREF="../../java/io/File.html#File(java.io.File, java.lang.String)">File</A></B>(<A HREF="../../java/io/File.html" title="class in java.io">File</A>&nbsp;parent, <A HREF="../../java/lang/String.html" title="class in java.lang">String</A>&nbsp;child)</CODE>
      *
+     * Java 4
+     * ------
+     * <CODE><B><A HREF="../../java/util/Collection.html#containsAll(java.util.Collection)">containsAll</A></B>(<A HREF="../../java/util/Collection.html" title="interface in java.util">Collection</A>&nbsp;c)</CODE>
+     *
+     * Java 5 & 6
+     * ----------
+     * <CODE><B><A HREF="../../java/util/Collection.html#containsAll(java.util.Collection)">containsAll</A></B>(<A HREF="../../java/util/Collection.html" title="interface in java.util">Collection</A>&lt;?&gt;&nbsp;c)</CODE>
+     *
      * Java 7
      * ------
      * <code><strong><a href="../../java/io/File.html#listFiles(java.io.FileFilter)">listFiles</a></strong>(<a href="../../java/io/FileFilter.html" title="interface in java.io">FileFilter</a>&nbsp;filter)</code>
      * <code><strong><a href="../../java/io/File.html#File(java.io.File, java.lang.String)">File</a></strong>(<a href="../../java/io/File.html" title="class in java.io">File</a>&nbsp;parent, <a href="../../java/lang/String.html" title="class in java.lang">String</a>&nbsp;child)</code>
+     * <code><strong><a href="../../java/util/Collection.html#containsAll(java.util.Collection)">containsAll</a></strong>(<a href="../../java/util/Collection.html" title="interface in java.util">Collection</a>&lt;?&gt;&nbsp;c)</code>
      */
     private String[] getParameterNames(AccessibleObject a, String name, Class<?>[] types, String raw) {
         if (types.length == 0)
@@ -144,7 +154,7 @@ public class JavadocParanamer implements Paranamer {
         regex.append(format(">\\Q%s\\E</A></(?>B|strong)>\\(", name));
         for (Class klass : types) {
             regex.append(format(
-                    ",?\\s*(?><A[^>]+>)?\\Q%s\\E(?></A>)?&nbsp;([^),\\s]+)",
+                    ",?\\s*(?><A[^>]+>)?\\Q%s\\E(?></A>)?(?>&lt;[^&]+&gt;)?&nbsp;([^),\\s]+)",
                     klass.getSimpleName()
             ));
         }
