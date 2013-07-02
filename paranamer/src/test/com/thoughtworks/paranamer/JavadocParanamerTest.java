@@ -98,41 +98,29 @@ public class JavadocParanamerTest {
         testJavaIoFile(JAVADOCS_7_PARTIAL_ZIP);
     }
 
-    private void testJavaIoFile(String fileOrDirectory) throws Exception {
-        Paranamer p = new JavadocParanamer(new File(fileOrDirectory));
-        testAccessible(p, File.class.getMethod("listFiles", FileFilter.class), "filter");
-        testAccessible(p, File.class.getConstructor(File.class, String.class), "parent", "child");
-    }
-
     @Test
     public void javadocs3() throws Exception {
-        testJavaUtilSample(new JavadocParanamer(new URL(JAVADOCS_3)));
+        testJavaUtilUrl(JAVADOCS_3);
     }
 
     @Test
     public void javadocs4() throws Exception {
-        testJavaUtilSample(new JavadocParanamer(new URL(JAVADOCS_4)));
+        testJavaUtilUrl(JAVADOCS_4);
     }
 
     @Test
     public void javadocs5() throws Exception {
-        Paranamer p = new JavadocParanamer(new URL(JAVADOCS_5));
-        testJavaUtilSample(p);
-        testJavaUtilGenericsSample(p);
+        testJavaUtilUrl(JAVADOCS_5);
     }
 
     @Test
     public void javadocs6() throws Exception {
-        Paranamer p = new JavadocParanamer(new URL(JAVADOCS_6));
-        testJavaUtilSample(p);
-        testJavaUtilGenericsSample(p);
+        testJavaUtilUrl(JAVADOCS_6);
     }
 
     @Test
     public void javadocs7() throws Exception {
-        Paranamer p = new JavadocParanamer(new URL(JAVADOCS_7));
-        testJavaUtilSample(p);
-        testJavaUtilGenericsSample(p);
+        testJavaUtilUrl(JAVADOCS_7);
     }
 
     @Test
@@ -143,8 +131,15 @@ public class JavadocParanamerTest {
                 "n", "dx", "_dx_offset", "incx");
     }
 
+    private void testJavaIoFile(String fileOrDirectory) throws Exception {
+        Paranamer p = new JavadocParanamer(new File(fileOrDirectory));
+        testAccessible(p, File.class.getMethod("listFiles", FileFilter.class), "filter");
+        testAccessible(p, File.class.getConstructor(File.class, String.class), "parent", "child");
+    }
 
-    private void testJavaUtilSample(Paranamer p) throws Exception {
+    private void testJavaUtilUrl(String url) throws Exception {
+        Paranamer p = new JavadocParanamer(new URL(url));
+
         // normal methods, collision in name
         testAccessible(p, Random.class.getMethod("nextInt", Integer.TYPE), "n");
         testAccessible(p, Random.class.getMethod("nextInt"));
@@ -154,9 +149,8 @@ public class JavadocParanamerTest {
 
         // constructor
         testAccessible(p, String.class.getConstructor(char[].class), "value");
-    }
 
-    private void testJavaUtilGenericsSample(Paranamer p) throws Exception {
+        // generics (Java 5+)
         testAccessible(p, Collection.class.getMethod("containsAll", Collection.class), "c");
     }
 
