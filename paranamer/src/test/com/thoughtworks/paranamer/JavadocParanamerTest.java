@@ -101,6 +101,7 @@ public class JavadocParanamerTest {
     private void testJavaIoFile(String fileOrDirectory) throws Exception {
         Paranamer p = new JavadocParanamer(new File(fileOrDirectory));
         testAccessible(p, File.class.getMethod("listFiles", FileFilter.class), "filter");
+        testAccessible(p, File.class.getConstructor(File.class, String.class), "parent", "child");
     }
 
     @Test

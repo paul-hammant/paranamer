@@ -114,46 +114,43 @@ public class JavadocParanamer implements Paranamer {
     }
 
     private String[] getConstructorParameterNames(Constructor<?> cons, String raw) {
-        if (cons.getParameterTypes().length == 0)
-            return new String[0];
+        return getParameterNames(cons, cons.getDeclaringClass().getSimpleName(), cons.getParameterTypes(), raw);
+    }
 
-        throw new UnsupportedOperationException();
+    private String[] getMethodParameterNames(Method method, String raw) {
+        return getParameterNames(method, method.getName(), method.getParameterTypes(), raw);
     }
 
     /* Some example patterns
      *
      * File#listFiles(FileFilter filter)
+     * File#(File parent, String child)
      * =================================
-     *
      * Java 4, 5 & 6
      * -------------
-     *
      * <CODE><B><A HREF="../../java/io/File.html#listFiles(java.io.FileFilter)">listFiles</A></B>(<A HREF="../../java/io/FileFilter.html" title="interface in java.io">FileFilter</A>&nbsp;filter)</CODE>
+     * <CODE><B><A HREF="../../java/io/File.html#File(java.io.File, java.lang.String)">File</A></B>(<A HREF="../../java/io/File.html" title="class in java.io">File</A>&nbsp;parent, <A HREF="../../java/lang/String.html" title="class in java.lang">String</A>&nbsp;child)</CODE>
      *
      * Java 7
      * ------
-     *
      * <code><strong><a href="../../java/io/File.html#listFiles(java.io.FileFilter)">listFiles</a></strong>(<a href="../../java/io/FileFilter.html" title="interface in java.io">FileFilter</a>&nbsp;filter)</code>
-     *
+     * <code><strong><a href="../../java/io/File.html#File(java.io.File, java.lang.String)">File</a></strong>(<a href="../../java/io/File.html" title="class in java.io">File</a>&nbsp;parent, <a href="../../java/lang/String.html" title="class in java.lang">String</a>&nbsp;child)</code>
      */
-    private String[] getMethodParameterNames(Method method, String raw) {
+    private String[] getParameterNames(AccessibleObject a, String name, Class<?>[] types, String raw) {
+        if (types.length == 0)
+            return new String[0];
+
         StringBuilder regex = new StringBuilder();
-        regex.append(format(">\\Q%s\\E</A></(?>B|strong)>\\(", method.getName()));
-        for (Class klass : method.getParameterTypes()) {
+        regex.append(format(">\\Q%s\\E</A></(?>B|strong)>\\(", name));
+        for (Class klass : types) {
             regex.append(format(
                     ",?\\s*(?><A[^>]+>)?\\Q%s\\E(?></A>)?&nbsp;([^),\\s]+)",
                     klass.getSimpleName()
             ));
         }
         regex.append(format("\\)</CODE>"));
-        return getParameterNames(method, regex.toString(), method.getParameterTypes(), raw);
-    }
 
-    private String[] getParameterNames(AccessibleObject a, String regex, Class<?>[] types, String raw) {
-        if (types.length == 0)
-            return new String[0];
-
-        Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile(regex.toString(), Pattern.MULTILINE | Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(raw);
 
         if (!matcher.find())
