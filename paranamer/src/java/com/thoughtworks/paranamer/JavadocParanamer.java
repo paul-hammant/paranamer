@@ -37,8 +37,12 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import static java.lang.String.format;
 
 
 /**
@@ -109,7 +113,10 @@ public class JavadocParanamer implements Paranamer {
         }
     }
 
-    private String[] getConstructorParameterNames(Constructor<?> accessible, String raw) {
+    private String[] getConstructorParameterNames(Constructor<?> cons, String raw) {
+        if (cons.getParameterTypes().length == 0)
+            return new String[0];
+
         throw new UnsupportedOperationException();
     }
 
@@ -129,8 +136,33 @@ public class JavadocParanamer implements Paranamer {
      * <code><strong><a href="../../java/io/File.html#listFiles(java.io.FileFilter)">listFiles</a></strong>(<a href="../../java/io/FileFilter.html" title="interface in java.io">FileFilter</a>&nbsp;filter)</code>
      *
      */
-    private String[] getMethodParameterNames(Method accessible, String raw) {
-        throw new UnsupportedOperationException();
+    private String[] getMethodParameterNames(Method method, String raw) {
+        if (method.getParameterTypes().length == 0)
+            return new String[0];
+
+        StringBuilder regex = new StringBuilder();
+        regex.append(format(">\\Q%s\\E</A></B>\\(", method.getName()));
+        for (Class klass : method.getParameterTypes()) {
+            regex.append(format(
+                    ",?\\s*(?><A[^>]+>)?\\Q%s\\E(?></A>)?&nbsp;([^),\\s]+)",
+                    klass.getSimpleName()
+            ));
+        }
+        regex.append(format("\\)</CODE>"));
+
+        Pattern pattern = Pattern.compile(regex.toString(), Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(raw);
+
+        if (!matcher.find())
+            throw new ParameterNamesNotFoundException(method + ", " + regex);
+
+//        System.out.println(matcher.group());
+
+        String[] names = new String[method.getParameterTypes().length];
+        for (int i = 0 ; i < names.length ; i++)
+            names[i] = matcher.group(1 + i).trim();
+
+        return names;
     }
 
     //////////// CONVENIENCE METHODS ////////////

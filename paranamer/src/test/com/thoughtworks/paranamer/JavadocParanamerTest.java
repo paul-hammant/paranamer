@@ -57,15 +57,15 @@ public class JavadocParanamerTest {
 
     private static final String JAVADOCS_F2J = "http://icl.cs.utk.edu/projectsfiles/f2j/javadoc/";
 
-    private static final String JAVADOCS_4_PARTIAL_DIR = "paranamer/src/java/resources/javadocs/jdk1.4/docs/api";
-    private static final String JAVADOCS_5_PARTIAL_DIR = "paranamer/src/java/resources/javadocs/jdk5/docs";
-    private static final String JAVADOCS_6_PARTIAL_DIR = "paranamer/src/java/resources/javadocs/jdk6/docs/api";
-    private static final String JAVADOCS_7_PARTIAL_DIR = "paranamer/src/java/resources/javadocs/jdk7";
+    private static final String JAVADOCS_4_PARTIAL_DIR = "paranamer/src/resources/javadocs/jdk1.4/docs";
+    private static final String JAVADOCS_5_PARTIAL_DIR = "paranamer/src/resources/javadocs/jdk5/docs";
+    private static final String JAVADOCS_6_PARTIAL_DIR = "paranamer/src/resources/javadocs/jdk6/docs/api";
+    private static final String JAVADOCS_7_PARTIAL_DIR = "paranamer/src/resources/javadocs/jdk7";
 
-    private static final String JAVADOCS_4_PARTIAL_ZIP = "paranamer/src/java/resources/javadocs/jdk1.4.zip";
-    private static final String JAVADOCS_5_PARTIAL_ZIP = "paranamer/src/java/resources/javadocs/jdk5.zip";
-    private static final String JAVADOCS_6_PARTIAL_ZIP = "paranamer/src/java/resources/javadocs/jdk6.zip";
-    private static final String JAVADOCS_7_PARTIAL_ZIP = "paranamer/src/java/resources/javadocs/jdk7.zip";
+    private static final String JAVADOCS_4_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk1.4.zip";
+    private static final String JAVADOCS_5_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk5.zip";
+    private static final String JAVADOCS_6_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk6.zip";
+    private static final String JAVADOCS_7_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk7.zip";
 
     @Test(expected = FileNotFoundException.class)
     public void failsIfBadInput() throws Exception {
