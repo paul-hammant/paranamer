@@ -154,7 +154,7 @@ public class JavadocParanamer implements Paranamer {
         regex.append(format(">\\Q%s\\E</A></(?:B|strong)>\\(", name));
         for (Class klass : types) {
             regex.append(format(
-                    ",?\\s*(?:<A[^>]+>)?\\Q%s\\E(?:</A>)?(?:&lt;[^&]+&gt;)?&nbsp;([^),\\s]+)",
+                    ",?\\s*(?:<A[^>]+>)?[\\w.]*\\Q%s\\E(?:</A>)?(?:&lt;[^&]+&gt;)?&nbsp;([^),\\s]+)",
                     klass.getSimpleName()
             ));
         }
