@@ -78,13 +78,15 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
         paranamer = new JavadocParanamer(new File(JAVADOCS_PARANAMER_FILE));
     }
 
+    @Test
     @Ignore("java.lang.Object.toString is not documented in the paranamer javadocs")
     @Override
     public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
     }
 
-    @Ignore("private methods are not documented so parameter names are not available")
     @Test
+    @Ignore("private methods are not documented so parameter names are not available")
+    @Override
     public void testLookupParameterNamesForPrivateMethod() throws Exception {
     }
 
