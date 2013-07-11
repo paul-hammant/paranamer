@@ -34,6 +34,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.netlib.blas.Dasum;
+import org.netlib.blas.Dgbmv;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -79,7 +80,8 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
 
     @Ignore("java.lang.Object.toString is not documented in the paranamer javadocs")
     @Override
-    public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {}
+    public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
+    }
 
     @Test(expected = FileNotFoundException.class)
     public void failsIfBadInput() throws Exception {
@@ -151,6 +153,14 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
         testAccessible(p, Dasum.class.getMethod("dasum",
                 Integer.TYPE, double[].class, Integer.TYPE, Integer.TYPE),
                 "n", "dx", "_dx_offset", "incx");
+
+        testAccessible(p, Dgbmv.class.getMethod("dgbmv",
+                String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE, Integer.TYPE,
+                Double.TYPE, double[].class, Integer.TYPE, Integer.TYPE, double[].class,
+                Integer.TYPE, Integer.TYPE, Double.TYPE, double[].class, Integer.TYPE,
+                Integer.TYPE),
+                "trans", "m", "n", "kl", "ku", "alpha", "a", "_a_offset", "lda",
+                "x", "_x_offset", "incx", "beta", "y", "_y_offset", "incy");
     }
 
     private void testJavaIoFile(String fileOrDirectory) throws Exception {
