@@ -83,6 +83,11 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
     }
 
+    @Ignore("private methods are not documented so parameter names are not available")
+    @Test
+    public void testLookupParameterNamesForPrivateMethod() throws Exception {
+    }
+
     @Test(expected = FileNotFoundException.class)
     public void failsIfBadInput() throws Exception {
         new JavadocParanamer(new URL(JAVADOCS_7 + "/DOES_NOT_EXIST"));
