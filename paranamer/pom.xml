@@ -25,6 +25,20 @@
         <version>0.1</version>
         <scope>test</scope>
     </dependency>
+    <dependency>
+        <groupId>net.sourceforge.f2j</groupId>
+        <artifactId>arpack_combined_all</artifactId>
+        <version>0.1</version>
+        <classifier>javadoc</classifier>
+        <scope>test</scope>
+    </dependency>
+      <dependency>
+          <groupId>${groupId}</groupId>
+          <artifactId>${artifactId}</artifactId>
+          <version>2.5.5</version>
+          <classifier>javadoc</classifier>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -68,6 +82,27 @@
           <outputDirectory>${pom.build.outputDirectory}</outputDirectory>
         </configuration>
       </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>javadocs</id>
+                    <phase>test-compile</phase>
+                    <goals>
+                        <goal>copy-dependencies</goal>
+                    </goals>
+                    <configuration>
+                        <excludeTransitive>true</excludeTransitive>
+                        <classifier>javadoc</classifier>
+                        <includeGroupIds>net.sourceforge.f2j,${groupId}</includeGroupIds>
+                        <includeArtifactIds>arpack_combined_all,${artifactId}</includeArtifactIds>
+                        <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
+                        <outputDirectory>${project.build.directory}/test-data</outputDirectory>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
     </plugins>
     <pluginManagement>
       <plugins>

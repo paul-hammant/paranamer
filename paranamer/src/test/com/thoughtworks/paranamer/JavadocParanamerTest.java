@@ -30,6 +30,8 @@ package com.thoughtworks.paranamer;
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.netlib.blas.Dasum;
 
@@ -47,7 +49,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Samuel Halliday
  */
-public class JavadocParanamerTest {
+public class JavadocParanamerTest extends AbstractParanamerTestCase {
 
     private static final String JAVADOCS_3 = "http://docs.oracle.com/javase/1.3/docs/api/";
     private static final String JAVADOCS_4 = "http://docs.oracle.com/javase/1.4.2/docs/api/";
@@ -56,6 +58,7 @@ public class JavadocParanamerTest {
     private static final String JAVADOCS_7 = "http://docs.oracle.com/javase/7/docs/api/";
 
     private static final String JAVADOCS_F2J = "http://icl.cs.utk.edu/projectsfiles/f2j/javadoc/";
+    private static final String JAVADOCS_F2J_FILE = "paranamer/target/test-data/arpack_combined_all-0.1-javadoc.jar";
 
     private static final String JAVADOCS_4_PARTIAL_DIR = "paranamer/src/resources/javadocs/jdk1.4/docs";
     private static final String JAVADOCS_5_PARTIAL_DIR = "paranamer/src/resources/javadocs/jdk5/docs";
@@ -66,6 +69,17 @@ public class JavadocParanamerTest {
     private static final String JAVADOCS_5_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk5.zip";
     private static final String JAVADOCS_6_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk6.zip";
     private static final String JAVADOCS_7_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk7.zip";
+
+    private static final String JAVADOCS_PARANAMER_FILE = "paranamer/target/test-data/paranamer-2.5.5-javadoc.jar";
+
+    @Before
+    public void setUp() throws Exception {
+        paranamer = new JavadocParanamer(new File(JAVADOCS_PARANAMER_FILE));
+    }
+
+    @Ignore("java.lang.Object.toString is not documented in the paranamer javadocs")
+    @Override
+    public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {}
 
     @Test(expected = FileNotFoundException.class)
     public void failsIfBadInput() throws Exception {
@@ -124,8 +138,16 @@ public class JavadocParanamerTest {
     }
 
     @Test
-    public void f2J() throws Exception {
-        Paranamer p = new JavadocParanamer(new URL(JAVADOCS_F2J));
+    public void f2JUrl() throws Exception {
+        f2J(new JavadocParanamer(new URL(JAVADOCS_F2J)));
+    }
+
+    @Test
+    public void f2JFile() throws Exception {
+        f2J(new JavadocParanamer(new File(JAVADOCS_F2J_FILE)));
+    }
+
+    public void f2J(Paranamer p) throws Exception {
         testAccessible(p, Dasum.class.getMethod("dasum",
                 Integer.TYPE, double[].class, Integer.TYPE, Integer.TYPE),
                 "n", "dx", "_dx_offset", "incx");
