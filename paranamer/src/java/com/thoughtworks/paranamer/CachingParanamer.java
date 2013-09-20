@@ -31,6 +31,8 @@
 package com.thoughtworks.paranamer;
 
 import java.lang.reflect.AccessibleObject;
+import java.util.Collections;
+import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
@@ -47,7 +49,9 @@ public class CachingParanamer implements Paranamer {
         + "com.thoughtworks.paranamer.CachingParanamer lookupParameterNames java.lang.AccessibleObject, boolean methodOrCtor,throwExceptionIfMissing \n";
 
     private final Paranamer delegate;
-    private final WeakHashMap<AccessibleObject,String[]> methodCache = new WeakHashMap<AccessibleObject,String[]>();
+
+    private final Map<AccessibleObject,String[]> methodCache =
+            Collections.synchronizedMap(new WeakHashMap<AccessibleObject, String[]>());
 
     /**
      * Uses a DefaultParanamer as the implementation it delegates to.
