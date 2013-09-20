@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.codehaus</groupId>
         <artifactId>codehaus-parent</artifactId>
-        <version>1</version>
+        <version>4</version>
     </parent>
     <groupId>com.thoughtworks.paranamer</groupId>
     <artifactId>paranamer-parent</artifactId>
