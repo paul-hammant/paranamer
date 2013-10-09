@@ -140,7 +140,7 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
     }
 
     @Test
-    public void testDoesNotRetrieveParagmeterNamedArg0() throws SecurityException, NoSuchMethodException {
+    public void testDoesNotRetrieveParameterNamedArg0() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         try {
         	asm.lookupParameterNames(SpecificMethodSearchable.class.getMethod(
@@ -192,6 +192,29 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         Method method = SpecificMethodSearchable.class.getMethod("byteArray", new Class[] { byte[].class });
         assertThatParameterNamesMatch("bytes", asm.lookupParameterNames(method));
     }
+
+    @Test
+    public void testRetrievesParameterNamesFromBooleanArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("booleanArray", new Class[] { boolean[].class });
+        assertThatParameterNamesMatch("flags", asm.lookupParameterNames(method));
+    }
+
+    @Test
+    public void testRetrievesParameterNamesFromCharArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("charArray", new Class[] { char[].class });
+        assertThatParameterNamesMatch("chars", asm.lookupParameterNames(method));
+    }
+
+    @Test
+    public void testRetrievesParameterNamesFromFloatArrayMethod() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("floatArray", new Class[] { float[].class });
+        assertThatParameterNamesMatch("floats", asm.lookupParameterNames(method));
+    }
+
+
 
     @Test
     public void testRetrievesParameterNamesFromOtherArrayMethod() throws SecurityException, NoSuchMethodException {
@@ -309,6 +332,15 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
 
         public void intArray(int[] ints) {
+        }
+
+        public void booleanArray(boolean[] flags) {
+        }
+
+        public void charArray(char[] chars) {
+        }
+
+        public void floatArray(float[] floats) {
         }
 
         public void doubleArray(double[] doubles) {
