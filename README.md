@@ -193,21 +193,15 @@ The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/
 
 # Projects using it
 
-[Mandragora](http://mandragora.sourceforge.net)
-
-[Oval - Object Validation Framework](http://oval.sourceforge.net/),
-
-[PicoContainer - Dependency Injection Container](http://picocontainer.org/),
-
-[PicoContainer Web-Remoting](http://picocontainer.org/web/remoting),
-
-[VRaptor - Web Framework](http://vraptor.org/),
-
-[Waffle - Web Framework](http://waffle.codehaus.org/)
-
-[JBehave - BDD tests for Java](http://jbehave.codehaus.org/)
-
-[CDI Interceptors](https://github.com/sfleiter/cdi-interceptors)
+* [Mandragora - extensible framework for business layers](http://mandragora.sourceforge.net)
+* [Oval - Object Validation Framework](http://oval.sourceforge.net/),
+* [PicoContainer - Dependency Injection Container](http://picocontainer.org/),
+* [PicoContainer Web-Remoting](http://picocontainer.org/web/remoting),
+* [VRaptor - Web Framework](http://vraptor.org/),
+* [Waffle - Web Framework](http://waffle.codehaus.org/)
+* [JBehave - BDD testing](http://jbehave.codehaus.org/)
+* [CDI Interceptors](https://github.com/sfleiter/cdi-interceptors)
+* [A Jackson extension - serialization](https://github.com/FasterXML/jackson-module-paranamer)
 
 # Releases
 
