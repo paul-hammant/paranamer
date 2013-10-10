@@ -259,10 +259,19 @@ Release 1.0 - Jul 01 2007
 
 [See Project On Github](http://github.com/paul-hammant/paranamer) (yes pull requests are fine), mirrored from Codehaus - see the  [repo connection details](http://xircles.codehaus.org/projects/paranamer/repos/git/repo) for that.
 
-## More Examples
+## Team
 
-The unit tests for Paranamer illustrate some more way to use
-it: [http://github.com/paul-hammant/paranamer/tree/master/paranamer/src/test/com/thoughtworks/paranamer](http://github.com/paul-hammant/paranamer/tree/master/paranamer/src/test/com/thoughtworks/paranamer)
+### Project Founder and Lead
+
+Paul Hammant
+
+### Committers & Contributors
+
+Paul Hammant
+Mauro Talevi
+Guilherme Silveira
+Sam Halliday
+Stefan Fleiter
 
 ## Other Codehaus Project Info
 
@@ -273,3 +282,13 @@ Developers, Maven 2 repository, lists, sites are detailed here: [http://xircles.
 Latest Released Jar file here (auto-download)
 
 [href="http://nexus.codehaus.org/service/local/artifact/maven/redirect?r=releases&g=com.thoughtworks.paranamer&a=paranamer&v=2.6](http://nexus.codehaus.org/service/local/artifact/maven/redirect?r=releases&g=com.thoughtworks.paranamer&a=paranamer&v=2.6)
+
+
+## Mail Lists
+
+[http://xircles.codehaus.org/projects/paranamer/lists](http://xircles.codehaus.org/projects/paranamer/lists) ... but you'll need to enroll in Codehaus' Xircles system first : [http://xircles.codehaus.org/my/email/subscriptions](http://xircles.codehaus.org/my/email/subscriptions)
+
+# More Examples
+
+The unit tests for Paranamer illustrate some more way to use it: [http://github.com/paul-hammant/paranamer/tree/master/paranamer/src/test/com/thoughtworks/paranamer](http://github.com/paul-hammant/paranamer/tree/master/paranamer/src/test/com/thoughtworks/paranamer)
+
