@@ -90,9 +90,8 @@ CachingParanamer stores the results of each parameter name lookup, so that secon
 
 AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses DefaultParanamer with <code>ByteCodeReadingParanamer</code> as its contingency.
 
-# Creating Parameter Name data and modifying compiled class files
-
-## Optional Generation of Parameter Name data with Ant
+# Feeding DefaultParanamer
+##  Generating __PARANAMER_DATA with Ant
 
 This for <code>DefaultParanamer</code> usage of course, as <code>BytecodeReadingParanamer</code> does not need it.
 
@@ -106,86 +105,82 @@ You need to download:
 ... and declare in your Ant script the following after &lt;javac/&gt; (remember to add to the taskdef classpath all the above jars):
 
 ```xml
-&lt;taskdef name="paranamer" classname="com.thoughtworks.paranamer.ant.ParanamerGeneratorTask"/&gt;
-  &lt;paranamer sourceDirectory="src/java" outputDirectory="target/classes"/&gt;
+<taskdef name="paranamer" 
+       classname="com.thoughtworks.paranamer.ant.ParanamerGeneratorTask"/>
+  <paranamer sourceDirectory="src/java" outputDirectory="target/classes"/>
 ```
 
 Classes are changed to have an extra static String member variable that contains the member functions and their parameter names. Be sure to zip them up in to you final jar.
 
-## Optional Generation of Parameter Name data with Maven 2
+##  Generating __PARANAMER_DATA with Maven 2 or 3
 
 For Maven, configuration is simpler. Just add this to the build/plugins section of your pom.xml:
 
 ```xml
-&lt;plugin&gt;
-&nbsp;&nbsp;&nbsp; &lt;groupId&gt;com.thoughtworks.paranamer&lt;/groupId&gt;
-&nbsp;&nbsp;&nbsp; &lt;artifactId&gt;paranamer-maven-plugin&lt;/artifactId&gt;
-&nbsp;&nbsp; &nbsp;&lt;executions&gt;
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;execution&gt;
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;id&gt;run&lt;/id&gt;  &lt;!-- id is optional --&gt;
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;configuration&gt;
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;sourceDirectory&gt;${project.build.sourceDirectory}&lt;/sourceDirectory&gt;
-&nbsp; &nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;outputDirectory&gt;${project.build.outputDirectory}&lt;/outputDirectory&gt;
-&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/configuration&gt;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;
- &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goals&gt;
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;goal&gt;generate&lt;/goal&gt;
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/goals&gt;
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/execution&gt;
-&nbsp;&nbsp;&nbsp; &lt;/executions&gt;
-&nbsp;&nbsp;&nbsp; &lt;dependencies&gt;
-        &lt;!-- if some of parameter names you need to retain are held in pre-existing jars, they need to be added to the classpath --&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;some-artifact-group&lt;/groupId&gt;
-            &lt;artifactId&gt;some-artifact&lt;/artifactId&gt;
-            &lt;version&gt;1.0&lt;/version&gt;
-        &lt;/dependency&gt;
-    &lt;/dependencies&gt;
-&lt;/plugin&gt;
+<plugin>
+    <groupId>com.thoughtworks.paranamer</groupId>
+    <artifactId>paranamer-maven-plugin</artifactId>
+    <executions>
+        <execution>
+            <id>run</id>  <!-- id is optional -->
+            <configuration>
+                <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+                <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+            </configuration>        
+             <goals>
+                <goal>generate</goal>
+            </goals>
+        </execution>
+    </executions>
+    <dependencies>
+        <!-- if some of parameter names you need to retain are held in pre-existing jars, they need to be added to the classpath -->
+        <dependency>
+            <groupId>some-artifact-group</groupId>
+            <artifactId>some-artifact</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+</plugin>
 ```
 
 The classes in the ultimate jar file will automatically be made with parameter name data.
 
-## Using Paranamer in your application without depending on Paranamer's jar
+## Embedding Paranamer in your jar
 
-There are already too many jar's for day to day Java development
-right?&nbsp; Simply consume the runtime paranamer jar into your project's jar using the Maven2 'shade' plugin.
+There are already too many jar's for day to day Java development right? Simply consume the runtime paranamer jar into your project's jar using the Maven2 'shade' plugin.
 
 ```xml
 <!-- Put in your POM.xml file -->
-&lt;build&gt;
-    &lt;plugins&gt;
-      &lt;plugin&gt;
-        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-        &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;
-        &lt;executions&gt;
-          &lt;execution&gt;
-            &lt;phase&gt;package&lt;/phase&gt;
-            &lt;goals&gt;
-              &lt;goal&gt;shade&lt;/goal&gt;
-            &lt;/goals&gt;
-            &lt;configuration&gt;
-              &lt;shadedArtifactId&gt;artifact-shaded&lt;/shadedArtifactId&gt;
-              &lt;relocations&gt;
-                &lt;relocation&gt;
-                  &lt;pattern&gt;com.thoughtworks.paranamer&lt;/pattern&gt;
-                  &lt;shadedPattern&gt;com.yourcompany.yourapp.paranamer&lt;/shadedPattern&gt;
-                &lt;/relocation&gt;
-              &lt;/relocations&gt;
-            &lt;/configuration&gt;
-          &lt;/execution&gt;
-        &lt;/executions&gt;
-      &lt;/plugin&gt;
-    &lt;/plugins&gt;
-  &lt;/build&gt;
+<build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadedArtifactId>artifact-shaded</shadedArtifactId>
+              <relocations>
+                <relocation>
+                  <pattern>com.thoughtworks.paranamer</pattern>
+                  <shadedPattern>com.yourcompany.yourapp.paranamer</shadedPattern>
+                </relocation>
+              </relocations>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 ```
 
-# How Paranamer works
+# What if a parameter names changes?
 
-## What if a parameter names changes?
-
-The general answer to this question is that you should not ship something to third parties where they are going to hard-core your parameter names into their application. For you own in-house stuff, accessing parameter names is harmless. You should be able to ripple though the source code of even large applications, and change say &quot;badSpeeldWord&quot; to &quot;badlySpelledWorld&quot; if you need to.
-
-In a later version we may store previous parameter names too. It won't be magic, you'll have to code the previous parameter names in your source with a doclet tag. The lookup mechanism will change too. It will likely leverage a doclet tag.
+The general answer to this question is that you should not ship something to third parties where they are going to hard-core your parameter names into their application. For you own in-house stuff, accessing parameter names is harmless. You should be able to ripple though the source code of even large applications, and change say <code>badSpeeldWord</code> to <code>badlySpelledWorld</code> if you need to.
 
 # Other Modules
 
@@ -194,7 +189,7 @@ In a later version we may store previous parameter names too. It won't be magic,
 
 # Paranamer's Future
 
-The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/118) lands as part of Java8.
+The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/118) lands as part of Java8.  Despite that, we intend to maintain the library so that it continues to work.
 
 # Projects using it
 
