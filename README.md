@@ -1,4 +1,4 @@
-# [![ParaNamer](http://paulhammant.com/images/ParaNamer.jpg)](/)
+# ![ParaNamer](http://paulhammant.com/images/ParaNamer.jpg)
 
 ## Method Parameter Name Access for Java*
 
@@ -279,9 +279,9 @@ Developers, Maven 2 repository, lists, sites are detailed here: [http://xircles.
 
 ## Downloads
 
-Latest Released Jar file here (auto-download)
+Auto-download the latest Released Jar file (2.6) here:
 
-[href="http://nexus.codehaus.org/service/local/artifact/maven/redirect?r=releases&g=com.thoughtworks.paranamer&a=paranamer&v=2.6](http://nexus.codehaus.org/service/local/artifact/maven/redirect?r=releases&g=com.thoughtworks.paranamer&a=paranamer&v=2.6)
+[http://nexus.codehaus.org/service/local/artifact/maven/redirect?r=releases&g=com.thoughtworks.paranamer&a=paranamer&v=2.6](http://nexus.codehaus.org/service/local/artifact/maven/redirect?r=releases&g=com.thoughtworks.paranamer&a=paranamer&v=2.6)
 
 
 ## Mail Lists
