@@ -42,9 +42,9 @@ The static field essentially looks like the following. You really do not need to
 
 ```java
 private static final String __PARANAMER_DATA = "v1.0 \n"
-      + "&lt;init&gt; com.example.PeopleService peopleService \n"
+      + "<init> com.example.PeopleService peopleService \n"
       + "setName java.lang.String,java.lang.String givenName,familyName \n";
-      + "setDateOfBirth int,int,int day,month,year \n";</pre></div>
+      + "setDateOfBirth int,int,int day,month,year \n";
 ```
 
 Clearly the method's source needs to be analysed and lines added per method to that __PARANAMER_DATA field. See below.
@@ -76,11 +76,11 @@ public static class Something {
 }
 ```
 
-AnnotationParanamer takes a delegate paranamer instance as an optional constructor arg.  This will allow constructors and methods to only partly leverage @Named, with other parameters having non-annotated parameter names (the via say DefaulParanamer or <code>BytecodeReadingParanamer</code>).
+AnnotationParanamer takes a delegate paranamer instance as an optional constructor arg.  This will allow constructors and methods to only partly leverage <code>@Named</code>, with other parameters having non-annotated parameter names (the via say <code>DefaulParanamer</code> or <code>BytecodeReadingParanamer</code>).
 
-If you have an alternate annotation to @Named, then you can specify that in a subclass of AnnotationParanamer that overrides two methods isNamed and getNamedValue.  Your overridden methods should do the equivalent of 'return ann instanceof Named;' and 'return ((Named) ann).value();' respectively.
+If you have an alternate annotation to <code>@Named</code>, then you can specify that in a subclass of <code>AnnotationParanamer</code> that overrides two methods isNamed and getNamedValue.  Your overridden methods should do the equivalent of 'return an instance of Named' and <code>return ((Named) ann).value();</code> respectively.
 
-If you are using @Named from JSR 330, you will need it in your classpath of course.  In Maven terms, Paranamer is built with the 'javax.atinject' module as an optional dependency.
+If you are using @Named from JSR 330, you will need it in your classpath of course.  In Maven terms, Paranamer is built with the <code>javax.atinject</code> module as an optional dependency.
 
 ## CachingParanamer
 
