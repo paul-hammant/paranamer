@@ -211,47 +211,19 @@ The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/
 
 # Releases
 
-Release 2.6 - Oct 9 2013 (JDK 5.0 and above) - adding PositionalParanamer from Stefan Fleiter
-
-Release 2.5 - Apr 15 2012 (JDK 5.0 and above)
-
-Release 2.4 - Oct 29 2011 (JDK 5.0 and above)
-
-Release 2.3 - Oct 19 2010 (JDK 5.0 and above)
-
-Release 2.2 - Jan 2 2010 (JDK 5.0 and above)
-
-Release 2.1 - Sep 6 2009 (last version that is compatible with JDK 1.4)
-
-Release 2.0 - Jul 10 2009
-
-Release 1.5 - May 19 2009
-
-Release 1.4 - May 9 2009
-
-Release 1.3 - Feb 22 2009
-
-Release 1.2 - Feb 2 2009
-
-Release 1.1.7 - Jan 20 2009
-
-Release 1.1.6 - Dec 22 2008
-
-Release 1.1.5 - Aug 14 2008
-
-Release 1.1.4 - Jun 19 2008
-
-Release 1.1.3 - May 16 2008
-
-Release 1.1.2 - Mar 16 2008
-
-Release 1.1.1 - Nov 28 2007
-
-Release 1.1 - Oct 14 2007
-
-Release 1.0.1 - Jul 07 2007
-
-Release 1.0 - Jul 01 2007
+* Release 2.6 - Oct 9 2013  - adding PositionalParanamer from Stefan Fleiter
+* Release 2.5 - Apr 15 2012 
+* Release 2.4 - Oct 29 2011 
+* Release 2.3 - Oct 19 2010 
+* Release 2.2 - Jan 2 2010 
+* Release 2.1 - Sep 6 2009  - last version that is compatible with JDK 1.4, all others after this require Java 5
+* Release 2.0 - Jul 10 2009
+* Release 1.5 - May 19 2009
+* Release 1.4 - May 9 2009
+* Release 1.3 - Feb 22 2009
+* Release 1.2 - Feb 2 2009
+* Release 1.1 - Oct 14 2007
+* Release 1.0 - Jul 01 2007
 
 # Project Information
 
