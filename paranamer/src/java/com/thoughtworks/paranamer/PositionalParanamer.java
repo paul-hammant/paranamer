@@ -67,19 +67,21 @@ public class PositionalParanamer implements Paranamer {
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor,
             boolean throwExceptionIfMissing) {
-        int count;
-        if (methodOrCtor instanceof Method) {
-            Method method = (Method) methodOrCtor;
-            count = method.getParameterTypes().length;
-        } else {
-            Constructor<?> constructor = (Constructor<?>) methodOrCtor;
-            count = constructor.getParameterTypes().length;
-        }
+        int count = count(methodOrCtor);
         String[] result = new String[count];
         for (int i = 0; i < result.length; i++) {
             result[i] = prefix + i;
         }
         return result;
+    }
+    
+    private int count(AccessibleObject methodOrCtor) {
+        if (methodOrCtor instanceof Method) {
+            Method method = (Method) methodOrCtor;
+            return method.getParameterTypes().length;
+        }
+        Constructor<?> constructor = (Constructor<?>) methodOrCtor;
+        return constructor.getParameterTypes().length;
     }
 
 }
