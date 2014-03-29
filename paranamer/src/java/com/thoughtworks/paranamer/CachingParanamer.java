@@ -34,6 +34,7 @@ import java.lang.reflect.AccessibleObject;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implementation of Paranamer which delegate to another Paranamer implementation, adding caching functionality to speed up usage.
@@ -50,8 +51,11 @@ public class CachingParanamer implements Paranamer {
 
     private final Paranamer delegate;
 
-    private final Map<AccessibleObject,String[]> methodCache =
-            Collections.synchronizedMap(new WeakHashMap<AccessibleObject, String[]>());
+    private final Map<AccessibleObject,String[]> methodCache = makeMethodCache();
+
+    protected Map<AccessibleObject, String[]> makeMethodCache() {
+        return Collections.synchronizedMap(new WeakHashMap<AccessibleObject, String[]>());
+    }
 
     /**
      * Uses a DefaultParanamer as the implementation it delegates to.
@@ -81,5 +85,21 @@ public class CachingParanamer implements Paranamer {
         }
         return names;
     }
+
+    public static class WithoutWeakReferences extends CachingParanamer {
+
+        public WithoutWeakReferences() {
+        }
+
+        public WithoutWeakReferences(Paranamer delegate) {
+            super(delegate);
+        }
+
+        @Override
+        protected Map<AccessibleObject, String[]> makeMethodCache() {
+            return new ConcurrentHashMap<AccessibleObject,String[]>();
+        }
+    }
+
 
 }

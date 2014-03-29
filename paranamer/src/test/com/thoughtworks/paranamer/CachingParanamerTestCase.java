@@ -30,16 +30,18 @@
 
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.AccessibleObject;
-import java.util.Arrays;
-
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
+import static junit.framework.Assert.assertEquals;
+
 public class CachingParanamerTestCase {
+    private static final Method METHOD = CachingParanamerTestCase.class.getDeclaredMethods()[0];
     private Paranamer paranamer;
     private int count = 0;
 
@@ -48,6 +50,7 @@ public class CachingParanamerTestCase {
         paranamer = new Paranamer() {
 
             public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+                assertEquals(METHOD, methodOrConstructor);
                 return lookupParameterNames(methodOrConstructor, true);
             }
 
@@ -60,17 +63,25 @@ public class CachingParanamerTestCase {
     }
 
 
-     @Test
-     public void testLookupOfParameterNamesForMethod() {
-        Paranamer cachingParanamer = new CachingParanamer(paranamer);
-        String[] paramNames = cachingParanamer.lookupParameterNames((Method)null);
+    @Test
+    public void testLookupOfParameterNamesForMethod_forWeakReferencesCachingParanamer() {
+        doLookupTest(new CachingParanamer(paranamer));
+    }
+
+    @Test
+    public void testLookupOfParameterNamesForMethod_forNonWeakReferencesCachingParanamer() {
+        doLookupTest(new CachingParanamer.WithoutWeakReferences(paranamer));
+    }
+
+    private void doLookupTest(Paranamer cachingParanamer) {
+        String[] paramNames = cachingParanamer.lookupParameterNames(METHOD);
         Assert.assertEquals(Arrays.asList(new String[]{"foo", "bar"}), Arrays.asList(paramNames));
         Assert.assertEquals(1, count);
 
         // cache hit
-        paramNames = cachingParanamer.lookupParameterNames((Method)null);
+        paramNames = cachingParanamer.lookupParameterNames(METHOD);
         Assert.assertEquals(Arrays.asList(new String[]{"foo", "bar"}), Arrays.asList(paramNames));
         Assert.assertEquals(1, count);
     }
-    
+
 }
