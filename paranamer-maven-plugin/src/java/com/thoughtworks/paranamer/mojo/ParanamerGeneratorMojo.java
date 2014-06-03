@@ -31,7 +31,6 @@
 package com.thoughtworks.paranamer.mojo;
 
 import java.io.IOException;
-import java.util.TreeSet;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
