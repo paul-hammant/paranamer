@@ -6,6 +6,7 @@
     <version>2.7-SNAPSHOT</version>
   </parent>
   <artifactId>paranamer</artifactId>
+  <packaging>bundle</packaging>
   <name>ParaNamer Core</name>
   <dependencies>
     <dependency>
@@ -105,6 +106,18 @@
                 </execution>
             </executions>
         </plugin>
+
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <extensions>true</extensions>
+          <configuration>
+            <instructions>
+              <Export-Package>com.thoughtworks.paranamer</Export-Package>
+            </instructions>
+          </configuration>
+        </plugin>
+        
     </plugins>
     <pluginManagement>
       <plugins>
