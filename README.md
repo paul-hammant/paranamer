@@ -205,6 +205,7 @@ The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/
 
 # Releases
 
+* Release 2.6.1 - Jul 18 2014 - OSGi bundle info [PR15](https://github.com/paul-hammant/paranamer/pull/15) by Raghu Devarakonda, -DskipParanamer CLI option [PR14](https://github.com/paul-hammant/paranamer/pull/14) by Nicholas Whitehead, and Maven fixups and Code refactoring from Otávio Garcia (PR13, PR14).
 * Release 2.6 - Oct 9 2013  - adding PositionalParanamer from Stefan Fleiter
 * Release 2.5 - Apr 15 2012 
 * Release 2.4 - Oct 29 2011 
