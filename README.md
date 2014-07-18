@@ -86,6 +86,8 @@ If you are using @Named from JSR 330, you will need it in your classpath of cour
 
 CachingParanamer stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.
 
+There's a subclass of CachingParanamer called CachingParanamer.WithoutWeakReferences. It does not use a WeakHashMap as an internal implementation. If you're great with profiling of applications under load, you might be able to justify use of this implementation for your particular app.
+
 ## AdaptiveParanamer
 
 AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses DefaultParanamer with <code>ByteCodeReadingParanamer</code> as its contingency.
@@ -205,7 +207,7 @@ The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/
 
 # Releases
 
-* Release 2.6.1 - Jul 18 2014 - OSGi bundle info [PR15](https://github.com/paul-hammant/paranamer/pull/15) by Raghu Devarakonda, -DskipParanamer CLI option [PR14](https://github.com/paul-hammant/paranamer/pull/14) by Nicholas Whitehead, and Maven fixups and Code refactoring from Otávio Garcia (PR13, PR14).
+* Release 2.6.1 - Jul 18 2014 - New OSGi bundle info [PR15](https://github.com/paul-hammant/paranamer/pull/15) by Raghu Devarakonda, a new -DskipParanamer CLI option [PR14](https://github.com/paul-hammant/paranamer/pull/14) by Nicholas Whitehead, a new and optional non-WeakHashMap caching impl [Issue 8](https://github.com/paul-hammant/paranamer/issues/8), Maven fixups and Code refactoring from Otávio Garcia (PR13, PR14), 
 * Release 2.6 - Oct 9 2013  - adding PositionalParanamer from Stefan Fleiter
 * Release 2.5 - Apr 15 2012 
 * Release 2.4 - Oct 29 2011 
@@ -239,6 +241,10 @@ Mauro Talevi
 Guilherme Silveira
 Sam Halliday
 Stefan Fleiter
+Raghuram Devarakonda
+Nicholas Whitehead
+Otávio Garcia
+
 
 ## Other Codehaus Project Info
 
