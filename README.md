@@ -86,7 +86,7 @@ If you are using @Named from JSR 330, you will need it in your classpath of cour
 
 CachingParanamer stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.
 
-There's a subclass of CachingParanamer called CachingParanamer.WithoutWeakReferences. It does not use a WeakHashMap as an internal implementation. If you're great with profiling of applications under load, you might be able to justify use of this implementation for your particular app.
+There's a subclass of <code>CachingParanamer</code> called <code>CachingParanamer.WithoutWeakReferences</code>. It does not use a WeakHashMap as an internal implementation. If you're great with profiling of applications under load, you might be able to justify use of this implementation for your particular app.
 
 ## AdaptiveParanamer
 
