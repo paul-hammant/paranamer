@@ -13,7 +13,11 @@ To date parameter name access has not been very useful to Java application devel
 
 ParaNamer allows you to generate and use parameter name info for versions of Java prior to JDK 5.0 and above. Parameter name access was scheduled for JDK 6.0, but was cancelled at a late stage as the spec-lead suggested the development team ran out of time to implement it. It is sadly not shipping in JDK 7.0 either.  Sun also had misgivings about the appropriateness of the this change to Java. It was felt that applications could end up depending on parameter names, and that they essentially became part of constructor/method signatures and could never be changed if you wanted to be backwards compatible.  The view of the authors of Paranamer is that you should be aware that parameter names may change between releases, and code to not depend on them.
 
-Paranamer is Open Source, and licensed as BSD. It is compatible with commercial/proprietary, GPL, Apache use.
+Paranamer is Open Source, and licensed as BSD, and first created in in July 2006. It is compatible with commercial/proprietary, GPL, BSD, and Apache (or any open/free source) use.
+
+# Java8 has this built in!
+
+Oracle write about that here - [http://docs.oracle.com/javase/tutorial/reflect/member/methodparameterreflection.html](http://docs.oracle.com/javase/tutorial/reflect/member/methodparameterreflection.html). Don't forget to launch Javac with the <code>-parameters</code> option. Paranamer is still a choice in a Java8 solution, but it's really only needed if you're also wanting to run on Java5, 6, and 7 VMs.  There's also a StackOverflow Question on [parameter name access in Java8](http://stackoverflow.com/questions/21455403/how-to-get-method-parameter-names-in-java-8-using-reflection).
 
 # Accessing Parameter Name data
 
