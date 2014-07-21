@@ -252,14 +252,11 @@ Otávio Garcia
 
 ## Other Codehaus Project Info
 
-Developers, Maven 2 repository, lists, sites are detailed here: [http://xircles.codehaus.org/projects/paranamer](http://xircles.codehaus.org/projects/paranamer)
+Developers, Maven 2 repository, lists, sites are detailed here: [http://xircles.codehaus.org/projects/paranamer](http://xircles.codehaus.org/projects/paranamer). The Github repo us a mirror of the Codehaus one. Issues can be raised in [JIRA one Codehaus](http://jira.codehaus.org/browse/PARANAMER) or Github's [issue tracker for Paranamer](https://github.com/paul-hammant/paranamer/issues) (your choice, but perhaps link to a buildable example or what you're referring to).
 
 ## Downloads
 
-Auto-download the latest Released Jar file (2.6) here:
-
-[http://nexus.codehaus.org/service/local/artifact/maven/redirect?r=releases&g=com.thoughtworks.paranamer&a=paranamer&v=2.6](http://nexus.codehaus.org/service/local/artifact/maven/redirect?r=releases&g=com.thoughtworks.paranamer&a=paranamer&v=2.6)
-
+Download the latest released jar files (2.6.1) [here](http://central.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.6.1/)
 
 ## Mail Lists
 
