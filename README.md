@@ -211,6 +211,7 @@ The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/
 
 # Releases
 
+* Release 2.7 - Aug 16 2014 - QDox changed from 1.x to 2.x meaning Java7 features are supported. Thanks to [PR16](https://github.com/paul-hammant/paranamer/pull/16) by Robert Scholte
 * Release 2.6.1 - Jul 18 2014 - New OSGi bundle info [PR15](https://github.com/paul-hammant/paranamer/pull/15) by Raghu Devarakonda, a new -DskipParanamer CLI option [PR14](https://github.com/paul-hammant/paranamer/pull/14) by Nicholas Whitehead, a new and optional non-WeakHashMap caching impl [Issue 8](https://github.com/paul-hammant/paranamer/issues/8), Maven fixups and Code refactoring from Otávio Garcia (PR13, PR14), 
 * Release 2.6 - Oct 9 2013  - adding PositionalParanamer from Stefan Fleiter
 * Release 2.5 - Apr 15 2012 
