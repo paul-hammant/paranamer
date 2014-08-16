@@ -29,17 +29,19 @@
  */
 package com.thoughtworks.paranamer.generator;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-import junit.framework.TestCase;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
 public class QDoxParanamerTestCase {
+
+    private static final String PACKAGE_PREFIX = "com.thoughtworks.paranamer.generator.";
+    private static final String PATH_PREFIX = "/target/test-classes/" + PACKAGE_PREFIX.replace('.', '/');
 
     private String root;
 
@@ -50,30 +52,84 @@ public class QDoxParanamerTestCase {
         generator.processSourcePath(root + "/src/test", root + "/target/test-classes/");
     }
 
+    private String paranamerDataOf(String className) throws IOException, NoSuchFieldException, IllegalAccessException {
+        return paranamerDataOf(className, className);
+    }
+
+    private String paranamerDataOf(String className, String fileName) throws IOException, NoSuchFieldException, IllegalAccessException {
+        FileInputStream fis = new FileInputStream(root + PATH_PREFIX + fileName + ".class");
+        byte[] bytes = new byte[40000];
+         int read = fis.read(bytes);
+         byte[] bytes2 = new byte[read];
+         System.arraycopy(bytes, 0, bytes2, 0, read);
+
+         MyClassLoader cl = new MyClassLoader();
+
+         Class<?> enhancedClazz = cl.defineEnhancerClass(className, bytes2, read);
+         Field f = enhancedClazz.getField("__PARANAMER_DATA");
+         f.setAccessible(true);
+         return (String) f.get(null);
+    }
+
     @Test
-    public void testFoo() throws IOException, NoSuchFieldException, IllegalAccessException {
-
-        FileInputStream fis = new FileInputStream(root + "/target/test-classes/com/thoughtworks/paranamer/generator/Elephant.class");
-        byte[] bytes = new byte[4000];
-        int read = fis.read(bytes);
-        byte[] bytes2 = new byte[read];
-        System.arraycopy(bytes,0,bytes2,0,read);
-
-        MyClassLoader cl = new MyClassLoader();
-
-        Class<?> enhancedClazz = cl.defineEnhancerClass(bytes2, read);
-        Field f = enhancedClazz.getField("__PARANAMER_DATA");
-        Assert.assertNotNull(f);
-        String s1 = ((String) f.get(null));
-        String s2 = ("<init> java.util.Map map \n" +
-                        "setMap java.util.Map map \n");
+    public void testSimpleClassGeneration() throws IOException, NoSuchFieldException, IllegalAccessException {
+        String s1 = paranamerDataOf("Elephant");
+        String s2 = "<init> java.util.Map map \n"
+                + "longArray long[] longs \n"
+                + "setMap java.util.Map map \n";
         Assert.assertEquals(s2, s1);
     }
 
+    @Test
+    public void testGenericClassGeneration() throws IOException, NoSuchFieldException, IllegalAccessException {
+        String s1 = paranamerDataOf("Horse");
+        String s2 = "elephantArrays E[],java.lang.String theArrayParameter,otherParameter \n"
+                + "<init> E dumbo \n"
+                + "setElephant E dumboss \n";
+        Assert.assertEquals(s2, s1);
+    }
+
+    @Test
+    public void testGenerationWithInnerClass1() throws IOException, NoSuchFieldException, IllegalAccessException {
+        String s1 = paranamerDataOf("Monkey");
+        String s2 = "<init> " + PACKAGE_PREFIX + "Monkey$Banana monkeyEatsBanana \n"
+                + "aMethod " + PACKAGE_PREFIX + "Monkey$Avocado theInnerAvocado \n";
+        Assert.assertEquals(s2, s1);
+    }
+
+    @Test
+    public void testGenerationWithInnerClass2() throws IOException, NoSuchFieldException, IllegalAccessException {
+        String s1 = paranamerDataOf("Monkey$Banana");
+        String s2 = "bananaMethod int number \n";
+        Assert.assertEquals(s2, s1);
+    }
+
+    @Test
+    public void testGenerationWithMultipleClassesAtSameFile1() throws IOException, NoSuchFieldException, IllegalAccessException {
+        String s1 = paranamerDataOf("Chicken");
+        String s2 = "aMethod java.lang.String aParamater \n"
+                + "strangeMethod " + PACKAGE_PREFIX + "Fox aFox \n";
+        Assert.assertEquals(s2, s1);
+    }
+
+    @Test
+    public void testGenerationWithMultipleClassesAtSameFile2() throws IOException, NoSuchFieldException, IllegalAccessException {
+        String s1 = paranamerDataOf("Dog");
+        String s2 = "crazyMethod " + PACKAGE_PREFIX + "Chicken aChicken \n"
+                + "woof java.lang.String woofWoof \n";
+        Assert.assertEquals(s2, s1);
+    }
+
+    @Test
+    public void testGenerationWithClassMismatchingFilename() throws IOException, NoSuchFieldException, IllegalAccessException {
+        String s1 = paranamerDataOf("Chameleon");
+        String s2 = "thisIsCrazy " + PACKAGE_PREFIX + "Monkey veryCrazy \n";
+        Assert.assertEquals(s2, s1);
+    }
 
     private static class MyClassLoader extends ClassLoader {
-        public Class<?> defineEnhancerClass(byte[] bytes, int length) {
-            return defineClass("com.thoughtworks.paranamer.generator.Elephant", bytes, 0, bytes.length);
+        public Class<?> defineEnhancerClass(String name, byte[] bytes, int length) {
+            return defineClass(PACKAGE_PREFIX + name, bytes, 0, bytes.length);
         }
     }
 }

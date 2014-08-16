@@ -27,26 +27,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.thoughtworks.paranamer.generator;
 
-package com.thoughtworks.paranamer;
+class Fox {
+    public void foxMethod(int foxEatsChicken) {
+    }
+}
 
-import java.lang.reflect.AccessibleObject;
-
-/**
- * Implementation of Paranamer which adheres to the NullObject pattern
- *
- * @author Paul Hammant
- */
-public class NullParanamer implements Paranamer {
-
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return new String[0];
+public class Chicken {
+    public void aMethod(String aParamater) {
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
-        if (throwExceptionIfMissing) {
-            throw new ParameterNamesNotFoundException("NullParanamer implementation predictably finds no parameter names");
-        }
-        return Paranamer.EMPTY_NAMES;
+    // Exports a non-public class through a public API, but we don't care about that.
+    public void strangeMethod(Fox aFox) {
+    }
+}
+
+class Dog {
+    public void woof(String woofWoof) {
+    }
+
+    public void crazyMethod(Chicken aChicken) {
     }
 }

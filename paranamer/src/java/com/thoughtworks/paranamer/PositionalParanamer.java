@@ -1,6 +1,6 @@
-/***
+/**
  *
- * Copyright (c) 2007 Paul Hammant
+ * Copyright (c) 2013 Stefan Fleiter
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,26 +27,61 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.thoughtworks.paranamer;
 
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
- * Implementation of Paranamer which adheres to the NullObject pattern
- *
- * @author Paul Hammant
+ * Paranamer that works on basis of the parameter position and can be used as
+ * last fallback of the <code>AdaptiveParanamer</code>.
+ * 
+ * @author Stefan Fleiter
  */
-public class NullParanamer implements Paranamer {
+public class PositionalParanamer implements Paranamer {
+
+    private final String prefix;
+
+    /**
+     * Default Contstructor with prefix <code>arg</code>.
+     */
+    public PositionalParanamer() {
+        this("arg");
+    }
+
+    /**
+     * Constructor that allows to override the prefix.
+     * 
+     * @param prefix
+     *            string that is prepended before the position of the parameter.
+     */
+    public PositionalParanamer(String prefix) {
+        super();
+        this.prefix = prefix;
+    }
 
     public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return new String[0];
+        return lookupParameterNames(methodOrConstructor, true);
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
-        if (throwExceptionIfMissing) {
-            throw new ParameterNamesNotFoundException("NullParanamer implementation predictably finds no parameter names");
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor,
+            boolean throwExceptionIfMissing) {
+        int count = count(methodOrCtor);
+        String[] result = new String[count];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = prefix + i;
         }
-        return Paranamer.EMPTY_NAMES;
+        return result;
     }
+    
+    private int count(AccessibleObject methodOrCtor) {
+        if (methodOrCtor instanceof Method) {
+            Method method = (Method) methodOrCtor;
+            return method.getParameterTypes().length;
+        }
+        Constructor<?> constructor = (Constructor<?>) methodOrCtor;
+        return constructor.getParameterTypes().length;
+    }
+
 }

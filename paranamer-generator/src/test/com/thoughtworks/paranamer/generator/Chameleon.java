@@ -27,26 +27,15 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-
-package com.thoughtworks.paranamer;
-
-import java.lang.reflect.AccessibleObject;
+package com.thoughtworks.paranamer.generator;
 
 /**
- * Implementation of Paranamer which adheres to the NullObject pattern
- *
- * @author Paul Hammant
+ * This class has evil purposes. It is called chameleon, though it is in the Goat.java class.
+ * It's purpose is to check what happens when the file name does not matches the class name.
  */
-public class NullParanamer implements Paranamer {
+class Chameleon {
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return new String[0];
-    }
-
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
-        if (throwExceptionIfMissing) {
-            throw new ParameterNamesNotFoundException("NullParanamer implementation predictably finds no parameter names");
-        }
-        return Paranamer.EMPTY_NAMES;
+    public int thisIsCrazy(Monkey veryCrazy) {
+        return 0;
     }
 }

@@ -1,5 +1,5 @@
 /***
- *
++ *
  * Copyright (c) 2007 Paul Hammant
  * All rights reserved.
  *
@@ -27,26 +27,25 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.thoughtworks.paranamer.generator;
 
-package com.thoughtworks.paranamer;
+public class Horse<E extends Elephant> {
+    private E dumbo;
 
-import java.lang.reflect.AccessibleObject;
-
-/**
- * Implementation of Paranamer which adheres to the NullObject pattern
- *
- * @author Paul Hammant
- */
-public class NullParanamer implements Paranamer {
-
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return new String[0];
+    public Horse(E dumbo) {
+        this.dumbo = dumbo;
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
-        if (throwExceptionIfMissing) {
-            throw new ParameterNamesNotFoundException("NullParanamer implementation predictably finds no parameter names");
-        }
-        return Paranamer.EMPTY_NAMES;
+    public E getElephant() {
+        return dumbo;
     }
+
+    public void setElephant(E dumboss) {
+        this.dumbo = dumboss;
+    }
+
+    public E[] elephantArrays(E[] theArrayParameter, String otherParameter) {
+        return theArrayParameter;
+    }
+
 }

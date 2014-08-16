@@ -30,17 +30,17 @@
 
 package com.thoughtworks.paranamer.mojo;
 
-import java.io.IOException;
-
+import com.thoughtworks.paranamer.generator.ParanamerGenerator;
+import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
-import com.thoughtworks.paranamer.generator.ParanamerGenerator;
-import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
+import java.io.IOException;
 
 /**
  * Mojo to generate parameter names via ParanamerGenerator
@@ -49,6 +49,18 @@ import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
  */
 @Mojo(name="generate", defaultPhase=LifecyclePhase.COMPILE, requiresDependencyResolution=ResolutionScope.COMPILE)
 public class ParanamerGeneratorMojo extends AbstractMojo {
+	
+	/** THe system property name, which if set, will skip execution of this mojo */
+	public static final String skipProp = "skipParanamer";
+	
+	/**
+	 * Determines if the skip property is set
+	 * 
+	 * @return true if the skip property is set, false otherwise
+	 */
+	public boolean skip() {
+		return System.getProperties().containsKey(skipProp);
+	}
 
     /**
      * The directory containing the Java source files
@@ -67,7 +79,11 @@ public class ParanamerGeneratorMojo extends AbstractMojo {
      */
     private ParanamerGenerator generator = new QdoxParanamerGenerator();
 
-    public void execute() throws MojoExecutionException {
+    public void execute() throws MojoExecutionException, MojoFailureException {
+    	if(skip()) {
+    		getLog().info("\n\tSkipping ParanamerGeneratorMojo as \"" + skipProp + "\" system property is set\n");
+    		return;
+    	}
         getLog().info("Generating parameter names from " + sourceDirectory + " to " + outputDirectory);
         try {
             generator.processSourcePath(sourceDirectory, outputDirectory);

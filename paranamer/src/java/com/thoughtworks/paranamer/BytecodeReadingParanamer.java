@@ -56,8 +56,9 @@ public class BytecodeReadingParanamer implements Paranamer {
         {
             put("int","I");
             put("boolean","Z");
+            put("byte", "B");
             put("char","C");
-            put("short","B");
+            put("short","S");
             put("float","F");
             put("long","J");
             put("double","D");

@@ -27,26 +27,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
+package com.thoughtworks.paranamer.generator;
 
-package com.thoughtworks.paranamer;
+public class Monkey {
 
-import java.lang.reflect.AccessibleObject;
-
-/**
- * Implementation of Paranamer which adheres to the NullObject pattern
- *
- * @author Paul Hammant
- */
-public class NullParanamer implements Paranamer {
-
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return new String[0];
+    public static class Banana {
+        public void bananaMethod(int number) {
+        }
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
-        if (throwExceptionIfMissing) {
-            throw new ParameterNamesNotFoundException("NullParanamer implementation predictably finds no parameter names");
-        }
-        return Paranamer.EMPTY_NAMES;
+    public class Avocado {
+    }
+
+    public Monkey(Banana monkeyEatsBanana) {
+    }
+
+    public void aMethod(Avocado theInnerAvocado) {
     }
 }
