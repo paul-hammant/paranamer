@@ -46,7 +46,7 @@ import org.objectweb.asm.Opcodes;
  */
 public class Enhancer implements Opcodes {
 
-	public void enhance(File classFile, String parameterNameData)
+	public void enhance(File classFile, CharSequence parameterNameData)
 			throws IOException {
 
 		byte[] classBytecode = addExtraStaticField(classFile, parameterNameData);
@@ -56,7 +56,7 @@ public class Enhancer implements Opcodes {
 	}
 
 	private byte[] addExtraStaticField(File classFile,
-			final String parameterNameData) throws IOException {
+			final CharSequence parameterNameData) throws IOException {
 
 		InputStream inputStream = new FileInputStream(classFile);
 		ClassReader reader = new ClassReader(inputStream);
@@ -68,7 +68,7 @@ public class Enhancer implements Opcodes {
 
 		AddFieldAdapter adapter = new AddFieldAdapter(writer, ACC_PUBLIC
 				+ ACC_FINAL + ACC_STATIC, "__PARANAMER_DATA",
-				"Ljava/lang/String;", parameterNameData);
+				"Ljava/lang/String;", parameterNameData.toString());
 
 		reader.accept(adapter, 0);
 

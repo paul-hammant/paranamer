@@ -37,7 +37,7 @@ import org.apache.tools.ant.DirectoryScanner;
 
 import org.apache.tools.ant.types.FileSet;
 
-import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.JavaProjectBuilder;
 
 import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
 
@@ -178,7 +178,7 @@ public class ParanamerTask extends Task {
                     + ds.getBasedir());
             for (Object o : Arrays.asList(includedFiles)) {
                 String file = (String) o;
-                JavaDocBuilder builder = new JavaDocBuilder();
+                JavaProjectBuilder builder = new JavaProjectBuilder();
                 try {
                     builder.addSource(new File(ds.getBasedir(), file));
                     // if the classdir is set then we source the classes
