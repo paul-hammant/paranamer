@@ -11,14 +11,14 @@
 
   <dependencies>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>paranamer-generator</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>${pom.groupId}</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>paranamer-ant</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
   <build>
@@ -40,9 +40,9 @@
               <overWriteSnapshots>true</overWriteSnapshots>
               <artifactItems>
                 <artifactItem>
-                  <groupId>${pom.groupId}</groupId>
+                  <groupId>${project.groupId}</groupId>
                   <artifactId>paranamer</artifactId>
-                  <version>${pom.version}</version>
+                  <version>${project.version}</version>
                   <classifier>javadoc</classifier>
                 </artifactItem>
               </artifactItems>
@@ -112,7 +112,7 @@
             </goals>
             <configuration>
               <descriptor>${basedir}/src/assembly/assembly-bin.xml</descriptor>
-              <finalName>paranamer-${pom.version}</finalName>
+              <finalName>paranamer-${project.version}</finalName>
               <workDirectory>${project.build.directory}/assembly/bin</workDirectory>
             </configuration>
           </execution>
@@ -124,7 +124,7 @@
             </goals>
             <configuration>
               <descriptor>${basedir}/src/assembly/assembly-src.xml</descriptor>
-              <finalName>paranamer-${pom.version}</finalName>
+              <finalName>paranamer-${project.version}</finalName>
               <workDirectory>${project.build.directory}/assembly/src</workDirectory>
             </configuration>
           </execution>

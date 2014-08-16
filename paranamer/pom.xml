@@ -65,8 +65,8 @@
           </execution>
         </executions>
         <configuration>
-          <sourceDirectory>${pom.build.sourceDirectory}</sourceDirectory>
-          <outputDirectory>${pom.build.outputDirectory}</outputDirectory>
+          <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
+          <outputDirectory>${project.build.outputDirectory}</outputDirectory>
         </configuration>
       </plugin>
     </plugins>
