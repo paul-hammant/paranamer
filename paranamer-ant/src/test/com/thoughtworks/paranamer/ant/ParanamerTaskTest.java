@@ -1,27 +1,25 @@
 package com.thoughtworks.paranamer.ant;
 
-import com.thoughtworks.paranamer.generator.Enhancer;
-import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
-
-import com.thoughtworks.qdox.model.JavaClass;
-
-import org.junit.Assert;
-import org.junit.Test;
-import package1.A;
-import package1.B;
-import package2.C;
-
 import java.io.File;
 import java.io.IOException;
-
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Target;
-
 import org.apache.tools.ant.types.FileSet;
+import org.junit.Assert;
+import org.junit.Test;
+
+import package1.A;
+import package1.B;
+import package2.C;
+
+import com.thoughtworks.paranamer.generator.Enhancer;
+import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
+import com.thoughtworks.qdox.model.JavaClass;
 
 public class ParanamerTaskTest {
     private static final File BASE = new File(ParanamerTaskTest.class
@@ -65,7 +63,8 @@ public class ParanamerTaskTest {
 
             protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
                 return new QdoxParanamerGenerator() {
-                    public void processClasses(JavaClass[] classes, String outputPath)
+                	@Override
+                    public void processClasses(Collection<JavaClass> classes, String outputPath)
                         throws IOException {
                         for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
@@ -113,7 +112,8 @@ public class ParanamerTaskTest {
 
             protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
                 return new QdoxParanamerGenerator() {
-                    public void processClasses(JavaClass[] classes, String outputPath)
+                	@Override
+                    public void processClasses(Collection<JavaClass> classes, String outputPath)
                         throws IOException {
                         for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
@@ -164,7 +164,8 @@ public class ParanamerTaskTest {
 
             protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
                 return new QdoxParanamerGenerator() {
-                    public void processClasses(JavaClass[] classes, String outputPath)
+                	@Override
+                    public void processClasses(Collection<JavaClass> classes, String outputPath)
                         throws IOException {
                         for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
@@ -214,7 +215,8 @@ public class ParanamerTaskTest {
 
             protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
                 return new QdoxParanamerGenerator() {
-                    public void processClasses(JavaClass[] classes, String outputPath)
+                	@Override
+                    public void processClasses(Collection<JavaClass> classes, String outputPath)
                         throws IOException {
                         for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
@@ -258,7 +260,8 @@ public class ParanamerTaskTest {
 
             protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
                 return new QdoxParanamerGenerator() {
-                    public void processClasses(JavaClass[] classes, String outputPath)
+                	@Override
+                    public void processClasses(Collection<JavaClass> classes, String outputPath)
                         throws IOException {
                         for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
@@ -304,7 +307,8 @@ public class ParanamerTaskTest {
 
             protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
                 return new QdoxParanamerGenerator() {
-                    public void processClasses(JavaClass[] classes, String outputPath)
+                	@Override
+                    public void processClasses(Collection<JavaClass> classes, String outputPath)
                         throws IOException {
                         for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
@@ -350,7 +354,8 @@ public class ParanamerTaskTest {
 
             protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
                 return new QdoxParanamerGenerator() {
-                    public void processClasses(JavaClass[] classes, String outputPath)
+                	@Override
+                    public void processClasses(Collection<JavaClass> classes, String outputPath)
                         throws IOException {
                         for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
@@ -400,7 +405,8 @@ public class ParanamerTaskTest {
 
             protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
                 return new QdoxParanamerGenerator() {
-                    public void processClasses(JavaClass[] classes, String outputPath)
+                	@Override
+                    public void processClasses(Collection<JavaClass> classes, String outputPath)
                         throws IOException {
                         for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
@@ -447,7 +453,8 @@ public class ParanamerTaskTest {
 
             protected QdoxParanamerGenerator makeQdoxParanamerGenerator() {
                 return new QdoxParanamerGenerator() {
-                    public void processClasses(JavaClass[] classes, String outputPath)
+                	@Override
+                    public void processClasses(Collection<JavaClass> classes, String outputPath)
                         throws IOException {
                         for (JavaClass aClass : classes) {
                             result.add(aClass.getFullyQualifiedName());
@@ -495,14 +502,15 @@ public class ParanamerTaskTest {
                 return new QdoxParanamerGenerator() {
                     public Enhancer makeEnhancer() {
                         return new Enhancer() {
-                            public void enhance(File classFile, String parameterNameData)
+                        	@Override
+                            public void enhance(File classFile, CharSequence parameterNameData)
                                 throws IOException {
                                 enhanced[0] = true;
                                 super.enhance(classFile, parameterNameData);
                                 Assert.assertTrue(classFile.getAbsolutePath().endsWith("C.class"));
                                 Assert.assertEquals(
                                         "method1OfC int,int arg1,arg2 \n" +
-                                                "method2OfC int arg \n", parameterNameData);
+                                                "method2OfC int arg \n", parameterNameData.toString());
                             }
                         };
                     }

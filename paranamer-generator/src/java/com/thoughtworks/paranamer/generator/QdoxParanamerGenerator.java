@@ -29,15 +29,20 @@
  */
 package com.thoughtworks.paranamer.generator;
 
-import com.thoughtworks.qdox.JavaDocBuilder;
+import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaClass;
+import com.thoughtworks.qdox.model.JavaConstructor;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
-import com.thoughtworks.qdox.model.Type;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Qdox-based implementation of ParanamerGenerator which parses Java source files to processSourcePath
@@ -46,37 +51,42 @@ import java.util.Arrays;
  * @author Paul Hammant
  * @author Mauro Talevi
  * @author Guilherme Silveira
- * @author Victor Williams Stafusa da Silva
  */
 public class QdoxParanamerGenerator implements ParanamerGenerator {
 
     private static final String SPACE  = " ";
     private static final String NEWLINE = "\n";
     private static final String COMMA = ",";
-    private static final String EMPTY = "";
-    private static final String BRACKETS = "[]";
 
     public QdoxParanamerGenerator() {
     }
 
     public void processSourcePath(String sourcePath, String outputPath) throws IOException {
-        JavaClass[] classes = getClassesSortedByName(sourcePath);
+    	List<JavaClass> classes = getClassesSortedByName(sourcePath);
         processClasses(classes, outputPath);
     }
 
-    private JavaClass[] getClassesSortedByName(String sourcePath) {
-        JavaDocBuilder builder = new JavaDocBuilder();
+    private List<JavaClass> getClassesSortedByName(String sourcePath) {
+    	JavaProjectBuilder builder = new JavaProjectBuilder();
         builder.addSourceTree(new File(sourcePath));
-        JavaClass[] classes = builder.getClasses();
-        Arrays.sort(classes);
+        List<JavaClass> classes = new ArrayList<JavaClass>(builder.getClasses());
+        Collections.sort(classes, new Comparator<JavaClass>() {
+        	public int compare(JavaClass o1, JavaClass o2) 
+        	{
+        		return o1.getName().compareTo(o2.getName());
+        	}
+		} );
         return classes;
     }
 
-    public void processClasses(JavaClass[] classes, String outputPath) throws IOException {
+    public void processClasses(Collection<JavaClass> classes, String outputPath) throws IOException {
         for (JavaClass javaClass : classes) {
-            String content = addMethods(javaClass.getMethods());
-            File f = new File(outputPath, javaClass.getFullyQualifiedName().replace('.', File.separatorChar) + ".class");
-            makeEnhancer().enhance(f, content);
+        	StringBuilder content = new StringBuilder();
+        	content.append(addConstructors(javaClass.getConstructors()));
+        	content.append(addMethods(javaClass.getMethods()));
+            // TODO problem with inner classes
+            makeEnhancer().enhance(new File(outputPath, javaClass.getFullyQualifiedName().replace('.', File.separatorChar) + ".class"), content);
+
         }
     }
 
@@ -84,64 +94,89 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         return new Enhancer();
     }
 
-    private String addMethods(JavaMethod[] methods) {
-        Arrays.sort(methods);
+    private String addConstructors(List<JavaConstructor> methods) {
         StringBuilder buffer = new StringBuilder();
+        for (JavaConstructor javaConstructor : methods) {
+            if (!javaConstructor.isPrivate() && javaConstructor.getParameters().size() > 0) {
+                buffer.append(addConstructor(javaConstructor));
+            }
+        }
+        return buffer.toString();
+    }
+    
+    private String addMethods(List<JavaMethod> methods) {
+    	Collections.sort(methods, new Comparator<JavaMethod>() {
+    		public int compare(JavaMethod o1, JavaMethod o2) {
+    			return o1.getName().compareTo(o2.getName());
+    		}
+		});
+    	StringBuilder buffer = new StringBuilder();
         for (JavaMethod javaMethod : methods) {
-            if (!Arrays.asList(javaMethod.getModifiers()).contains("private") && javaMethod.getParameters().length > 0) {
-                addMethod(buffer, javaMethod);
+            if (!javaMethod.isPrivate() && javaMethod.getParameters().size() > 0) {
+                buffer.append(addMethod(javaMethod));
             }
         }
         return buffer.toString();
     }
 
-    private void addMethod(StringBuilder sb, JavaMethod method) {
-        JavaParameter[] parameters = method.getParameters();
-        formatMethod(sb, method, parameters);
+    private CharSequence addConstructor(JavaConstructor constructor) {
+        List<JavaParameter> parameters = constructor.getParameters();
+        return format(constructor.getName(), parameters, true);
     }
 
-    private void formatMethod(StringBuilder sb, JavaMethod method, JavaParameter[] parameters) {
-        String methodName = method.getName();
-        if (method.isConstructor()) {
+    private CharSequence addMethod(JavaMethod method) {
+        List<JavaParameter> parameters = method.getParameters();
+        return format(method.getName(), parameters, false);
+    }
+
+    private CharSequence format(String name, List<JavaParameter> parameters, boolean isConstructor) {
+    	StringBuilder sb = new StringBuilder();
+        String methodName = name;
+        if (isConstructor) {
             methodName = "<init>";
         }
+        String parameterTypes = getParameterTypes(parameters);
+        sb.append(formatLine(methodName, parameterTypes, getParameterNames(parameters)));
+        return sb;
+    }
 
+    private CharSequence formatLine(String methodName, String paramTypes, String paramNames){
+    	StringBuilder sb = new StringBuilder();
         // processClasses line structure:  methodName paramTypes paramNames
         sb.append(methodName).append(SPACE);
-        if (parameters.length > 0) {
-            formatParameterTypes(sb, parameters);
-            sb.append(SPACE);
-            formatParameterNames(sb, parameters);
-            sb.append(SPACE);
+        if ( paramTypes.length() > 0 ) {
+            sb.append(paramTypes.trim()).append(SPACE);
+            sb.append(paramNames.trim()).append(SPACE);
         }
         sb.append(NEWLINE);
+        return sb;
     }
 
-    private void formatParameterNames(StringBuilder sb, JavaParameter[] parameters) {
-        for (int i = 0; i < parameters.length; i++) {
-            sb.append(parameters[i].getName());
-            sb.append(comma(i, parameters.length));
+    private String getParameterNames(List<JavaParameter> parameters) {
+    	StringBuilder sb = new StringBuilder();
+        Iterator<JavaParameter> paramIter = parameters.iterator();
+        while(paramIter.hasNext()) {
+        	JavaParameter param = paramIter.next();
+        	sb.append(param.getName());
+        	if(paramIter.hasNext())
+        	{
+        		sb.append(COMMA);
+        	}
         }
+        return sb.toString();
     }
 
-    private void formatParameterTypes(StringBuilder sb, JavaParameter[] parameters) {
-        for (int i = 0; i < parameters.length; i++) {
-
-            // This code is a bit dodgy to ensure that both inner classes and arrays shows up correctly.
-            // It is based in the Type.toString() method, but using getFullyQualifiedName() instead of getValue().
-            Type t = parameters[i].getType();
-            sb.append(t.getFullyQualifiedName());
-            int dimensions = t.getDimensions();
-            for (int d = 0; d < dimensions; d++) {
-                sb.append(BRACKETS);
-            }
-
-            sb.append(comma(i, parameters.length));
+    private String getParameterTypes(List<JavaParameter> parameters) {
+        StringBuilder sb = new StringBuilder();
+        Iterator<JavaParameter> paramIter = parameters.iterator();
+        while(paramIter.hasNext()) {
+        	JavaParameter param = paramIter.next();
+        	sb.append(param.getType().getCanonicalName());
+        	if(paramIter.hasNext())
+        	{
+        		sb.append(COMMA);
+        	}
         }
+        return sb.toString();
     }
-
-    private String comma(int index, int size) {
-        return (index + 1 < size) ? COMMA : EMPTY;
-    }
-
 }

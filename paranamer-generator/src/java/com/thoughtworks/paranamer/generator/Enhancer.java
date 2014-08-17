@@ -29,15 +29,15 @@
  */
 package com.thoughtworks.paranamer.generator;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 
 /**
  * A bytecode enhancer which adds a new static variable to some specific class.
@@ -46,26 +46,34 @@ import org.objectweb.asm.Opcodes;
  */
 public class Enhancer implements Opcodes {
 
-    public void enhance(File classFile, String parameterNameData) throws IOException {
-        byte[] classBytecode = addExtraStaticField(classFile, parameterNameData);
-        FileOutputStream os = new FileOutputStream(classFile);
-        os.write(classBytecode);
-        os.close();
-    }
+	public void enhance(File classFile, CharSequence parameterNameData)
+			throws IOException {
 
-    private byte[] addExtraStaticField(File classFile, String parameterNameData) throws IOException {
-        InputStream inputStream = new FileInputStream(classFile);
-        ClassReader reader = new ClassReader(inputStream);
+		byte[] classBytecode = addExtraStaticField(classFile, parameterNameData);
+		FileOutputStream os = new FileOutputStream(classFile);
+		os.write(classBytecode);
+		os.close();
+	}
 
-        ClassWriter writer = new ClassWriter(reader, 0);
-        // TODO doc typo on page 21: recommended
-        AddFieldAdapter adapter = new AddFieldAdapter(writer, ACC_PUBLIC + ACC_FINAL + ACC_STATIC,
-                "__PARANAMER_DATA", "Ljava/lang/String;", parameterNameData);
+	private byte[] addExtraStaticField(File classFile,
+			final CharSequence parameterNameData) throws IOException {
 
-        reader.accept(adapter, 0);
+		InputStream inputStream = new FileInputStream(classFile);
+		ClassReader reader = new ClassReader(inputStream);
 
-        inputStream.close();
-        return writer.toByteArray();
-    }
+		ClassWriter writer = new ClassWriter(reader, 0);
+		// TODO fix problem with inner classes, two classes in one classFile and
+		// so on...
+		// TODO doc typo on page 21: recommended
+
+		AddFieldAdapter adapter = new AddFieldAdapter(writer, ACC_PUBLIC
+				+ ACC_FINAL + ACC_STATIC, "__PARANAMER_DATA",
+				"Ljava/lang/String;", parameterNameData.toString());
+
+		reader.accept(adapter, 0);
+
+		inputStream.close();
+		return writer.toByteArray();
+	}
 
 }

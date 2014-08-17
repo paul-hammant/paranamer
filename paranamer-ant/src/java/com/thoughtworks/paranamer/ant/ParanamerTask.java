@@ -27,22 +27,18 @@
  */
 package com.thoughtworks.paranamer.ant;
 
-import java.util.Arrays;
-import java.util.Vector;
-import java.util.Collection;
-
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
-import org.apache.tools.ant.DirectoryScanner;
-
-import org.apache.tools.ant.types.FileSet;
-
-import com.thoughtworks.qdox.JavaDocBuilder;
-
 import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
+import com.thoughtworks.qdox.JavaProjectBuilder;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.DirectoryScanner;
+import org.apache.tools.ant.Task;
+import org.apache.tools.ant.types.FileSet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Vector;
 
 /**
  * Ant Task to process parameter names. This ant task facilitates the
@@ -178,7 +174,7 @@ public class ParanamerTask extends Task {
                     + ds.getBasedir());
             for (Object o : Arrays.asList(includedFiles)) {
                 String file = (String) o;
-                JavaDocBuilder builder = new JavaDocBuilder();
+                JavaProjectBuilder builder = new JavaProjectBuilder();
                 try {
                     builder.addSource(new File(ds.getBasedir(), file));
                     // if the classdir is set then we source the classes

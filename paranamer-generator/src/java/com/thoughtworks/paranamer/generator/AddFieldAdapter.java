@@ -24,7 +24,6 @@ public class AddFieldAdapter extends ClassAdapter {
         this.fValue= fValue;
     }
 
-    @Override
     public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
         if (name.equals(fName)) {
             isFieldPresent = true;
@@ -32,7 +31,6 @@ public class AddFieldAdapter extends ClassAdapter {
         return cv.visitField(access, name, desc, signature, value);
     }
 
-    @Override
     public void visitEnd() {
         if (!isFieldPresent) {
             FieldVisitor fv = cv.visitField(fAcc, fName, fDesc, null, fValue);
