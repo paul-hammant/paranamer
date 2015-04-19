@@ -415,6 +415,16 @@ public class BytecodeReadingParanamer implements Paranamer {
         final static int NAME_TYPE = 12;
 
         /**
+        * The type of CONSTANT_MethodHandle constant pool items.
+        */
+        static final int MHANDLE = 15;
+
+        /**
+        * The type of CONSTANT_InvokeDynamic constant pool items.
+        */
+        static final int INVOKEDYN = 18;
+
+        /**
          * The type of CONSTANT_Utf8 constant pool items.
          */
         final static int UTF8 = 1;
@@ -455,6 +465,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                     case IMETH:
                     case INT:
                     case FLOAT:
+                    case INVOKEDYN:
                     case NAME_TYPE:
                         size = 5;
                         break;
@@ -462,6 +473,9 @@ public class BytecodeReadingParanamer implements Paranamer {
                     case DOUBLE:
                         size = 9;
                         ++i;
+                        break;
+                    case MHANDLE:
+                        size = 4;
                         break;
                     case UTF8:
                         size = 3 + readUnsignedShort(index + 1);
@@ -613,7 +627,6 @@ public class BytecodeReadingParanamer implements Paranamer {
                 // inlined in original ASM source, now a method call
                 u = readMethod(classVisitor, c, u);
             }
-
         }
 
         private int readMethod(TypeCollector classVisitor, char[] c, int u) {
