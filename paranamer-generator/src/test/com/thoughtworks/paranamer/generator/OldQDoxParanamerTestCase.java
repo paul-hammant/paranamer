@@ -77,7 +77,7 @@ public class OldQDoxParanamerTestCase {
     public void testSimpleClassGeneration() throws IOException, NoSuchFieldException, IllegalAccessException {
         String s1 = paranamerDataOf("Elephant");
         String s2 = "<init> java.util.Map map \n"
-                + "longArray long[] longs \n"
+                + "longArray long longs \n"
                 + "setMap java.util.Map map \n";
         Assert.assertEquals(s2, s1);
     }
@@ -94,8 +94,8 @@ public class OldQDoxParanamerTestCase {
     @Test
     public void testGenerationWithInnerClass1() throws IOException, NoSuchFieldException, IllegalAccessException {
         String s1 = paranamerDataOf("Monkey");
-        String s2 = "<init> com.thoughtworks.paranamer.generator.Monkey$Banana monkeyEatsBanana \n"
-                + "aMethod com.thoughtworks.paranamer.generator.Monkey$Avocado theInnerAvocado \n";
+        String s2 = "<init> com.thoughtworks.paranamer.generator.Monkey.Banana monkeyEatsBanana \n"
+                + "aMethod com.thoughtworks.paranamer.generator.Monkey.Avocado theInnerAvocado \n";
         Assert.assertEquals(s2, s1);
     }
 
