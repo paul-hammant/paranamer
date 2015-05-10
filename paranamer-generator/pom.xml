@@ -15,6 +15,12 @@
       <version>2.0-M3</version>
       <scope>compile</scope>
     </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.ow2.asm</groupId>-->
+      <!--<artifactId>asm</artifactId>-->
+      <!--<version>5.0.3</version>-->
+      <!--<scope>compile</scope>-->
+    <!--</dependency>-->
     <dependency>
       <groupId>asm</groupId>
       <artifactId>asm</artifactId>
