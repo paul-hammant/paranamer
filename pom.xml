@@ -12,7 +12,7 @@
     <name>ParaNamer Parent</name>
     <inceptionYear>2007</inceptionYear>    
     <description>Paranamer allows runtime access to constructor and method parameter names for Java classes</description>
-    <url>http://paranamer.codehaus.org</url>
+    <url>https://github.com/paul-hammant/paranamer</url>
     <modules>
         <module>paranamer</module>        
     </modules>
