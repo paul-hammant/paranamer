@@ -1,6 +1,5 @@
 package com.thoughtworks.paranamer.generator;
 
-import org.objectweb.asm.ClassAdapter;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 
@@ -9,7 +8,7 @@ import org.objectweb.asm.FieldVisitor;
  * Adapted from ASM 3.0 pagg 23-25
  * @author Alessandro Colantoni
  */
-public class AddFieldAdapter extends ClassAdapter {
+public class AddFieldAdapter extends ClassVisitor {
     private int fAcc;
     private String fName;
     private String fDesc;
@@ -17,7 +16,7 @@ public class AddFieldAdapter extends ClassAdapter {
     private boolean isFieldPresent;
 
     public AddFieldAdapter(ClassVisitor cv, int fAcc, String fName, String fDesc, Object fValue) {
-        super(cv);
+        super(org.objectweb.asm.Opcodes.ASM5, cv);
         this.fAcc = fAcc;
         this.fName = fName;
         this.fDesc = fDesc;
