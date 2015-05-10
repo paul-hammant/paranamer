@@ -12,7 +12,7 @@
     <name>ParaNamer Parent</name>
     <inceptionYear>2007</inceptionYear>    
     <description>Paranamer allows runtime access to constructor and method parameter names for Java classes</description>
-    <url>http://paranamer.codehaus.org</url>
+    <url>https://github.com/paul-hammant/paranamer</url>
     <modules>
         <module>paranamer</module>
         <module>paranamer-generator</module>
@@ -28,7 +28,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.11</version>
+                <version>4.12</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
@@ -71,7 +71,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.3</version>
                     <configuration>
                         <source>1.5</source>
                         <target>1.5</target>
@@ -80,7 +80,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.17</version>
+                    <version>2.18.1</version>
                     <configuration>
                         <junitArtifactName>junit:junit</junitArtifactName>
                         <excludes>
@@ -105,7 +105,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.9.1</version>
+                    <version>2.10.3</version>
                     <executions>
                         <execution>
                             <id>attach-javadoc</id>
@@ -125,7 +125,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>2.3</version>
+                    <version>2.4</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>
@@ -139,7 +139,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.6</version>
+                    <version>2.7</version>
                     <configuration>
                         <encoding>${resource.encoding}</encoding>
                     </configuration>
@@ -157,22 +157,22 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>2.5.4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>2.8</version>
+                    <version>2.10</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
-                    <version>1.7</version>
+                    <version>1.8</version>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>cobertura-maven-plugin</artifactId>
-                    <version>2.6</version>
+                    <version>2.7</version>
                     <configuration>
                         <formats>
                             <format>html</format>
@@ -190,7 +190,7 @@
                 <plugin>
                   <groupId>org.apache.felix</groupId>
                   <artifactId>maven-bundle-plugin</artifactId>
-                  <version>2.5.0</version>
+                  <version>2.5.4</version>
                 </plugin>
 
               </plugins>
@@ -288,9 +288,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://git.codehaus.org/paranamer-git.git</connection>
-        <developerConnection>scm:git:ssh://git@git.codehaus.org/paranamer-git.git</developerConnection>
-        <url>http://git.codehaus.org/gitweb.cgi?p=paranamer-git.git</url>
+        <connection>scm:git:git@github.com:paul-hammant/paranamer.git</connection>
+        <developerConnection>scm:git@github.com:paul-hammant/paranamer.git</developerConnection>
+        <url>https://github.com/paul-hammant/paranamer/tree/master/</url>
       <tag>HEAD</tag>
   </scm>
     
