@@ -275,9 +275,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://git.codehaus.org/paranamer-git.git</connection>
-        <developerConnection>scm:git:ssh://git@git.codehaus.org/paranamer-git.git</developerConnection>
-        <url>http://git.codehaus.org/gitweb.cgi?p=paranamer-git.git</url>
+        <connection>scm:git:git@github.com:paul-hammant/paranamer.git</connection>
+        <developerConnection>scm:git@github.com:paul-hammant/paranamer.git</developerConnection>
+        <url>https://github.com/paul-hammant/paranamer/tree/real_asm/</url>
     </scm>
     
 </project>
