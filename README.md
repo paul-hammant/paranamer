@@ -233,35 +233,24 @@ The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/
 
 [See Project On Github](http://github.com/paul-hammant/paranamer) (yes pull requests are fine), mirrored from Codehaus - see the  [repo connection details](http://xircles.codehaus.org/projects/paranamer/repos/git/repo) for that.
 
-## Team
+## Committers & Contributors
 
-### Project Founder and Lead
-
-Paul Hammant
-
-### Committers & Contributors
-
-Paul Hammant
-Mauro Talevi
-Guilherme Silveira
-Sam Halliday
-Stefan Fleiter
-Raghuram Devarakonda
-Nicholas Whitehead
-Otávio Garcia
-
+* Paul Hammant
+* Mauro Talevi
+* Guilherme Silveira
+* Sam Halliday
+* Stefan Fleiter
+* Raghuram Devarakonda
+* Nicholas Whitehead
+* Otávio Garcia
 
 ## Other Codehaus Project Info
 
-Developers, Maven 2 repository, lists, sites are detailed here: [http://xircles.codehaus.org/projects/paranamer](http://xircles.codehaus.org/projects/paranamer). The Github repo us a mirror of the Codehaus one. Issues can be raised in [JIRA one Codehaus](http://jira.codehaus.org/browse/PARANAMER) or Github's [issue tracker for Paranamer](https://github.com/paul-hammant/paranamer/issues) (your choice, but perhaps link to a buildable example or what you're referring to).
+Github's [issue tracker for Paranamer](https://github.com/paul-hammant/paranamer/issues) is kinda how conversations happen re Paranamer.
 
 ## Downloads
 
-Download the latest released jar files (2.6.1) [here](http://central.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.6.1/)
-
-## Mail Lists
-
-[http://xircles.codehaus.org/projects/paranamer/lists](http://xircles.codehaus.org/projects/paranamer/lists) ... but you'll need to enroll in Codehaus' Xircles system first : [http://xircles.codehaus.org/my/email/subscriptions](http://xircles.codehaus.org/my/email/subscriptions)
+Download the latest released jar files (2.7.1) [here](http://central.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.7.1/)
 
 # More Examples
 
