@@ -240,6 +240,7 @@ The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/
 * Guilherme Silveira
 * Sam Halliday
 * Stefan Fleiter
+* Robert Scholte
 * Raghuram Devarakonda
 * Nicholas Whitehead
 * Otávio Garcia
