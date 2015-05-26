@@ -288,10 +288,10 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:paul-hammant/paranamer.git</connection>
-        <developerConnection>scm:git@github.com:paul-hammant/paranamer.git</developerConnection>
-        <url>https://github.com/paul-hammant/paranamer/tree/master/</url>
-      <tag>HEAD</tag>
+        <connection>scm:git:git://github.com/paul-hammant/paranamer.git</connection>
+        <developerConnection>scm:git:git@github.com:paul-hammant/paranamer.git</developerConnection>
+        <url>https://github.com/paul-hammant/paranamer</url>
+        <tag>HEAD</tag>
   </scm>
     
 </project>
