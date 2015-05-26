@@ -33,6 +33,10 @@ package com.thoughtworks.paranamer.mojo;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import com.thoughtworks.paranamer.generator.ParanamerGenerator;
 import com.thoughtworks.paranamer.generator.QdoxParanamerGenerator;
@@ -44,10 +48,10 @@ import java.io.IOException;
  * Mojo to generate parameter names via ParanamerGenerator
  *
  * @author Mauro Talevi
- * @goal generate
- * @phase compile
- * @requiresDependencyResolution compile
  */
+@Mojo( name = "generate",
+       defaultPhase = LifecyclePhase.COMPILE,
+       requiresDependencyResolution = ResolutionScope.COMPILE)
 public class ParanamerGeneratorMojo extends AbstractMojo {
 
 	/** THe system property name, which if set, will skip execution of this mojo */
@@ -65,17 +69,15 @@ public class ParanamerGeneratorMojo extends AbstractMojo {
     /**
      * The directory containing the Java source files
      *
-     * @parameter default-value="${project.build.sourceDirectory}"
-     * @required
      */
+    @Parameter(defaultValue = "${project.build.sourceDirectory}", required = true)
     protected String sourceDirectory;
 
     /**
      * The directory where the Paranamer generator will write the output
      *
-     * @parameter default-value="${project.build.outputDirectory}"
-     * @required
      */
+    @Parameter(defaultValue = "${project.build.outputDirectory}", required = true)
     protected String outputDirectory;
 
     /**
