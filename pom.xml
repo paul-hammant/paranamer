@@ -116,7 +116,6 @@
                             <configuration>
                                 <links>
                                     <link>http://java.sun.com/j2se/1.5/docs/api</link>
-                                    <link>http://qdox.codehaus.org/apidocs/</link>                                    
                                 </links>
                             </configuration>
                         </execution>
