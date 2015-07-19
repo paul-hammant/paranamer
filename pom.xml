@@ -114,6 +114,8 @@
                             </goals>
                             <configuration>
                                 <links>
+                                    <failOnError>false</failOnError>
+                                    <additionalparam>-Xdoclint:none</additionalparam>
                                     <link>http://java.sun.com/j2se/1.5/docs/api</link>
                                 </links>
                             </configuration>
