@@ -46,7 +46,7 @@ import java.util.Vector;
  * nested file sets or a combination of both. The attributes applicable to
  * this ant task include a source directory, class directory, include pattern
  * and exclude pattern. i.e.:
- * <paranamer srcdir="src" classdir="classes" includes="*.java" excludes="excluded.java"/>
+ * &lt;paranamer srcdir="src" classdir="classes" includes="*.java" excludes="excluded.java"/&gt;
  * Each of these attributes contains a default:
  *  - srcdir: the base directory of the project
  *  - classdir: srcdir
@@ -54,16 +54,16 @@ import java.util.Vector;
  *              this is to be consistent with the default fileset includes.
  *  - excludes: "" (none are excluded)
  * Thus,
- * <paranamer srcdir="." classdir="." includes="*.java"/>
- * <paranamer srcdir="." includes="*.java"/>
- * <paranamer srcdir="."/>
- * <paranamer/>
+ * &lt;paranamer srcdir="." classdir="." includes="*.java"/&gt;
+ * &lt;paranamer srcdir="." includes="*.java"/&gt;
+ * &lt;paranamer srcdir="."/&gt;
+ * &lt;paranamer/&gt;
  * are equivalent.
  *
  * Files can be included in nested file sets via:
- * <paranamer>
- *  <fileset dir="." includes="*.java"/>
- * </paranamer>
+ * &lt;paranamer&gt;
+ *  &lt;fileset dir="." includes="*.java"/&gt;
+ * &lt;/paranamer&gt;
  * In this case, for each file set the defaults are:
  *  - srcdir: dir
  *  - classdir: srcdir
@@ -71,18 +71,18 @@ import java.util.Vector;
  *  - excludes: the default for ant standard file sets
  * No additional fileset generated from the attribute defaults will be
  * constructed when embedded filesets are used. i.e.
- * <paranamer>
- *  <fileset dir="directory" includes="*.java"/>
- * </paranamer>
+ * &lt;paranamer&gt;
+ *  &lt;fileset dir="directory" includes="*.java"/&gt;
+ * &lt;/paranamer&gt;
  * will not apply paranamer to the java files in ".".
  *
  * When mixing file sets and attributes, the classdir attribute is treated
  * differently. The classdir attribute will be applied to any files included
  * via srcdir or an embedded file set element. For example:
- * <paranamer classdir="classes"/>
- *  <fileset dir="." includes="*.java"/>
- *  <fileset dir="directory" includes="*.java"/>
- * </paranamer>
+ * &lt;paranamer classdir="classes"/&gt;
+ *  &lt;fileset dir="." includes="*.java"/&gt;
+ *  &lt;fileset dir="directory" includes="*.java"/&gt;
+ * &lt;/paranamer&gt;
  * will require the classes to modify for the first fileset to reside in
  * the classes directory and those of the second fileset to reside in
  * classes/directory. Note that the default srcdir is not applied when embedded
