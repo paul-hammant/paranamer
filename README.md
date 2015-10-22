@@ -45,7 +45,7 @@ DefaultParanamer tries to read parameter name data from an extra public static f
 The static field essentially looks like the following. You really do not need to know this unless your going to make something compatible with Paranamer:
 
 ```java
-private static final String __PARANAMER_DATA = "v1.0 \n"
+public static final String __PARANAMER_DATA = "v1.0 \n"
       + "<init> com.example.PeopleService peopleService \n"
       + "setName java.lang.String,java.lang.String givenName,familyName \n";
       + "setDateOfBirth int,int,int day,month,year \n";
