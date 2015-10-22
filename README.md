@@ -6,8 +6,8 @@
 
 # What is it?
 
-It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like <code>doSometing(mypkg.Person **toMe**)</code>
-currently look like <code>doSomething(mypackage.Person **???**)</code> to people using Java's reflection to inspect methods. 
+It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like `doSometing(mypkg.Person **toMe**)`
+currently look like `doSomething(mypackage.Person **???**)` to people using Java's reflection to inspect methods. 
 
 To date parameter name access has not been very useful to Java application developers, but with the advent of advanced scripting languages and web action frameworks for the JVM it is of increasing importance to be able to leverage a method's parameter names. Scripting languages like [Groovy](http://groovy.codehaus.org/) &amp; [JRuby](http://jruby.codehaus.org/), web action frameworks like [Waffle](http://waffle.codehaus.org) and [VRaptor](# "http://www.vraptor.org/") (that verge on the transparent) and the compelling [Grails](http://grails.codehaus.org/). SOAP and REST designs could also benefit.
 
@@ -21,7 +21,7 @@ Paranamer is gaining JDK 8 compatibility. JDK 8 though has native support though
 
 # Accessing Parameter Name data
 
-There is a method called <code>lookupParameterNames</code> that returns an array of strings for a method or constructor.
+There is a method called `lookupParameterNames` that returns an array of strings for a method or constructor.
 
 ```java
 // MySomethingOrOther.java**
@@ -51,15 +51,11 @@ public static final String __PARANAMER_DATA = "v1.0 \n"
       + "setDateOfBirth int,int,int day,month,year \n";
 ```
 
-Clearly the method's source needs to be analysed and lines added per method to that __PARANAMER_DATA field. See below.
+Clearly the method's source needs to be analysed and lines added per method to that `__PARANAMER_DATA` field. See below.
 
 ## BytecodeReadingParanamer
 
-If generating meta data for parameter names at compile time is not for you, try class <code>BytecodeReadingParanamer</code> as a runtime only solution. This uses a cut down forked and cut-down version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for <code>CachingParanamer</code> when <code>DefaultParanamer</code> reports that there is no meta data for a class.
-
-## AdaptiveParanamer
-
-AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses <code>DefaultParanamer</code> with <code>ByteCodeReadingParanamer</code> as its contingency.
+If generating meta data for parameter names at compile time is not for you, try class `BytecodeReadingParanamer` as a runtime only solution. This uses a cut down forked and cut-down version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for `CachingParanamer` when `DefaultParanamer` reports that there is no meta data for a class.
 
 ## JavadocParanamer
 
@@ -80,23 +76,27 @@ public static class Something {
 }
 ```
 
-AnnotationParanamer takes a delegate paranamer instance as an optional constructor arg.  This will allow constructors and methods to only partly leverage <code>@Named</code>, with other parameters having non-annotated parameter names (the via say <code>DefaulParanamer</code> or <code>BytecodeReadingParanamer</code>).
+AnnotationParanamer takes a delegate paranamer instance as an optional constructor arg.  This will allow constructors and methods to only partly leverage `@Named`, with other parameters having non-annotated parameter names (the via say `DefaultParanamer` or `BytecodeReadingParanamer`).
 
-If you have an alternate annotation to <code>@Named</code>, then you can specify that in a subclass of <code>AnnotationParanamer</code> that overrides two methods isNamed and getNamedValue.  Your overridden methods should do the equivalent of 'return an instance of Named' and <code>return ((Named) ann).value();</code> respectively.
+If you have an alternate annotation to `@Named`, then you can specify that in a subclass of `AnnotationParanamer` that overrides two methods isNamed and getNamedValue.  Your overridden methods should do the equivalent of 'return an instance of Named' and `return ((Named) ann).value();` respectively.
 
-If you are using @Named from JSR 330, you will need it in your classpath of course.  In Maven terms, Paranamer is built with the <code>javax.atinject</code> module as an optional dependency.
+If you are using @Named from JSR 330, you will need it in your classpath of course.  In Maven terms, Paranamer is built with the `javax.atinject` module as an optional dependency.
+
+## AdaptiveParanamer
+
+AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses `DefaultParanamer` with `ByteCodeReadingParanamer` as its contingency.
 
 ## CachingParanamer
 
 CachingParanamer stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.
 
-There's a subclass of <code>CachingParanamer</code> called <code>CachingParanamer.WithoutWeakReferences</code>. It does not use a WeakHashMap as an internal implementation. If you're great with profiling of applications under load, you might be able to justify use of this implementation for your particular app.
+There's a subclass of `CachingParanamer` called `CachingParanamer.WithoutWeakReferences`. It does not use a WeakHashMap as an internal implementation. If you're great with profiling of applications under load, you might be able to justify use of this implementation for your particular app.
 
 
 # Feeding DefaultParanamer
 ##  Generating __PARANAMER_DATA with Ant
 
-This for <code>DefaultParanamer</code> usage of course, as <code>BytecodeReadingParanamer</code> does not need it.
+This for `DefaultParanamer` usage of course, as `BytecodeReadingParanamer` does not need it.
 
 You need to download:
 
@@ -183,7 +183,7 @@ There are already too many jar's for day to day Java development right? Simply c
 
 # What if a parameter names changes?
 
-The general answer to this question is that you should not ship something to third parties where they are going to hard-core your parameter names into their application. For you own in-house stuff, accessing parameter names is harmless. You should be able to ripple though the source code of even large applications, and change say <code>badSpeeldWord</code> to <code>badlySpelledWorld</code> if you need to.
+The general answer to this question is that you should not ship something to third parties where they are going to hard-core your parameter names into their application. For you own in-house stuff, accessing parameter names is harmless. You should be able to ripple though the source code of even large applications, and change say `badSpeeldWord` to `badlySpelledWorld` if you need to.
 
 # Other Modules
 
@@ -249,7 +249,7 @@ Github's [issue tracker for Paranamer](https://github.com/paul-hammant/paranamer
 
 ## Downloads
 
-Download the latest released jar files (2.7.1) [here](http://central.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.7.1/)
+Download the latest released jar files (2.8) [here](http://central.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.8/)
 
 # More Examples
 
