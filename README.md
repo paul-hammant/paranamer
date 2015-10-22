@@ -1,4 +1,4 @@
-# ![ParaNamer](http://paulhammant.com/images/ParaNamer.jpg)
+# ![Paranamer](http://paulhammant.com/images/ParaNamer.jpg)
 
 ## Method Parameter Name Access for Java*
 
@@ -9,15 +9,15 @@
 It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like `doSometing(mypkg.Person **toMe**)`
 currently look like `doSomething(mypackage.Person **???**)` to people using Java's reflection to inspect methods. 
 
-To date parameter name access has not been very useful to Java application developers, but with the advent of advanced scripting languages and web action frameworks for the JVM it is of increasing importance to be able to leverage a method's parameter names. Scripting languages like [Groovy](http://groovy.codehaus.org/) &amp; [JRuby](http://jruby.codehaus.org/), web action frameworks like [Waffle](http://waffle.codehaus.org) and [VRaptor](# "http://www.vraptor.org/") (that verge on the transparent) and the compelling [Grails](http://grails.codehaus.org/). SOAP and REST designs could also benefit.
+To date parameter name access has not been very useful to Java application developers, but with the advent of advanced scripting languages and web action frameworks for the JVM it is of increasing importance to be able to leverage a method's parameter names. Scripting languages like [Groovy](http://groovy.codehaus.org/) and [JRuby](http://jruby.codehaus.org/), web action frameworks like [Waffle](http://waffle.codehaus.org) and [VRaptor](# "http://www.vraptor.org/") (that verge on the transparent) and the compelling [Grails](http://grails.codehaus.org/). SOAP and REST designs could also benefit.
 
-ParaNamer allows you to generate and use parameter name info for versions of Java prior to JDK 5.0 and above. Parameter name access was scheduled for JDK 6.0, but was cancelled at a late stage as the spec-lead suggested the development team ran out of time to implement it. It didn't ship in JDK 7.0 either, though it did in JDK 8 (see below). Historically, it was felt that applications could end up depending on parameter names, and that they essentially became part of constructor/method signatures and could never be changed if you wanted to be backwards compatible.  The view of the authors of Paranamer is that you should be aware that parameter names may change between releases, and code to not depend on them.
+*Paranamer* allows you to generate and use parameter name info for versions of Java prior to JDK 5.0 and above. Parameter name access was scheduled for JDK 6.0, but was cancelled at a late stage as the spec-lead suggested the development team ran out of time to implement it. It didn't ship in JDK 7.0 either, though it did in JDK 8 (see below). Historically, it was felt that applications could end up depending on parameter names, and that they essentially became part of constructor/method signatures and could never be changed if you wanted to be backwards compatible.  The view of the authors of *Paranamer* is that you should be aware that parameter names may change between releases, and code to not depend on them.
 
-Paranamer is Open Source, and licensed as BSD, and first created in in July 2006. It is compatible with commercial/proprietary, GPL, BSD, and Apache (or any open/free source) use.
+*Paranamer* is Open Source, and licensed as BSD, and first created in in July 2006. It is compatible with commercial/proprietary, GPL, BSD, and Apache (or any open/free source) use.
 
 # Java8 has parameter name access built in!
 
-Paranamer is gaining JDK 8 compatibility. JDK 8 though has native support though, and [stackoverflow](http://stackoverflow.com/questions/21455403/how-to-get-method-parameter-names-in-java-8-using-reflection) shows you how to make that work.
+*Paranamer* is gaining JDK 8 compatibility. JDK 8 though has native support though, and [stackoverflow](http://stackoverflow.com/questions/21455403/how-to-get-method-parameter-names-in-java-8-using-reflection) shows you how to make that work.
 
 # Accessing Parameter Name data
 
@@ -36,13 +36,13 @@ String[] parameterNames = paranamer.lookupParameterNames(method) // throws Param
 parameterNames = paranamer.lookupParameterNames(method, false) // will return null if not found
 ```
 
-ParaNamer does not have any runtime jar dependencies while looking up parameter info previously generated that's been zipped into a jar.
+*Paranamer* does not have any runtime jar dependencies while looking up parameter info previously generated that's been zipped into a jar.
 
 ## DefaultParanamer
 
-DefaultParanamer tries to read parameter name data from an extra public static field on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar. 
+DefaultParanamer tries to read parameter name data from an extra public static field called `__PARANAMER_DATA` on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar. 
 
-The static field essentially looks like the following. You really do not need to know this unless your going to make something compatible with Paranamer:
+The static field essentially looks like the following. You really do not need to know this unless your going to make something compatible with *Paranamer*:
 
 ```java
 public static final String __PARANAMER_DATA = "v1.0 \n"
@@ -67,7 +67,7 @@ Numbers it's parameter names arg0, arg1, arg2 (etc), intended as a fall-back if 
 
 ## AnnotationParanamer
 
-AnnotationParanamer uses the @Named annotation from JSR 330 and extracts names pertinent to parameters from that.
+`AnnotationParanamer` uses the `@Named` annotation from JSR 330 and extracts names pertinent to parameters from that.
 
 ```java
 public static class Something {
@@ -76,19 +76,19 @@ public static class Something {
 }
 ```
 
-AnnotationParanamer takes a delegate paranamer instance as an optional constructor arg.  This will allow constructors and methods to only partly leverage `@Named`, with other parameters having non-annotated parameter names (the via say `DefaultParanamer` or `BytecodeReadingParanamer`).
+`AnnotationParanamer` takes a delegate paranamer instance as an optional constructor arg.  This will allow constructors and methods to only partly leverage `@Named`, with other parameters having non-annotated parameter names (the via say `DefaultParanamer` or `BytecodeReadingParanamer`).
 
 If you have an alternate annotation to `@Named`, then you can specify that in a subclass of `AnnotationParanamer` that overrides two methods isNamed and getNamedValue.  Your overridden methods should do the equivalent of 'return an instance of Named' and `return ((Named) ann).value();` respectively.
 
-If you are using @Named from JSR 330, you will need it in your classpath of course.  In Maven terms, Paranamer is built with the `javax.atinject` module as an optional dependency.
+If you are using `@Named` annotation, you will need to add `javax.atinject` artifact in your classpath. *Paranamer* is built with the `javax.atinject` module as an optional dependency.
 
 ## AdaptiveParanamer
 
-AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses `DefaultParanamer` with `ByteCodeReadingParanamer` as its contingency.
+`AdaptiveParanamer` is designed for using a series of *Paranamer* implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses `DefaultParanamer` with `ByteCodeReadingParanamer` as its contingency.
 
 ## CachingParanamer
 
-CachingParanamer stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.
+`CachingParanamer` stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.
 
 There's a subclass of `CachingParanamer` called `CachingParanamer.WithoutWeakReferences`. It does not use a WeakHashMap as an internal implementation. If you're great with profiling of applications under load, you might be able to justify use of this implementation for your particular app.
 
@@ -117,7 +117,7 @@ Classes are changed to have an extra static String member variable that contains
 
 ##  Generating __PARANAMER_DATA with Maven 2 or 3
 
-For Maven, configuration is simpler. Just add this to the build/plugins section of your pom.xml:
+For Maven, configuration is simpler. Just add this to the `build/plugins` section of your `pom.xml`:
 
 ```xml
 <plugin>
@@ -150,7 +150,7 @@ The classes in the ultimate jar file will automatically be made with parameter n
 
 ## Embedding Paranamer in your jar
 
-There are already too many jar's for day to day Java development right? Simply consume the runtime paranamer jar into your project's jar using the Maven2 'shade' plugin.
+There are already too many jar's for day to day Java development right? Simply consume the runtime *Paranamer* jar into your project's jar using the Maven2 'shade' plugin.
 
 ```xml
 <!-- Put in your POM.xml file -->
@@ -192,7 +192,7 @@ The general answer to this question is that you should not ship something to thi
 
 # Paranamer's Future
 
-The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/118) lands as part of Java8.  Despite that, we intend to maintain the library so that it continues to work.
+The need for *Paranamer* will go away when [JEP-118](http://openjdk.java.net/jeps/118) lands as part of Java8.  Despite that, we intend to maintain the library so that it continues to work.
 
 # Projects using it
 
