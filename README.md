@@ -59,7 +59,7 @@ If generating meta data for parameter names at compile time is not for you, try 
 
 ## AdaptiveParanamer
 
-Give it a list of Paranamer implementations to try in turn for parameter names. In its default constructor it has <code>BytecodeReadingParanamer</code> and <code>DefaultParanamer</code> in that order.
+AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses <code>DefaultParanamer</code> with <code>ByteCodeReadingParanamer</code> as its contingency.
 
 ## JavadocParanamer
 
@@ -92,9 +92,6 @@ CachingParanamer stores the results of each parameter name lookup, so that secon
 
 There's a subclass of <code>CachingParanamer</code> called <code>CachingParanamer.WithoutWeakReferences</code>. It does not use a WeakHashMap as an internal implementation. If you're great with profiling of applications under load, you might be able to justify use of this implementation for your particular app.
 
-## AdaptiveParanamer
-
-AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses DefaultParanamer with <code>ByteCodeReadingParanamer</code> as its contingency.
 
 # Feeding DefaultParanamer
 ##  Generating __PARANAMER_DATA with Ant
