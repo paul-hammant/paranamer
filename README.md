@@ -6,8 +6,9 @@
 
 # What is it?
 
+
 It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like `doSometing(mypkg.Person **toMe**)`
-currently look like `doSomething(mypackage.Person **???**)` to people using Java's reflection to inspect methods. 
+currently look like `doSomething(mypackage.Person **???**)` to people using Java's reflection to inspect methods.
 
 To date parameter name access has not been very useful to Java application developers, but with the advent of advanced scripting languages and web action frameworks for the JVM it is of increasing importance to be able to leverage a method's parameter names. Scripting languages like [Groovy](http://groovy.codehaus.org/) and [JRuby](http://jruby.codehaus.org/), web action frameworks like [Waffle](http://waffle.codehaus.org) and [VRaptor](# "http://www.vraptor.org/") (that verge on the transparent) and the compelling [Grails](http://grails.codehaus.org/). SOAP and REST designs could also benefit.
 
@@ -40,7 +41,7 @@ parameterNames = paranamer.lookupParameterNames(method, false) // will return nu
 
 ## DefaultParanamer
 
-DefaultParanamer tries to read parameter name data from an extra public static field called `__PARANAMER_DATA` on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar. 
+DefaultParanamer tries to read parameter name data from an extra public static field called `__PARANAMER_DATA` on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar.
 
 The static field essentially looks like the following. You really do not need to know this unless your going to make something compatible with *Paranamer*:
 
@@ -56,6 +57,8 @@ Clearly the method's source needs to be analysed and lines added per method to t
 ## BytecodeReadingParanamer
 
 If generating meta data for parameter names at compile time is not for you, try class `BytecodeReadingParanamer` as a runtime only solution. This uses a cut down forked and cut-down version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for `CachingParanamer` when `DefaultParanamer` reports that there is no meta data for a class.
+
+Note: BytecodeReadingParanamer does not work parameters stored in **interfaces**, because the javac compiler ALWAYS omits that information from the debug tables in the .class file.
 
 ## JavadocParanamer
 
@@ -108,7 +111,7 @@ You need to download:
 ... and declare in your Ant script the following after &lt;javac/&gt; (remember to add to the taskdef classpath all the above jars):
 
 ```xml
-<taskdef name="paranamer" 
+<taskdef name="paranamer"
        classname="com.thoughtworks.paranamer.ant.ParanamerGeneratorTask"/>
   <paranamer sourceDirectory="src/java" outputDirectory="target/classes"/>
 ```
@@ -210,12 +213,12 @@ The need for *Paranamer* will go away when [JEP-118](http://openjdk.java.net/jep
 
 * Release 2.8 - Aug 26 2015 - JDK 8 compatibility improvements, and removal of Codehaus dependencies in build
 * Release 2.7 - Aug 16 2014 - QDox changed from 1.x to 2.x meaning Java7 features are supported. Thanks to [PR16](https://github.com/paul-hammant/paranamer/pull/16) by Robert Scholte
-* Release 2.6.1 - Jul 18 2014 - New OSGi bundle info [PR15](https://github.com/paul-hammant/paranamer/pull/15) by Raghu Devarakonda, a new -DskipParanamer CLI option [PR14](https://github.com/paul-hammant/paranamer/pull/14) by Nicholas Whitehead, a new and optional non-WeakHashMap caching impl [Issue 8](https://github.com/paul-hammant/paranamer/issues/8), Maven fixups and Code refactoring from Otávio Garcia (PR13, PR14), 
+* Release 2.6.1 - Jul 18 2014 - New OSGi bundle info [PR15](https://github.com/paul-hammant/paranamer/pull/15) by Raghu Devarakonda, a new -DskipParanamer CLI option [PR14](https://github.com/paul-hammant/paranamer/pull/14) by Nicholas Whitehead, a new and optional non-WeakHashMap caching impl [Issue 8](https://github.com/paul-hammant/paranamer/issues/8), Maven fixups and Code refactoring from Otávio Garcia (PR13, PR14),
 * Release 2.6 - Oct 9 2013  - adding PositionalParanamer from Stefan Fleiter
-* Release 2.5 - Apr 15 2012 
-* Release 2.4 - Oct 29 2011 
-* Release 2.3 - Oct 19 2010 
-* Release 2.2 - Jan 2 2010 
+* Release 2.5 - Apr 15 2012
+* Release 2.4 - Oct 29 2011
+* Release 2.3 - Oct 19 2010
+* Release 2.2 - Jan 2 2010
 * Release 2.1 - Sep 6 2009  - last version that is compatible with JDK 1.4, all others after this require Java 5
 * Release 2.0 - Jul 10 2009
 * Release 1.5 - May 19 2009
@@ -254,4 +257,3 @@ Download the latest released jar files (2.8) [here](http://central.maven.org/mav
 # More Examples
 
 The unit tests for Paranamer illustrate some more way to use it: [http://github.com/paul-hammant/paranamer/tree/master/paranamer/src/test/com/thoughtworks/paranamer](http://github.com/paul-hammant/paranamer/tree/master/paranamer/src/test/com/thoughtworks/paranamer)
-
