@@ -1,4 +1,4 @@
-# ![ParaNamer](http://paulhammant.com/images/ParaNamer.jpg)
+# ![Paranamer](http://paulhammant.com/images/ParaNamer.jpg)
 
 ## Method Parameter Name Access for Java*
 
@@ -6,22 +6,23 @@
 
 # What is it?
 
-It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like <code>doSometing(mypkg.Person **toMe**)</code>
-currently look like <code>doSomething(mypackage.Person **???**)</code> to people using Java's reflection to inspect methods.
 
-To date parameter name access has not been very useful to Java application developers, but with the advent of advanced scripting languages and web action frameworks for the JVM it is of increasing importance to be able to leverage a method's parameter names. Scripting languages like [Groovy](http://groovy.codehaus.org/) &amp; [JRuby](http://jruby.codehaus.org/), web action frameworks like [Waffle](http://waffle.codehaus.org) and [VRaptor](# "http://www.vraptor.org/") (that verge on the transparent) and the compelling [Grails](http://grails.codehaus.org/). SOAP and REST designs could also benefit.
+It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like `doSometing(mypkg.Person **toMe**)`
+currently look like `doSomething(mypackage.Person **???**)` to people using Java's reflection to inspect methods.
 
-ParaNamer allows you to generate and use parameter name info for versions of Java prior to JDK 5.0 and above. Parameter name access was scheduled for JDK 6.0, but was cancelled at a late stage as the spec-lead suggested the development team ran out of time to implement it. It didn't ship in JDK 7.0 either, though it did in JDK 8 (see below). Historically, it was felt that applications could end up depending on parameter names, and that they essentially became part of constructor/method signatures and could never be changed if you wanted to be backwards compatible.  The view of the authors of Paranamer is that you should be aware that parameter names may change between releases, and code to not depend on them.
+To date parameter name access has not been very useful to Java application developers, but with the advent of advanced scripting languages and web action frameworks for the JVM it is of increasing importance to be able to leverage a method's parameter names. Scripting languages like [Groovy](http://groovy.codehaus.org/) and [JRuby](http://jruby.codehaus.org/), web action frameworks like [Waffle](http://waffle.codehaus.org) and [VRaptor](# "http://www.vraptor.org/") (that verge on the transparent) and the compelling [Grails](http://grails.codehaus.org/). SOAP and REST designs could also benefit.
 
-Paranamer is Open Source, and licensed as BSD, and first created in in July 2006. It is compatible with commercial/proprietary, GPL, BSD, and Apache (or any open/free source) use.
+*Paranamer* allows you to generate and use parameter name info for versions of Java prior to JDK 5.0 and above. Parameter name access was scheduled for JDK 6.0, but was cancelled at a late stage as the spec-lead suggested the development team ran out of time to implement it. It didn't ship in JDK 7.0 either, though it did in JDK 8 (see below). Historically, it was felt that applications could end up depending on parameter names, and that they essentially became part of constructor/method signatures and could never be changed if you wanted to be backwards compatible.  The view of the authors of *Paranamer* is that you should be aware that parameter names may change between releases, and code to not depend on them.
+
+*Paranamer* is Open Source, and licensed as BSD, and first created in in July 2006. It is compatible with commercial/proprietary, GPL, BSD, and Apache (or any open/free source) use.
 
 # Java8 has parameter name access built in!
 
-Paranamer is gaining JDK 8 compatibility. JDK 8 though has native support though, and [stackoverflow](http://stackoverflow.com/questions/21455403/how-to-get-method-parameter-names-in-java-8-using-reflection) shows you how to make that work.
+*Paranamer* is gaining JDK 8 compatibility. JDK 8 though has native support though, and [stackoverflow](http://stackoverflow.com/questions/21455403/how-to-get-method-parameter-names-in-java-8-using-reflection) shows you how to make that work.
 
 # Accessing Parameter Name data
 
-There is a method called <code>lookupParameterNames</code> that returns an array of strings for a method or constructor.
+There is a method called `lookupParameterNames` that returns an array of strings for a method or constructor.
 
 ```java
 // MySomethingOrOther.java**
@@ -36,32 +37,28 @@ String[] parameterNames = paranamer.lookupParameterNames(method) // throws Param
 parameterNames = paranamer.lookupParameterNames(method, false) // will return null if not found
 ```
 
-ParaNamer does not have any runtime jar dependencies while looking up parameter info previously generated that's been zipped into a jar.
+*Paranamer* does not have any runtime jar dependencies while looking up parameter info previously generated that's been zipped into a jar.
 
 ## DefaultParanamer
 
-DefaultParanamer tries to read parameter name data from an extra public static field on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar.
+DefaultParanamer tries to read parameter name data from an extra public static field called `__PARANAMER_DATA` on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar.
 
-The static field essentially looks like the following. You really do not need to know this unless your going to make something compatible with Paranamer:
+The static field essentially looks like the following. You really do not need to know this unless your going to make something compatible with *Paranamer*:
 
 ```java
-private static final String __PARANAMER_DATA = "v1.0 \n"
+public static final String __PARANAMER_DATA = "v1.0 \n"
       + "<init> com.example.PeopleService peopleService \n"
       + "setName java.lang.String,java.lang.String givenName,familyName \n";
       + "setDateOfBirth int,int,int day,month,year \n";
 ```
 
-Clearly the method's source needs to be analysed and lines added per method to that __PARANAMER_DATA field. See below.
+Clearly the method's source needs to be analysed and lines added per method to that `__PARANAMER_DATA` field. See below.
 
 ## BytecodeReadingParanamer
 
-If generating meta data for parameter names at compile time is not for you, try class <code>BytecodeReadingParanamer</code> as a runtime only solution. This uses a cut down forked and cut-down version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for <code>CachingParanamer</code> when <code>DefaultParanamer</code> reports that there is no meta data for a class.
+If generating meta data for parameter names at compile time is not for you, try class `BytecodeReadingParanamer` as a runtime only solution. This uses a cut down forked and cut-down version of ASM to extract debug information from a class at runtime. As it happens this is the fallback implementation for `CachingParanamer` when `DefaultParanamer` reports that there is no meta data for a class.
 
-Note: BytecodeReadingParanamer does not work parameters stored in **interfaces**, because the javac compiler ALWAYS omits that information from the debug tables in the .class file. 
-
-## AdaptiveParanamer
-
-Give it a list of Paranamer implementations to try in turn for parameter names. In its default constructor it has <code>BytecodeReadingParanamer</code> and <code>DefaultParanamer</code> in that order.
+Note: BytecodeReadingParanamer does not work parameters stored in **interfaces**, because the javac compiler ALWAYS omits that information from the debug tables in the .class file.
 
 ## JavadocParanamer
 
@@ -73,7 +70,7 @@ Numbers it's parameter names arg0, arg1, arg2 (etc), intended as a fall-back if 
 
 ## AnnotationParanamer
 
-AnnotationParanamer uses the @Named annotation from JSR 330 and extracts names pertinent to parameters from that.
+`AnnotationParanamer` uses the `@Named` annotation from JSR 330 and extracts names pertinent to parameters from that.
 
 ```java
 public static class Something {
@@ -82,26 +79,27 @@ public static class Something {
 }
 ```
 
-AnnotationParanamer takes a delegate paranamer instance as an optional constructor arg.  This will allow constructors and methods to only partly leverage <code>@Named</code>, with other parameters having non-annotated parameter names (the via say <code>DefaulParanamer</code> or <code>BytecodeReadingParanamer</code>).
+`AnnotationParanamer` takes a delegate paranamer instance as an optional constructor arg.  This will allow constructors and methods to only partly leverage `@Named`, with other parameters having non-annotated parameter names (the via say `DefaultParanamer` or `BytecodeReadingParanamer`).
 
-If you have an alternate annotation to <code>@Named</code>, then you can specify that in a subclass of <code>AnnotationParanamer</code> that overrides two methods isNamed and getNamedValue.  Your overridden methods should do the equivalent of 'return an instance of Named' and <code>return ((Named) ann).value();</code> respectively.
+If you have an alternate annotation to `@Named`, then you can specify that in a subclass of `AnnotationParanamer` that overrides two methods isNamed and getNamedValue.  Your overridden methods should do the equivalent of 'return an instance of Named' and `return ((Named) ann).value();` respectively.
 
-If you are using @Named from JSR 330, you will need it in your classpath of course.  In Maven terms, Paranamer is built with the <code>javax.atinject</code> module as an optional dependency.
-
-## CachingParanamer
-
-CachingParanamer stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.
-
-There's a subclass of <code>CachingParanamer</code> called <code>CachingParanamer.WithoutWeakReferences</code>. It does not use a WeakHashMap as an internal implementation. If you're great with profiling of applications under load, you might be able to justify use of this implementation for your particular app.
+If you are using `@Named` annotation, you will need to add `javax.atinject` artifact in your classpath. *Paranamer* is built with the `javax.atinject` module as an optional dependency.
 
 ## AdaptiveParanamer
 
-AdaptiveParanamer is designed for using a series of Paranamer implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses DefaultParanamer with <code>ByteCodeReadingParanamer</code> as its contingency.
+`AdaptiveParanamer` is designed for using a series of *Paranamer* implementations together. The first supplied is asked if it can supply parameter name data for a constructor/method.  If it cannot, then the next one is asked and so on.  The default constructor for this uses `DefaultParanamer` with `ByteCodeReadingParanamer` as its contingency.
+
+## CachingParanamer
+
+`CachingParanamer` stores the results of each parameter name lookup, so that second and subsequent invocations will be far quicker.
+
+There's a subclass of `CachingParanamer` called `CachingParanamer.WithoutWeakReferences`. It does not use a WeakHashMap as an internal implementation. If you're great with profiling of applications under load, you might be able to justify use of this implementation for your particular app.
+
 
 # Feeding DefaultParanamer
 ##  Generating __PARANAMER_DATA with Ant
 
-This for <code>DefaultParanamer</code> usage of course, as <code>BytecodeReadingParanamer</code> does not need it.
+This for `DefaultParanamer` usage of course, as `BytecodeReadingParanamer` does not need it.
 
 You need to download:
 
@@ -122,7 +120,7 @@ Classes are changed to have an extra static String member variable that contains
 
 ##  Generating __PARANAMER_DATA with Maven 2 or 3
 
-For Maven, configuration is simpler. Just add this to the build/plugins section of your pom.xml:
+For Maven, configuration is simpler. Just add this to the `build/plugins` section of your `pom.xml`:
 
 ```xml
 <plugin>
@@ -155,7 +153,7 @@ The classes in the ultimate jar file will automatically be made with parameter n
 
 ## Embedding Paranamer in your jar
 
-There are already too many jar's for day to day Java development right? Simply consume the runtime paranamer jar into your project's jar using the Maven2 'shade' plugin.
+There are already too many jar's for day to day Java development right? Simply consume the runtime *Paranamer* jar into your project's jar using the Maven2 'shade' plugin.
 
 ```xml
 <!-- Put in your POM.xml file -->
@@ -188,7 +186,7 @@ There are already too many jar's for day to day Java development right? Simply c
 
 # What if a parameter names changes?
 
-The general answer to this question is that you should not ship something to third parties where they are going to hard-core your parameter names into their application. For you own in-house stuff, accessing parameter names is harmless. You should be able to ripple though the source code of even large applications, and change say <code>badSpeeldWord</code> to <code>badlySpelledWorld</code> if you need to.
+The general answer to this question is that you should not ship something to third parties where they are going to hard-core your parameter names into their application. For you own in-house stuff, accessing parameter names is harmless. You should be able to ripple though the source code of even large applications, and change say `badSpeeldWord` to `badlySpelledWorld` if you need to.
 
 # Other Modules
 
@@ -197,7 +195,7 @@ The general answer to this question is that you should not ship something to thi
 
 # Paranamer's Future
 
-The need for Paranamer will go away when [JEP-118](http://openjdk.java.net/jeps/118) lands as part of Java8.  Despite that, we intend to maintain the library so that it continues to work.
+The need for *Paranamer* will go away when [JEP-118](http://openjdk.java.net/jeps/118) lands as part of Java8.  Despite that, we intend to maintain the library so that it continues to work.
 
 # Projects using it
 
@@ -254,7 +252,7 @@ Github's [issue tracker for Paranamer](https://github.com/paul-hammant/paranamer
 
 ## Downloads
 
-Download the latest released jar files (2.7.1) [here](http://central.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.7.1/)
+Download the latest released jar files (2.8) [here](http://central.maven.org/maven2/com/thoughtworks/paranamer/paranamer/2.8/)
 
 # More Examples
 
