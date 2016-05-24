@@ -77,6 +77,7 @@ public class OldQDoxParanamerTestCase {
     public void testSimpleClassGeneration() throws IOException, NoSuchFieldException, IllegalAccessException {
         String s1 = paranamerDataOf("Elephant");
         String s2 = "<init> java.util.Map map \n"
+                + "leapToTheFuture java.lang.String wingedAvenger \n"
                 + "longArray long longs \n"
                 + "setMap java.util.Map map \n";
         Assert.assertEquals(s2, s1);

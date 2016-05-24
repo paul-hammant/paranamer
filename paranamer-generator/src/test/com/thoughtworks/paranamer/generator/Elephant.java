@@ -50,4 +50,6 @@ public class Elephant {
         return longs[0] + longs[1];
     }
 
+    public void leapToTheFuture(@IgnoreMe String wingedAvenger) {}
+
 }

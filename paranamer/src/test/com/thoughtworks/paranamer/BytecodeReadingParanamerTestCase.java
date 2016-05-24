@@ -62,6 +62,14 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("s", names);
     }
 
+    @Test
+    public void testRetrievesParameterNamesFromAMethodWithParamAnnotation() throws SecurityException, NoSuchMethodException {
+        BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
+        Method method = SpecificMethodSearchable.class.getMethod("singleStringWithAnnotation", new Class[] { String.class });
+        String[] names = asm.lookupParameterNames(method);
+        assertThatParameterNamesMatch("s", names);
+    }
+
 
     @Test
     public void testRetrievesParameterNamesFromAConstructor() throws SecurityException, NoSuchMethodException {
@@ -285,6 +293,10 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         }
 
         public void singleString(String s) {
+            bar = 22;
+        }
+
+        public void singleStringWithAnnotation(@IgnoreMe String s) {
             bar = 22;
         }
 
