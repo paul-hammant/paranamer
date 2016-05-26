@@ -7,8 +7,8 @@
 # What is it?
 
 
-It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like `doSometing(mypkg.Person **toMe**)`
-currently look like `doSomething(mypackage.Person **???**)` to people using Java's reflection to inspect methods.
+It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like `doSometing(mypkg.Person toMe)`
+currently look like `doSomething(mypackage.Person ???)` to people using Java's reflection to inspect methods.
 
 To date parameter name access has not been very useful to Java application developers, but with the advent of advanced scripting languages and web action frameworks for the JVM it is of increasing importance to be able to leverage a method's parameter names. Scripting languages like [Groovy](http://groovy.codehaus.org/) and [JRuby](http://jruby.codehaus.org/), web action frameworks like [Waffle](http://waffle.codehaus.org) and [VRaptor](# "http://www.vraptor.org/") (that verge on the transparent) and the compelling [Grails](http://grails.codehaus.org/). SOAP and REST designs could also benefit.
 
