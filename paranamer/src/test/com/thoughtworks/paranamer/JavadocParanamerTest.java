@@ -1,7 +1,6 @@
 package com.thoughtworks.paranamer;
 
 /*
- * Copyright 2007 Paul Hammant
  * Copyright 2013 Samuel Halliday
  *
  * Redistribution and use in source and binary forms, with or without

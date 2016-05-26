@@ -102,16 +102,17 @@ public class BytecodeReadingParanamer implements Paranamer {
             TypeCollector visitor = new TypeCollector(name, types, throwExceptionIfMissing);
             reader.accept(visitor);
             String[] parameterNamesForMethod = visitor.getParameterNamesForMethod();
-            try {
-                byteCodeStream.close();
-            } catch (IOException e) {
-            }
             return parameterNamesForMethod;
         } catch (IOException e) {
             if (throwExceptionIfMissing) {
                 throw new ParameterNamesNotFoundException("IoException while reading class bytes", e);
             } else {
                 return Paranamer.EMPTY_NAMES;
+            }
+        } finally {
+            try {
+                byteCodeStream.close();
+            } catch (IOException e) {
             }
         }
     }
@@ -159,7 +160,7 @@ public class BytecodeReadingParanamer implements Paranamer {
             this.collector = null;
         }
 
-        public MethodCollector visitMethod(int access, String name, String desc) {
+        private MethodCollector visitMethod(int access, String name, String desc) {
             // already found the method, skip any processing
             if (collector != null) {
                 return null;
@@ -191,28 +192,6 @@ public class BytecodeReadingParanamer implements Paranamer {
                     argumentTypes.length + longOrDoubleQuantity);
             return collector;
         }
-
-//        {
-//           String s = argumentTypes[i].getClassName();
-//           // array notation needs cleanup.
-//           if (s.endsWith("[]")) {
-//               String prefix = s.substring(0, s.length() - 2);
-//
-//               // adufilie: added brackets variable and while loop to fix bug with multi-dimensional arrays.
-//               String brackets = "[";
-//               while (prefix.endsWith("[]"))
-//               {
-//                   prefix = prefix.substring(0, prefix.length() - 2);
-//                   brackets += "[";
-//               }
-//
-//               if (primitives.containsKey(prefix)) {
-//                   s = brackets + primitives.get(prefix);
-//               } else {
-//                   s = brackets + "L" + prefix + ";";
-//               }
-//           }
-//           return s;        }
 
         private String correctTypeName(Type[] argumentTypes, int i) {
             String s = argumentTypes[i].getClassName();
@@ -274,7 +253,7 @@ public class BytecodeReadingParanamer implements Paranamer {
             this.debugInfoPresent = paramCount == 0;
         }
 
-        public void visitLocalVariable(String name, int index) {
+        private void visitLocalVariable(String name, int index) {
             if (index >= ignoreCount && index < ignoreCount + paramCount) {
                 if (!name.equals("arg" + currentParameter)) {
                     debugInfoPresent = true;

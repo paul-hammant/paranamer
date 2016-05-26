@@ -1,5 +1,4 @@
 /*
- * Copyright 2007 Paul Hammant
  * Copyright 2013 Samuel Halliday
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +42,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import static java.lang.String.format;
-
 
 /**
  * Accesses Javadocs to extract parameter names. Supports:-
