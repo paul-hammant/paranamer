@@ -158,6 +158,14 @@ public class DefaultParanamer implements Paranamer {
 
     private static String getParameterTypeName(Class<?> cls){
         String parameterTypeNameName = cls.getName();
+        parameterTypeNameName = parameterTypeNameName.replace("[J", "[Xlong")
+                .replace("[I", "[Xint")
+                .replace("[Z", "[Xboolean")
+                .replace("[S", "[Xshort")
+                .replace("[F", "[Xfloat")
+                .replace("[D", "[Xdouble")
+                .replace("[B", "[Xbyte")
+                .replace("[C", "[Xchar");
         int arrayNestingDepth = 0;
         int ix = parameterTypeNameName.indexOf("[");
         while (ix>-1){
@@ -165,7 +173,7 @@ public class DefaultParanamer implements Paranamer {
             parameterTypeNameName=parameterTypeNameName.replaceFirst("(\\[\\w)|(\\[)","");
             ix = parameterTypeNameName.indexOf("[");
         }
-        parameterTypeNameName =parameterTypeNameName.replaceFirst(";","");
+        parameterTypeNameName = parameterTypeNameName.replaceFirst(";","");
         for (int k=0;k<arrayNestingDepth;k++){
             parameterTypeNameName = parameterTypeNameName+"[]";
         }

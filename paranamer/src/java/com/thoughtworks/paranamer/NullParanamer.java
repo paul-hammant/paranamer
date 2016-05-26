@@ -47,6 +47,6 @@ public class NullParanamer implements Paranamer {
         if (throwExceptionIfMissing) {
             throw new ParameterNamesNotFoundException("NullParanamer implementation predictably finds no parameter names");
         }
-        return new String[0];
+        return Paranamer.EMPTY_NAMES;
     }
 }
