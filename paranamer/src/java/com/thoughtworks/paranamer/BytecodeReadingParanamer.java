@@ -1,6 +1,7 @@
 /***
  *
  * Portions Copyright (c) 2007 Paul Hammant
+ *
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,6 +52,7 @@ import java.util.Map;
  * An ASM-based implementation of Paranamer. It relies on debug information compiled
  * with the "-g" javac option to retrieve parameter names.
  * <p>
+ *
  *
  * @author Guilherme Silveira
  * @author Paul Hammant
