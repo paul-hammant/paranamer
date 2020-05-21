@@ -1,13 +1,13 @@
 package com.thoughtworks.paranamer;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 
 public class PositionalParanamerTestCase {
 

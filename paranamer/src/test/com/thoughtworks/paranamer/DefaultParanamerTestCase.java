@@ -33,11 +33,35 @@ package com.thoughtworks.paranamer;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
+
 public class DefaultParanamerTestCase extends AbstractParanamerTestCase {
 
     @Before
     public void setUp() throws Exception {
         paranamer = new DefaultParanamer();
+    }
+
+    public static interface HelloService {
+        public static final String __PARANAMER_DATA = "v1.0 \n"
+              + "hello java.lang.String name \n";
+        void hello(String name);
+    }
+
+    public static class HelloServiceImpl implements BytecodeReadingParanamerTestCase.HelloService {
+        public static final String __PARANAMER_DATA = "v1.0 \n"
+              + "hello java.lang.String name \n";
+        public void hello(String name) {
+        }
+    }
+
+    @Test
+    public void testGetNameFromInterfaceMethod() throws NoSuchMethodException {
+        assertArrayEquals(new String[]{"name"}, paranamer.lookupParameterNames(
+                HelloServiceImpl.class.getDeclaredMethod("hello", new Class[]{String.class})));
+        assertArrayEquals(new String[]{"name"}, paranamer.lookupParameterNames(
+                HelloService.class.getDeclaredMethod("hello", new Class[]{String.class})));
+
     }
 
 }

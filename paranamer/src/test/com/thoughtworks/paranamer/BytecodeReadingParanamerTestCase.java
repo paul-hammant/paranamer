@@ -39,8 +39,8 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
 
 
 /**
@@ -274,6 +274,33 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
 		String[] methNames = paranamer.lookupParameterNames(method);
 		assertEquals(0, methNames.length); //Failure here!
 	}
+
+    public static interface HelloService {
+        void hello(String name);
+    }
+
+    public static class HelloServiceImpl implements HelloService {
+        public void hello(String name) {
+        }
+    }
+
+    @Test
+    public void testGetNameFromInterfaceMethod() throws NoSuchMethodException {
+        assertArrayEquals(new String[]{"name"}, paranamer.lookupParameterNames(
+                HelloServiceImpl.class.getDeclaredMethod("hello", new Class[]{String.class})));
+
+        try {
+            // Ref "Note: BytecodeReadingParanamer" in https://github.com/paul-hammant/paranamer/ page
+            assertArrayEquals(new String[]{"name"}, paranamer.lookupParameterNames(
+                    HelloService.class.getDeclaredMethod("hello", new Class[]{String.class})));
+            fail("should have barfed as parameter names are erased from interfaces' debug tables");
+        } catch (ParameterNamesNotFoundException e) {
+            // expected
+        }
+
+    }
+
+
 
     class NoArgs {
 	    public void foo() {}
