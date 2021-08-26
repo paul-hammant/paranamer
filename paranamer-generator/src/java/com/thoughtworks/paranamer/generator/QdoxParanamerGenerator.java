@@ -36,6 +36,7 @@ import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,7 +86,16 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         	content.append(addConstructors(javaClass.getConstructors()));
         	content.append(addMethods(javaClass.getMethods()));
             // TODO problem with inner classes
-            makeEnhancer().enhance(new File(outputPath, javaClass.getFullyQualifiedName().replace('.', File.separatorChar) + ".class"), content);
+            String fullyQualifiedName = javaClass.getFullyQualifiedName();
+
+            try {
+                makeEnhancer().enhance(new File(outputPath, fullyQualifiedName.replace('.', File.separatorChar) + ".class"), content);
+            } catch (FileNotFoundException e) {
+                // Maybe inner class - QDox changes fully-qualified-names for these
+                StringBuilder fullyQualifiedNameSB = new StringBuilder(fullyQualifiedName);
+                fullyQualifiedNameSB.setCharAt(fullyQualifiedName.lastIndexOf("."), '$');
+                makeEnhancer().enhance(new File(outputPath, fullyQualifiedNameSB.toString().replace('.', File.separatorChar) + ".class"), content);
+            }
 
         }
     }
