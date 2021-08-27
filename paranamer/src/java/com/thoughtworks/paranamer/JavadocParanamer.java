@@ -144,7 +144,7 @@ public class JavadocParanamer implements Paranamer {
      * <code><strong><a href="../../java/io/File.html#File(java.io.File, java.lang.String)">File</a></strong>(<a href="../../java/io/File.html" title="class in java.io">File</a>&nbsp;parent, <a href="../../java/lang/String.html" title="class in java.lang">String</a>&nbsp;child)</code>
      * <code><strong><a href="../../java/util/Collection.html#containsAll(java.util.Collection)">containsAll</a></strong>(<a href="../../java/util/Collection.html" title="interface in java.util">Collection</a>&lt;?&gt;&nbsp;c)</code>
      */
-    private String[] getParameterNames(AccessibleObject a, String name, Class<?>[] types, String raw) {
+     static String[] getParameterNames(AccessibleObject a, String name, Class<?>[] types, String raw) {
         if (types.length == 0)
             return new String[0];
 
