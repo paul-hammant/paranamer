@@ -85,17 +85,8 @@ public class QdoxParanamerGenerator implements ParanamerGenerator {
         	StringBuilder content = new StringBuilder();
         	content.append(addConstructors(javaClass.getConstructors()));
         	content.append(addMethods(javaClass.getMethods()));
-            // TODO problem with inner classes
-            String fullyQualifiedName = javaClass.getFullyQualifiedName();
 
-            try {
-                makeEnhancer().enhance(new File(outputPath, fullyQualifiedName.replace('.', File.separatorChar) + ".class"), content);
-            } catch (FileNotFoundException e) {
-                // Maybe inner class - QDox changes fully-qualified-names for these
-                StringBuilder fullyQualifiedNameSB = new StringBuilder(fullyQualifiedName);
-                fullyQualifiedNameSB.setCharAt(fullyQualifiedName.lastIndexOf("."), '$');
-                makeEnhancer().enhance(new File(outputPath, fullyQualifiedNameSB.toString().replace('.', File.separatorChar) + ".class"), content);
-            }
+            makeEnhancer().enhance(new File(outputPath, javaClass.getBinaryName().replace('.', File.separatorChar) + ".class"), content);
 
         }
     }

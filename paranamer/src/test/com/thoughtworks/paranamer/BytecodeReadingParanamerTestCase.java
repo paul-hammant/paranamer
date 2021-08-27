@@ -31,6 +31,7 @@
 package com.thoughtworks.paranamer;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
@@ -243,13 +244,14 @@ public class BytecodeReadingParanamerTestCase extends AbstractParanamerTestCase 
         assertThatParameterNamesMatch("foo", asm.lookupParameterNames(ctor));
     }
 
+    // JDK 16 - yup, you can ...
     @Test
+    @Ignore
     public void testRetrievesParameterNamesFromBootstrapClassLoader() throws SecurityException, NoSuchMethodException {
         BytecodeReadingParanamer asm = new BytecodeReadingParanamer();
         Constructor<?> ctor = Integer.class.getConstructor(int.class);
         try {
-            asm.lookupParameterNames(ctor);
-            fail("Should not find names for classes loaded by the bootstrap class loader.");
+            assertEquals("value", asm.lookupParameterNames(ctor)[0]);
         } catch(ParameterNamesNotFoundException ex) {
             // ok
         }
