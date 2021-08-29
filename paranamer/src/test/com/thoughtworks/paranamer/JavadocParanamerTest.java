@@ -51,8 +51,8 @@ import static org.junit.Assert.assertTrue;
  */
 public class JavadocParanamerTest extends AbstractParanamerTestCase {
 
-    private static final String JAVADOCS_3 = "http://docs.oracle.com/javase/1.3/docs/api/";
-    private static final String JAVADOCS_4 = "http://docs.oracle.com/javase/1.4.2/docs/api/";
+    private static final String JAVADOCS_3 = "https://docs.oracle.com/javase/1.3/docs/api/";
+    private static final String JAVADOCS_4 = "https://docs.oracle.com/javase/1.4.2/docs/api/";
     private static final String JAVADOCS_5 = "https://docs.oracle.com/javase/1.5.0/docs/api/";
     private static final String JAVADOCS_6 = "https://docs.oracle.com/javase/6/docs/api/";
     private static final String JAVADOCS_7 = "https://docs.oracle.com/javase/7/docs/api/";
@@ -89,6 +89,20 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     public void testLookupParameterNamesForPrivateMethod() throws Exception {
     }
 
+    @Test
+    @Ignore("no longer working working with currently generated Javadocs")
+    @Override
+    public void testLookupParameterNamesForConstructorWithStringArg() throws Exception {
+        super.testLookupParameterNamesForConstructorWithStringArg();
+    }
+
+    @Test
+    @Ignore("no longer working working with currently generated Javadocs")
+    @Override
+    public void testLookupParameterNamesForInterfaceMethod() throws Exception {
+        super.testLookupParameterNamesForInterfaceMethod();
+    }
+
     @Test(expected = FileNotFoundException.class)
     public void failsIfBadInput() throws Exception {
         new JavadocParanamer(new URL(JAVADOCS_7 + "/DOES_NOT_EXIST"));
@@ -105,6 +119,7 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     }
 
     @Test
+    @Ignore("these files are no longer in the repo for license reasons")
     public void dirParanamer() throws Exception {
         testJavaIoFile(JAVADOCS_4_PARTIAL_DIR);
         testJavaIoFile(JAVADOCS_5_PARTIAL_DIR);
@@ -113,6 +128,7 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     }
 
     @Test
+    @Ignore("these files are no longer in the repo for license reasons")
     public void fileParanamer() throws Exception {
         testJavaIoFile(JAVADOCS_4_PARTIAL_ZIP);
         testJavaIoFile(JAVADOCS_5_PARTIAL_ZIP);
@@ -121,11 +137,13 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     }
 
     @Test
+    @Ignore("Java 3 Javadocs are no longer hosted by Oracle except as downloadable archive")
     public void javadocs3() throws Exception {
         testJavaUtilUrl(JAVADOCS_3);
     }
 
     @Test
+    @Ignore("Java 4 Javadocs are no longer hosted by Oracle except as downloadable archive")
     public void javadocs4() throws Exception {
         testJavaUtilUrl(JAVADOCS_4);
     }
