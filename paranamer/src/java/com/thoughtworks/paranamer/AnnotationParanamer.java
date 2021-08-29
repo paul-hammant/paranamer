@@ -30,12 +30,11 @@
 
 package com.thoughtworks.paranamer;
 
+import javax.inject.Named;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-
-import javax.inject.Named;
 
 /**
  * Implementation of Paranamer that uses @Named annotation of JSR 330.
@@ -57,10 +56,6 @@ public class AnnotationParanamer implements Paranamer {
 
     public AnnotationParanamer(Paranamer fallback) {
         this.fallback = fallback;
-    }
-
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return lookupParameterNames(methodOrConstructor, true);
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {

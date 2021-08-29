@@ -39,6 +39,7 @@ import java.lang.reflect.AccessibleObject;
  */
 public class NullParanamer implements Paranamer {
 
+    @Override
     public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
         return new String[0];
     }

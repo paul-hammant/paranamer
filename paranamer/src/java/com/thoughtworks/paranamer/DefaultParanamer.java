@@ -30,11 +30,7 @@
 
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.*;
 
 /**
  * Default implementation of Paranamer reads from a post-compile added field called '__PARANAMER_DATA'
@@ -54,10 +50,6 @@ public class DefaultParanamer implements Paranamer {
         + "getParameterTypeName java.lang.Class cls\n";
 
     public DefaultParanamer() {
-    }
-
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return lookupParameterNames(methodOrConstructor, true);
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {

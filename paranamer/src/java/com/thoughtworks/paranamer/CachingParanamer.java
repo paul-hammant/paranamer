@@ -61,7 +61,7 @@ public class CachingParanamer implements Paranamer {
     private final Map<AccessibleObject,String[]> methodCache = makeMethodCache();
 
     protected Map<AccessibleObject, String[]> makeMethodCache() {
-        return Collections.synchronizedMap(new WeakHashMap<AccessibleObject, String[]>());
+        return Collections.synchronizedMap(new WeakHashMap<>());
     }
 
     /**
@@ -77,10 +77,6 @@ public class CachingParanamer implements Paranamer {
      */
     public CachingParanamer(Paranamer delegate) {
         this.delegate = delegate;
-    }
-
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return lookupParameterNames(methodOrConstructor, true);
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
@@ -115,7 +111,7 @@ public class CachingParanamer implements Paranamer {
 
         @Override
         protected Map<AccessibleObject, String[]> makeMethodCache() {
-            return new ConcurrentHashMap<AccessibleObject,String[]>();
+            return new ConcurrentHashMap<>();
         }
     }
 

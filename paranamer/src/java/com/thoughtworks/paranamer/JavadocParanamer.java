@@ -84,10 +84,6 @@ public class JavadocParanamer implements Paranamer {
         this.provider = new UrlJavadocProvider(url);
     }
 
-    public String[] lookupParameterNames(AccessibleObject accessible) {
-        return lookupParameterNames(accessible, true);
-    }
-
     public String[] lookupParameterNames(AccessibleObject accessible, boolean throwExceptionIfMissing) {
         if (!(accessible instanceof Member))
             throw new IllegalArgumentException(accessible.getClass().getCanonicalName());
