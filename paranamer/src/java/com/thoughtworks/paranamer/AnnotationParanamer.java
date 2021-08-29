@@ -30,12 +30,11 @@
 
 package com.thoughtworks.paranamer;
 
+import javax.inject.Named;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-
-import javax.inject.Named;
+import java.lang.reflect.Executable;
 
 /**
  * Implementation of Paranamer that uses @Named annotation of JSR 330.
@@ -64,24 +63,12 @@ public class AnnotationParanamer implements Paranamer {
     }
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
-        // Oh for some commonality between Constructor and Method !!
-        Class<?>[] types = null;
-        Class<?> declaringClass = null;
-        String name = null;
-        Annotation[][] anns = null;
-        if (methodOrCtor instanceof Method) {
-            Method method = (Method) methodOrCtor;
-            types = method.getParameterTypes();
-            name = method.getName();
-            declaringClass = method.getDeclaringClass();
-            anns = method.getParameterAnnotations();
-        } else {
-            Constructor<?> constructor = (Constructor<?>) methodOrCtor;
-            types = constructor.getParameterTypes();
-            declaringClass = constructor.getDeclaringClass();
-            name = "<init>";
-            anns = constructor.getParameterAnnotations();
-        }
+        Executable executable = (Executable) methodOrCtor;
+
+        Class<?>[] types = executable.getParameterTypes();
+        Class<?> declaringClass = executable.getDeclaringClass();
+        String name = executable instanceof Constructor ? "<init>" : executable.getName();
+        Annotation[][] anns = executable.getParameterAnnotations();
 
         if (types.length == 0) {
             return EMPTY_NAMES;
