@@ -53,9 +53,9 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
 
     private static final String JAVADOCS_3 = "http://docs.oracle.com/javase/1.3/docs/api/";
     private static final String JAVADOCS_4 = "http://docs.oracle.com/javase/1.4.2/docs/api/";
-    private static final String JAVADOCS_5 = "http://docs.oracle.com/javase/1.5.0/docs/api/";
-    private static final String JAVADOCS_6 = "http://docs.oracle.com/javase/6/docs/api/";
-    private static final String JAVADOCS_7 = "http://docs.oracle.com/javase/7/docs/api/";
+    private static final String JAVADOCS_5 = "https://docs.oracle.com/javase/1.5.0/docs/api/";
+    private static final String JAVADOCS_6 = "https://docs.oracle.com/javase/6/docs/api/";
+    private static final String JAVADOCS_7 = "https://docs.oracle.com/javase/7/docs/api/";
 
     private static final String JAVADOCS_F2J = "http://icl.cs.utk.edu/projectsfiles/f2j/javadoc/";
     private static final String JAVADOCS_F2J_FILE = "paranamer/target/test-data/arpack_combined_all-0.1-javadoc.jar";
@@ -70,7 +70,7 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     private static final String JAVADOCS_6_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk6.zip";
     private static final String JAVADOCS_7_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk7.zip";
 
-    private static final String JAVADOCS_PARANAMER_FILE = "paranamer/target/test-data/paranamer-2.5.5-javadoc.jar";
+    private static final String JAVADOCS_PARANAMER_FILE = "paranamer/target/test-data/paranamer-2.8-javadoc.jar";
 
     @Before
     public void setUp() throws Exception {
