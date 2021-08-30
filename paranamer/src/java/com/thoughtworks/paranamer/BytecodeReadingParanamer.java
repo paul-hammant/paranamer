@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,21 +66,12 @@ public class BytecodeReadingParanamer implements Paranamer {
     };
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
+        Executable executable = (Executable) methodOrCtor;
 
-        Class<?>[] types = null;
-        Class<?> declaringClass = null;
-        String name = null;
-        if (methodOrCtor instanceof Method) {
-            Method method = (Method) methodOrCtor;
-            types = method.getParameterTypes();
-            name = method.getName();
-            declaringClass = method.getDeclaringClass();
-        } else {
-            Constructor<?> constructor = (Constructor<?>) methodOrCtor;
-            types = constructor.getParameterTypes();
-            declaringClass = constructor.getDeclaringClass();
-            name = "<init>";
-        }
+        Class<?>[] types = executable.getParameterTypes();
+        Class<?> declaringClass = executable.getDeclaringClass();
+        String name = executable instanceof Constructor ? "<init>" : executable.getName();
+
 
         if (types.length == 0) {
             return EMPTY_NAMES;
