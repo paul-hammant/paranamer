@@ -30,8 +30,7 @@
 package com.thoughtworks.paranamer;
 
 import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
+import java.lang.reflect.Executable;
 
 /**
  * Paranamer that works on basis of the parameter position and can be used as
@@ -67,21 +66,11 @@ public class PositionalParanamer implements Paranamer {
 
     public String[] lookupParameterNames(AccessibleObject methodOrCtor,
             boolean throwExceptionIfMissing) {
-        int count = count(methodOrCtor);
+        int count = ((Executable) methodOrCtor).getParameterCount();
         String[] result = new String[count];
         for (int i = 0; i < result.length; i++) {
             result[i] = prefix + i;
         }
         return result;
     }
-    
-    private int count(AccessibleObject methodOrCtor) {
-        if (methodOrCtor instanceof Method) {
-            Method method = (Method) methodOrCtor;
-            return method.getParameterTypes().length;
-        }
-        Constructor<?> constructor = (Constructor<?>) methodOrCtor;
-        return constructor.getParameterTypes().length;
-    }
-
 }
