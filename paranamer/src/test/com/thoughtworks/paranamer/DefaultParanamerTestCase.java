@@ -39,7 +39,7 @@ public class DefaultParanamerTestCase extends AbstractParanamerTestCase {
 
     @Before
     public void setUp() throws Exception {
-        paranamer = new DefaultParanamer();
+        paranamer = new LegacyParanamer();
     }
 
     public static interface HelloService {

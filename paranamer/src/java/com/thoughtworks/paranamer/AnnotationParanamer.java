@@ -32,7 +32,6 @@ package com.thoughtworks.paranamer;
 
 import javax.inject.Named;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 
@@ -114,7 +113,7 @@ public class AnnotationParanamer implements Paranamer {
         if (!allDone) {
             if (throwExceptionIfMissing) {
             throw new ParameterNamesNotFoundException("One or more @Named annotations missing for class '" + declaringClass.getName() + "', methodOrCtor " + name
-                    +" and parameter types "+ DefaultParanamer.getParameterTypeNamesCSV(types));
+                    +" and parameter types "+ LegacyParanamer.getParameterTypeNamesCSV(types));
             } else {
                 return Paranamer.EMPTY_NAMES;
             }

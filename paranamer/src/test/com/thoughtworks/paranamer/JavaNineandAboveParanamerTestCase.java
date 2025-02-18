@@ -31,17 +31,9 @@
 package com.thoughtworks.paranamer;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-
 import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.*;
 
 
 /**
@@ -56,7 +48,7 @@ public class JavaNineandAboveParanamerTestCase extends AbstractParanamerTestCase
 
     @Test
     public void testRetrievesParameterNamesFromAMethod() throws SecurityException, NoSuchMethodException {
-        String arg0 = paranamer.lookupParameterNames(DefaultParanamer.class.getDeclaredMethod("findFirstMatchingLine", String.class, String.class))[0];
+        String arg0 = paranamer.lookupParameterNames(LegacyParanamer.class.getDeclaredMethod("findFirstMatchingLine", String.class, String.class))[0];
         assertEquals("data", arg0);
     }
 

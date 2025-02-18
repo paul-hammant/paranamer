@@ -30,7 +30,6 @@
 
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Executable;
 
 /**
@@ -52,10 +51,10 @@ public class AdaptiveParanamer implements Paranamer {
     private final Paranamer[] paranamers;
 
     /**
-     * Use DefaultParanamer ahead of BytecodeReadingParanamer
+     * Use LegacyParanamer ahead of BytecodeReadingParanamer
      */
     public AdaptiveParanamer() {
-        this(new DefaultParanamer(), new BytecodeReadingParanamer());
+        this(new LegacyParanamer(), new BytecodeReadingParanamer());
     }
 
     /**

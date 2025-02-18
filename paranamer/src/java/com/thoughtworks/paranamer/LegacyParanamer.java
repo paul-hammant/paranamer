@@ -39,7 +39,7 @@ import java.lang.reflect.*;
  * @author Mauro Talevi
  * @author Guilherme Silveira
  */
-public class DefaultParanamer implements Paranamer {
+public class LegacyParanamer implements Paranamer {
 
     private static final String COMMA = ",";
     private static final String SPACE = " ";
@@ -49,7 +49,7 @@ public class DefaultParanamer implements Paranamer {
         + "lookupParameterNames java.lang.AccessibleObject,boolean methodOrCtor,throwExceptionIfMissing \n"
         + "getParameterTypeName java.lang.Class cls\n";
 
-    public DefaultParanamer() {
+    public LegacyParanamer() {
     }
 
     public String[] lookupParameterNames(Executable methodOrConstructor) {

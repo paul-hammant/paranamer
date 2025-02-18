@@ -30,12 +30,10 @@
 
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -54,7 +52,7 @@ public abstract class AbstractParanamerTestCase {
 
     @Test
     public void testLookupParameterNamesForMethodWhenNoArg() throws Exception {
-        Method method = DefaultParanamer.class.getMethod("toString", new Class[0]);
+        Method method = LegacyParanamer.class.getMethod("toString", new Class[0]);
         String[] names = paranamer.lookupParameterNames(method);
         Assert.assertEquals(0, names.length);
     }
@@ -68,7 +66,7 @@ public abstract class AbstractParanamerTestCase {
 
     @Test
     public void testLookupParameterNamesForPrivateMethod() throws Exception {
-        Method m = DefaultParanamer.class.getDeclaredMethod("getParameterTypeName", new Class[] {Class.class});
+        Method m = LegacyParanamer.class.getDeclaredMethod("getParameterTypeName", new Class[] {Class.class});
         String[] names = paranamer.lookupParameterNames(m);
         assertThatParameterNamesMatch("cls", names);
     }
