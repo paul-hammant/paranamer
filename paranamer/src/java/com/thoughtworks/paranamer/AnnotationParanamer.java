@@ -58,11 +58,11 @@ public class AnnotationParanamer implements Paranamer {
         this.fallback = fallback;
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+    public String[] lookupParameterNames(Executable methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
+    public String[] lookupParameterNames(Executable methodOrCtor, boolean throwExceptionIfMissing) {
         Executable executable = (Executable) methodOrCtor;
 
         Class<?>[] types = executable.getParameterTypes();

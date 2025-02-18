@@ -31,6 +31,7 @@
 package com.thoughtworks.paranamer;
 
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Executable;
 
 /**
  * Implementation of Paranamer which chooses between a series of Paranamer instances depending on which can supply data.
@@ -65,11 +66,11 @@ public class AdaptiveParanamer implements Paranamer {
         this.paranamers = paranamers;
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+    public String[] lookupParameterNames(Executable methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
+    public String[] lookupParameterNames(Executable methodOrCtor, boolean throwExceptionIfMissing) {
         for (int i = 0; i < paranamers.length; i++) {
             Paranamer paranamer = paranamers[i];
             String[] names = paranamer.lookupParameterNames(methodOrCtor, i+1 < paranamers.length ? false : throwExceptionIfMissing);

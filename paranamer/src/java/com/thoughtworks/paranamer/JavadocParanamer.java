@@ -29,10 +29,7 @@
 package com.thoughtworks.paranamer;
 
 import java.io.*;
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Member;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Enumeration;
@@ -84,11 +81,11 @@ public class JavadocParanamer implements Paranamer {
         this.provider = new UrlJavadocProvider(url);
     }
 
-    public String[] lookupParameterNames(AccessibleObject accessible) {
+    public String[] lookupParameterNames(Executable accessible) {
         return lookupParameterNames(accessible, true);
     }
 
-    public String[] lookupParameterNames(AccessibleObject accessible, boolean throwExceptionIfMissing) {
+    public String[] lookupParameterNames(Executable accessible, boolean throwExceptionIfMissing) {
         if (!(accessible instanceof Member))
             throw new IllegalArgumentException(accessible.getClass().getCanonicalName());
         try {

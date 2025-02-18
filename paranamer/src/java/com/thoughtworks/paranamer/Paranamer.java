@@ -33,6 +33,7 @@ package com.thoughtworks.paranamer;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 
 /**
@@ -60,7 +61,7 @@ public interface Paranamer {
 	 *             if reflection is not permitted on the containing {@link Class} of the
 	 *             parameter
 	 */
-	public String[] lookupParameterNames(AccessibleObject methodOrConstructor);
+	public String[] lookupParameterNames(Executable methodOrConstructor);
 
 	/**
 	 * Lookup the parameter names of a given method.
@@ -78,7 +79,7 @@ public interface Paranamer {
 	 *             if reflection is not permitted on the containing {@link Class} of the
 	 *             parameter
 	 */
-	public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing);
+	public String[] lookupParameterNames(Executable methodOrConstructor, boolean throwExceptionIfMissing);
 
 
 }

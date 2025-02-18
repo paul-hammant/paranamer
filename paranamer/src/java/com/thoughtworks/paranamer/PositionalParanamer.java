@@ -60,11 +60,11 @@ public class PositionalParanamer implements Paranamer {
         this.prefix = prefix;
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+    public String[] lookupParameterNames(Executable methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrCtor,
+    public String[] lookupParameterNames(Executable methodOrCtor,
             boolean throwExceptionIfMissing) {
         int count = ((Executable) methodOrCtor).getParameterCount();
         String[] result = new String[count];

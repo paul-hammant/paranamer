@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Executable;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
@@ -192,7 +193,7 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
         testAccessible(p, Collection.class.getMethod("containsAll", Collection.class), "c");
     }
 
-    private void testAccessible(Paranamer p, AccessibleObject accessible, String... expected) {
+    private void testAccessible(Paranamer p, Executable accessible, String... expected) {
         String[] names = p.lookupParameterNames(accessible);
         assertTrue(accessible + " " + Arrays.toString(names), Arrays.equals(expected, names));
     }

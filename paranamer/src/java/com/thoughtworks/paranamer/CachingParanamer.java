@@ -31,6 +31,7 @@
 package com.thoughtworks.paranamer;
 
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Executable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -79,11 +80,11 @@ public class CachingParanamer implements Paranamer {
         this.delegate = delegate;
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+    public String[] lookupParameterNames(Executable methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
     }
 
-    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
+    public String[] lookupParameterNames(Executable methodOrCtor, boolean throwExceptionIfMissing) {
         String[] names = methodCache.get(methodOrCtor);
         // refer PARANAMER-19
         if(names == null) {

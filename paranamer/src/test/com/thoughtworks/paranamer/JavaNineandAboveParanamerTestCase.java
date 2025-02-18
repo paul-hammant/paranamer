@@ -30,24 +30,35 @@
 
 package com.thoughtworks.paranamer;
 
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Executable;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.*;
+
 
 /**
- * Implementation of Paranamer which adheres to the NullObject pattern
  *
- * @author Paul Hammant
  */
-public class NullParanamer implements Paranamer {
+public class JavaNineandAboveParanamerTestCase extends AbstractParanamerTestCase {
 
-    public String[] lookupParameterNames(Executable methodOrConstructor) {
-        return new String[0];
+    @Before
+    public void setUp() throws Exception {
+        paranamer = new JavaNineOrAboveParanamer();
     }
 
-    public String[] lookupParameterNames(Executable methodOrConstructor, boolean throwExceptionIfMissing) {
-        if (throwExceptionIfMissing) {
-            throw new ParameterNamesNotFoundException("NullParanamer implementation predictably finds no parameter names");
-        }
-        return Paranamer.EMPTY_NAMES;
+    @Test
+    public void testRetrievesParameterNamesFromAMethod() throws SecurityException, NoSuchMethodException {
+        String arg0 = paranamer.lookupParameterNames(DefaultParanamer.class.getDeclaredMethod("findFirstMatchingLine", String.class, String.class))[0];
+        assertEquals("data", arg0);
     }
+
+
 }

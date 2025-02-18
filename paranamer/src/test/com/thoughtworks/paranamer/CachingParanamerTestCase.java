@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -49,12 +50,12 @@ public class CachingParanamerTestCase {
     public void setUp() throws Exception {
         paranamer = new Paranamer() {
 
-            public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+            public String[] lookupParameterNames(Executable methodOrConstructor) {
                 assertEquals(METHOD, methodOrConstructor);
                 return lookupParameterNames(methodOrConstructor, true);
             }
 
-            public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
+            public String[] lookupParameterNames(Executable methodOrCtor, boolean throwExceptionIfMissing) {
                 count++;
                 return new String[]{"foo","bar"};
             }
