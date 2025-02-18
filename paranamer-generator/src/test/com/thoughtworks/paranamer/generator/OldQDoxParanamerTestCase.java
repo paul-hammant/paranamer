@@ -78,7 +78,7 @@ public class OldQDoxParanamerTestCase {
         String s1 = paranamerDataOf("Elephant");
         String s2 = "<init> java.util.Map map \n"
                 + "leapToTheFuture java.lang.String wingedAvenger \n"
-                + "longArray long longs \n"
+                + "longArray long[] longs \n"
                 + "setMap java.util.Map map \n";
         Assert.assertEquals(s2, s1);
     }
@@ -87,7 +87,7 @@ public class OldQDoxParanamerTestCase {
     public void testGenericClassGeneration() throws IOException, NoSuchFieldException, IllegalAccessException {
         String s1 = paranamerDataOf("Horse");
         String s2 = "<init> E dumbo \n" +
-                "elephantArrays E,java.lang.String theArrayParameter,otherParameter \n" +
+                "elephantArrays E[],java.lang.String theArrayParameter,otherParameter \n" +
                 "setElephant E dumboss \n";
         Assert.assertEquals(s2, s1);
     }

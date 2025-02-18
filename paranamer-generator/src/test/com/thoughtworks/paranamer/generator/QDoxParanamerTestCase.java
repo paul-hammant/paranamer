@@ -71,7 +71,7 @@ public class QDoxParanamerTestCase {
         String s1 = ((String) f.get(null));
         String s2 = ("<init> java.util.Map map \n" +
                         "leapToTheFuture java.lang.String wingedAvenger \n" +
-                        "longArray long longs \n" +
+                        "longArray long[] longs \n" +
                         "setMap java.util.Map map \n");
         Assert.assertEquals(s2, s1);
     }
