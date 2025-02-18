@@ -54,7 +54,7 @@ public class AdaptiveParanamer implements Paranamer {
      * Use LegacyParanamer ahead of BytecodeReadingParanamer
      */
     public AdaptiveParanamer() {
-        this(new LegacyParanamer(), new BytecodeReadingParanamer());
+        this(new DefaultParanamer(), new BytecodeReadingParanamer(), new LegacyParanamer());
     }
 
     /**

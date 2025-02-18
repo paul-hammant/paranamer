@@ -69,7 +69,7 @@ public class CachingParanamer implements Paranamer {
      * Uses a LegacyParanamer as the implementation it delegates to.
      */
     public CachingParanamer() {
-        this(new LegacyParanamer());
+        this(new DefaultParanamer());
     }
 
 

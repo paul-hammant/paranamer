@@ -43,7 +43,7 @@ public class JavaNineandAboveParanamerTestCase extends AbstractParanamerTestCase
 
     @Before
     public void setUp() throws Exception {
-        paranamer = new JavaNineOrAboveParanamer();
+        paranamer = new DefaultParanamer();
     }
 
     @Test
