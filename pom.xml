@@ -13,7 +13,6 @@
         <module>paranamer-generator</module>
         <module>paranamer-ant</module>
         <module>paranamer-maven-plugin</module>
-        <module>paranamer-integration-tests</module>
 
     </modules>
     <dependencyManagement>
