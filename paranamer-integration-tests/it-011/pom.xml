@@ -37,7 +37,7 @@
                   <pluginExecutionFilter>
                     <groupId>com.thoughtworks.paranamer</groupId>
                     <artifactId>paranamer-maven-plugin</artifactId>
-                    <versionRange>[2.5-SNAPSHOT,)</versionRange>
+                    <versionRange>${project.version}}</versionRange>
                     <goals>
                       <goal>generate</goal>
                     </goals>
