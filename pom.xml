@@ -336,7 +336,4 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-    <properties>
-        <gpg.keyname>YourGPGKeyName</gpg.keyname>
-    </properties>
 </project>
