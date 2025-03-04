@@ -10,6 +10,12 @@
   <name>ParaNamer Core</name>
   <dependencies>
     <dependency>
+      <groupId>com.thoughtworks.paranamer</groupId>
+      <artifactId>paranamer-core9</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-all</artifactId>
       <version>2.0.2-beta</version>
@@ -117,8 +123,27 @@
             </instructions>
           </configuration>
         </plugin>
-        
-    </plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-antrun-plugin</artifactId>
+              <version>3.1.0</version>
+              <executions>
+                  <execution>
+                      <phase>generate-sources</phase>
+                      <goals>
+                          <goal>run</goal>
+                      </goals>
+                      <configuration>
+                          <target>
+                              <copy file="../paranamer-core9/target/classes/com/thoughtworks/paranamer/DefaultParanamer.class"
+                                    tofile="target/classes/com/thoughtworks/paranamer/DefaultParanamer.class"/>
+                          </target>
+                      </configuration>
+                  </execution>
+              </executions>
+          </plugin>
+      </plugins>
+
     <pluginManagement>
       <plugins>
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
