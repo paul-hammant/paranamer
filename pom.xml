@@ -9,6 +9,7 @@
     <description>Paranamer allows runtime access to constructor and method parameter names for Java classes</description>
     <url>https://github.com/paul-hammant/paranamer</url>
     <modules>
+	<module>paranamer-core9</module>
         <module>paranamer</module>
         <module>paranamer-generator</module>
         <module>paranamer-ant</module>
@@ -59,8 +60,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.1</version>
                     <configuration>
-                        <source>1.9</source>
-                        <target>1.9</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                         <compilerArgs>
                             <arg>-parameters</arg>
                         </compilerArgs>

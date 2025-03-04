@@ -66,10 +66,10 @@ public class CachingParanamer implements Paranamer {
     }
 
     /**
-     * Uses a LegacyParanamer as the implementation it delegates to.
+     * Uses a AdaptiveParanamer as the implementation it delegates to.
      */
     public CachingParanamer() {
-        this(new DefaultParanamer());
+        this(new AdaptiveParanamer());
     }
 
 

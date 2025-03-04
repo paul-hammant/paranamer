@@ -30,27 +30,30 @@
 
 package com.thoughtworks.paranamer;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import static junit.framework.Assert.assertEquals;
-
-
 /**
- *
+ * Exception thrown when no parameter names are found
+ * 
+ * @author Paul Hammant
+ * @author Mauro Talevi
  */
-public class JavaNineandAboveParanamerTestCase extends AbstractParanamerTestCase {
+@SuppressWarnings("serial")
+public class ParameterNamesNotFoundException extends RuntimeException {
 
-    @Before
-    public void setUp() throws Exception {
-        paranamer = (Paranamer) AdaptiveParanamer.class.getClassLoader().loadClass("com.thoughtworks.paranamer.DefaultParanamer").newInstance();
+    public static final String __PARANAMER_DATA = "v1.0 \n"
+      + "<init> java.lang.String message \n";
+    private Exception cause;
+
+    public ParameterNamesNotFoundException(String message, Exception cause) {
+        super(message);
+        this.cause = cause;
     }
 
-    @Test
-    public void testRetrievesParameterNamesFromAMethod() throws SecurityException, NoSuchMethodException {
-        String arg0 = paranamer.lookupParameterNames(LegacyParanamer.class.getDeclaredMethod("findFirstMatchingLine", String.class, String.class))[0];
-        assertEquals("data", arg0);
+    public ParameterNamesNotFoundException(String message) {
+        super(message);
     }
 
 
+    public Throwable getCause() {
+        return cause;
+    }
 }
