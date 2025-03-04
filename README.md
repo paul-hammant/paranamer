@@ -3,14 +3,15 @@
 ## Method Parameter Name Access for Java*
 
 * versions PRIOR TO Java <del>7.0</del> 8.0
+* Minimum JDK version 8
+* Has JDK9's supported parameter name access built in (for JDK9 and above deployments)
 
 # What is it?
 
-
 It is a library that allows the parameter names of non-private methods and constructors to be accessed at runtime. Normally this information is dropped by the compiler. In effect, methods like `doSometing(mypkg.Person toMe)`
-currently look like `doSomething(mypackage.Person ???)` to people using Java's reflection to inspect methods.
+currently look like `doSomething(mypackage.Person ???)` to people using Java's reflection to inspect methods. Well, normal prior to JDK 9.
 
-To date parameter name access has not been very useful to Java application developers, but with the advent of advanced scripting languages and web action frameworks for the JVM it is of increasing importance to be able to leverage a method's parameter names. Scripting languages like [Groovy](http://groovy.codehaus.org/) and [JRuby](http://jruby.codehaus.org/), web action frameworks like [Waffle](http://waffle.codehaus.org) and [VRaptor](# "http://www.vraptor.org/") (that verge on the transparent) and the compelling [Grails](http://grails.codehaus.org/). SOAP and REST designs could also benefit.
+Historically parameter name access has not been very useful to Java application developers, but with the advent of advanced scripting languages and web action frameworks for the JVM it is of increasing importance to be able to leverage a method's parameter names. Scripting languages like [Groovy](http://groovy.codehaus.org/) and [JRuby](http://jruby.codehaus.org/), web action frameworks like [Waffle](http://waffle.codehaus.org) and [VRaptor](# "http://www.vraptor.org/") (that verge on the transparent) and the compelling [Grails](http://grails.codehaus.org/). SOAP and REST designs could also benefit.
 
 *Paranamer* allows you to generate and use parameter name info for versions of Java prior to JDK 5.0 and above. Parameter name access was scheduled for JDK 6.0, but was cancelled at a late stage as the spec-lead suggested the development team ran out of time to implement it. It didn't ship in JDK 7.0 either, though it did in JDK 8 (see below). Historically, it was felt that applications could end up depending on parameter names, and that they essentially became part of constructor/method signatures and could never be changed if you wanted to be backwards compatible.  The view of the authors of *Paranamer* is that you should be aware that parameter names may change between releases, and code to not depend on them.
 
@@ -40,6 +41,20 @@ parameterNames = paranamer.lookupParameterNames(method, false) // will return nu
 *Paranamer* does not have any runtime jar dependencies while looking up parameter info previously generated that's been zipped into a jar.
 
 ## DefaultParanamer
+
+DefaultParanamer tries to read parameter name data that JDK9 can compile in if you pass `-paramaters` to Javac. For maven:
+
+```xml 
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+        <compilerArgument>-parameters</compilerArgument>
+    </configuration>
+</plugin>
+```
+
+## LegacyParanamer
 
 DefaultParanamer tries to read parameter name data from an extra public static field called `__PARANAMER_DATA` on the class. This field need to be added after compilation of the class, and before you put the resulting classes in a jar.
 
@@ -211,6 +226,8 @@ The need for *Paranamer* will go away when [JEP-118](http://openjdk.java.net/jep
 
 # Releases
 
+* Release 2.8.2 - Mar 2025 - Adaptive JDK 8 compatibility improvements
+* Release 2.8.1 - Feb 2025 - JDK 9 compatibility improvements, upgrades of ASM, QDox and more
 * Release 2.8 - Aug 26 2015 - JDK 8 compatibility improvements, and removal of Codehaus dependencies in build
 * Release 2.7 - Aug 16 2014 - QDox changed from 1.x to 2.x meaning Java7 features are supported. Thanks to [PR16](https://github.com/paul-hammant/paranamer/pull/16) by Robert Scholte
 * Release 2.6.1 - Jul 18 2014 - New OSGi bundle info [PR15](https://github.com/paul-hammant/paranamer/pull/15) by Raghu Devarakonda, a new -DskipParanamer CLI option [PR14](https://github.com/paul-hammant/paranamer/pull/14) by Nicholas Whitehead, a new and optional non-WeakHashMap caching impl [Issue 8](https://github.com/paul-hammant/paranamer/issues/8), Maven fixups and Code refactoring from Otávio Garcia (PR13, PR14),
