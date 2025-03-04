@@ -60,8 +60,8 @@ public class AdaptiveParanamer implements Paranamer {
     private static Paranamer[] makeArrayOfParanamers() {
         try {
             // Java 9 or above platform
-            return new Paranamer[] { (Paranamer) AdaptiveParanamer.class.getClassLoader().loadClass("com.thoughtworks.paranamer.DefaultParanamer").newInstance(), new BytecodeReadingParanamer(), new LegacyParanamer() };
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+            return new Paranamer[] {(Paranamer) AdaptiveParanamer.class.getClassLoader().loadClass("com.thoughtworks.paranamer.DefaultParanamer").newInstance(), new BytecodeReadingParanamer(), new LegacyParanamer() };
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | UnsupportedClassVersionError e) {
             // Java 8 or below platform
             return new Paranamer[] { new BytecodeReadingParanamer(), new LegacyParanamer() };
         }
