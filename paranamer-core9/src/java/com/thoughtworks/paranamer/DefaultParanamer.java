@@ -19,8 +19,14 @@ public class DefaultParanamer implements Paranamer {
 
     @Override
     public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
-        String[] names = new String[((Executable) methodOrConstructor).getParameters().length];
-        Parameter[] x = ((Executable) methodOrConstructor).getParameters();
+        Executable methodOrConstructorExecutable = null;
+        try {
+            methodOrConstructorExecutable = (Executable) methodOrConstructor;
+        } catch (ClassCastException e) {
+            return EMPTY_NAMES; // should never happen unless someone passed a Field in.
+        }
+        String[] names = new String[methodOrConstructorExecutable.getParameters().length];
+        Parameter[] x = methodOrConstructorExecutable.getParameters();
         for (int i = 0; i < x.length; i++) {
             names[i] = x[i].getName();
             if (names[i].matches("^arg\\d+$")) {
