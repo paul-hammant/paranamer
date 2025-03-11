@@ -30,6 +30,7 @@
 
 package com.thoughtworks.paranamer;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
@@ -73,7 +74,7 @@ public abstract class AbstractParanamerTestCase {
 
     @Test
     public void testLookupParameterNamesForInterfaceMethod() throws Exception {
-        Method m = Paranamer.class.getDeclaredMethod("lookupParameterNames", new Class[] {Executable.class, boolean.class});
+        Method m = Paranamer.class.getDeclaredMethod("lookupParameterNames", new Class[] {AccessibleObject.class, boolean.class});
         String[] names = paranamer.lookupParameterNames(m);
         assertThatParameterNamesMatch("methodOrConstructor,throwExceptionIfMissing", names);
     }

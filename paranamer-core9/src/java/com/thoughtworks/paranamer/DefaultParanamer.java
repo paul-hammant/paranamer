@@ -1,5 +1,6 @@
 package com.thoughtworks.paranamer;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Parameter;
 
@@ -12,14 +13,14 @@ import java.lang.reflect.Parameter;
 
 public class DefaultParanamer implements Paranamer {
     @Override
-    public String[] lookupParameterNames(Executable methodOrConstructor) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, false);
     }
 
     @Override
-    public String[] lookupParameterNames(Executable methodOrConstructor, boolean throwExceptionIfMissing) {
-        String[] names = new String[methodOrConstructor.getParameters().length];
-        Parameter[] x = methodOrConstructor.getParameters();
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
+        String[] names = new String[((Executable) methodOrConstructor).getParameters().length];
+        Parameter[] x = ((Executable) methodOrConstructor).getParameters();
         for (int i = 0; i < x.length; i++) {
             names[i] = x[i].getName();
             if (names[i].matches("^arg\\d+$")) {

@@ -40,11 +40,11 @@ import java.lang.reflect.Executable;
  */
 public class NullParanamer implements Paranamer {
 
-    public String[] lookupParameterNames(Executable methodOrConstructor) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
         return new String[0];
     }
 
-    public String[] lookupParameterNames(Executable methodOrConstructor, boolean throwExceptionIfMissing) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing) {
         if (throwExceptionIfMissing) {
             throw new ParameterNamesNotFoundException("NullParanamer implementation predictably finds no parameter names");
         }

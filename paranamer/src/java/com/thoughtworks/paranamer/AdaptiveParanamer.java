@@ -30,6 +30,7 @@
 
 package com.thoughtworks.paranamer;
 
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Executable;
 
 /**
@@ -75,11 +76,11 @@ public class AdaptiveParanamer implements Paranamer {
         this.paranamers = paranamers;
     }
 
-    public String[] lookupParameterNames(Executable methodOrConstructor) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
     }
 
-    public String[] lookupParameterNames(Executable methodOrCtor, boolean throwExceptionIfMissing) {
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
         for (int i = 0; i < paranamers.length; i++) {
             Paranamer paranamer = paranamers[i];
             String[] names = paranamer.lookupParameterNames(methodOrCtor, i+1 < paranamers.length ? false : throwExceptionIfMissing);

@@ -52,11 +52,11 @@ public class LegacyParanamer implements Paranamer {
     public LegacyParanamer() {
     }
 
-    public String[] lookupParameterNames(Executable methodOrConstructor) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
     }
 
-    public String[] lookupParameterNames(Executable methodOrCtor, boolean throwExceptionIfMissing) {
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
         Executable executable = (Executable) methodOrCtor;
 
         Class<?>[] types = executable.getParameterTypes();

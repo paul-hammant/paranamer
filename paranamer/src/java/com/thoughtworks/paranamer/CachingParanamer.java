@@ -82,11 +82,11 @@ public class CachingParanamer implements Paranamer {
         this.delegate = delegate;
     }
 
-    public String[] lookupParameterNames(Executable methodOrConstructor) {
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
         return lookupParameterNames(methodOrConstructor, true);
     }
 
-    public String[] lookupParameterNames(Executable methodOrCtor, boolean throwExceptionIfMissing) {
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
         String[] names = methodCache.get(methodOrCtor);
         // refer PARANAMER-19
         if(names == null) {

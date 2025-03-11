@@ -50,12 +50,12 @@ public class CachingParanamerTestCase {
     public void setUp() throws Exception {
         paranamer = new Paranamer() {
 
-            public String[] lookupParameterNames(Executable methodOrConstructor) {
+            public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
                 assertEquals(METHOD, methodOrConstructor);
                 return lookupParameterNames(methodOrConstructor, true);
             }
 
-            public String[] lookupParameterNames(Executable methodOrCtor, boolean throwExceptionIfMissing) {
+            public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
                 count++;
                 return new String[]{"foo","bar"};
             }

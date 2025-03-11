@@ -61,7 +61,7 @@ public interface Paranamer {
 	 *             if reflection is not permitted on the containing {@link Class} of the
 	 *             parameter
 	 */
-	public String[] lookupParameterNames(Executable methodOrConstructor);
+	public String[] lookupParameterNames(AccessibleObject methodOrConstructor);
 
 	/**
 	 * Lookup the parameter names of a given method.
@@ -79,7 +79,7 @@ public interface Paranamer {
 	 *             if reflection is not permitted on the containing {@link Class} of the
 	 *             parameter
 	 */
-	public String[] lookupParameterNames(Executable methodOrConstructor, boolean throwExceptionIfMissing);
+	public String[] lookupParameterNames(AccessibleObject methodOrConstructor, boolean throwExceptionIfMissing);
 
 
 }
