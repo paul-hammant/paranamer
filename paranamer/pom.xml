@@ -108,6 +108,7 @@
                         <includeArtifactIds>arpack_combined_all,${project.artifactId}</includeArtifactIds>
                         <failOnMissingClassifierArtifact>true</failOnMissingClassifierArtifact>
                         <outputDirectory>${project.build.directory}/test-data</outputDirectory>
+                        <stripVersion>true</stripVersion>
                     </configuration>
                 </execution>
             </executions>

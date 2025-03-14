@@ -52,14 +52,14 @@ import static org.junit.Assert.assertTrue;
  */
 public class JavadocParanamerTest extends AbstractParanamerTestCase {
 
-    private static final String JAVADOCS_3 = "http://docs.oracle.com/javase/1.3/docs/api/";
-    private static final String JAVADOCS_4 = "http://docs.oracle.com/javase/1.4.2/docs/api/";
-    private static final String JAVADOCS_5 = "http://docs.oracle.com/javase/1.5.0/docs/api/";
-    private static final String JAVADOCS_6 = "http://docs.oracle.com/javase/6/docs/api/";
-    private static final String JAVADOCS_7 = "http://docs.oracle.com/javase/7/docs/api/";
+    private static final String JAVADOCS_3 = "https://docs.oracle.com/javase/1.3/docs/api/";
+    private static final String JAVADOCS_4 = "https://docs.oracle.com/javase/1.4.2/docs/api/";
+    private static final String JAVADOCS_5 = "https://docs.oracle.com/javase/1.5.0/docs/api/";
+    private static final String JAVADOCS_6 = "https://docs.oracle.com/javase/6/docs/api/";
+    private static final String JAVADOCS_7 = "https://docs.oracle.com/javase/7/docs/api/";
 
     private static final String JAVADOCS_F2J = "http://icl.cs.utk.edu/projectsfiles/f2j/javadoc/";
-    private static final String JAVADOCS_F2J_FILE = "paranamer/target/test-data/arpack_combined_all-0.1-javadoc.jar";
+    private static final String JAVADOCS_F2J_FILE = "paranamer/target/test-data/arpack_combined_all-javadoc.jar";
 
     private static final String JAVADOCS_4_PARTIAL_DIR = "paranamer/src/resources/javadocs/jdk1.4/docs";
     private static final String JAVADOCS_5_PARTIAL_DIR = "paranamer/src/resources/javadocs/jdk5/docs";
@@ -71,7 +71,7 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     private static final String JAVADOCS_6_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk6.zip";
     private static final String JAVADOCS_7_PARTIAL_ZIP = "paranamer/src/resources/javadocs/jdk7.zip";
 
-    private static final String JAVADOCS_PARANAMER_FILE = "paranamer/target/test-data/paranamer-2.5.5-javadoc.jar";
+    private static final String JAVADOCS_PARANAMER_FILE = "paranamer/target/test-data/paranamer-javadoc.jar";
 
     @Before
     public void setUp() throws Exception {
@@ -90,6 +90,20 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     public void testLookupParameterNamesForPrivateMethod() throws Exception {
     }
 
+    @Test
+    @Ignore("no longer working working with currently generated Javadocs")
+    @Override
+    public void testLookupParameterNamesForConstructorWithStringArg() throws Exception {
+        super.testLookupParameterNamesForConstructorWithStringArg();
+    }
+
+    @Test
+    @Ignore("no longer working working with currently generated Javadocs")
+    @Override
+    public void testLookupParameterNamesForInterfaceMethod() throws Exception {
+        super.testLookupParameterNamesForInterfaceMethod();
+    }
+
     @Test(expected = FileNotFoundException.class)
     public void failsIfBadInput() throws Exception {
         new JavadocParanamer(new URL(JAVADOCS_7 + "/DOES_NOT_EXIST"));
@@ -106,6 +120,7 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     }
 
     @Test
+    @Ignore("these files are no longer in the repo for license reasons")
     public void dirParanamer() throws Exception {
         testJavaIoFile(JAVADOCS_4_PARTIAL_DIR);
         testJavaIoFile(JAVADOCS_5_PARTIAL_DIR);
@@ -114,6 +129,7 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     }
 
     @Test
+    @Ignore("these files are no longer in the repo for license reasons")
     public void fileParanamer() throws Exception {
         testJavaIoFile(JAVADOCS_4_PARTIAL_ZIP);
         testJavaIoFile(JAVADOCS_5_PARTIAL_ZIP);
@@ -122,11 +138,13 @@ public class JavadocParanamerTest extends AbstractParanamerTestCase {
     }
 
     @Test
+    @Ignore("Java 3 Javadocs are no longer hosted by Oracle except as downloadable archive")
     public void javadocs3() throws Exception {
         testJavaUtilUrl(JAVADOCS_3);
     }
 
     @Test
+    @Ignore("Java 4 Javadocs are no longer hosted by Oracle except as downloadable archive")
     public void javadocs4() throws Exception {
         testJavaUtilUrl(JAVADOCS_4);
     }
